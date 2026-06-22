@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>M|P Assessoria — Diagnóstico gratuito para lojas de material de construção</title>
+  <meta name="description" content="Aumente o faturamento da sua loja de material de construção em até 40% com a metodologia testada da M|P Assessoria. Demanda qualificada, conteúdo que converte e processo comercial. Peça seu diagnóstico gratuito." />
+  <meta name="theme-color" content="#0A0A0A" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://mp-lp-construcao.vercel.app/" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Open Graph / compartilhamento em redes -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:title" content="Aumente o faturamento da sua loja de material de construção em até 40%" />
+  <meta property="og:description" content="A metodologia testada da M|P para lojas de material de construção venderem mais — todo mês, com previsibilidade. Peça seu diagnóstico gratuito." />
+  <meta property="og:image" content="assets/telhas-coral-whatsapp.jpeg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Fontes: o @import está em colors_and_type.css; o preconnect acelera o download -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="colors_and_type.css" />
+
+  <!-- ============================================================
+       PIXEL / ANALYTICS — cole aqui quando tiver os IDs
+       (Meta Pixel, Google Tag Manager, Google Ads). Exemplo:
+       <script>... seu código do pixel ...</script>
+       ============================================================ -->
+
+  <!-- Ícones Lucide -->
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js" defer></script>
+
+  <style>
+    html, body { margin: 0; padding: 0; background: var(--bg-page); color: var(--fg-1); scroll-behavior: smooth; }
+    * { box-sizing: border-box; }
+
+    /* Carrossel automático das lojas (marquee infinito) */
+    .lojas-marquee {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+              mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+    }
+    .lojas-marquee__track {
+      display: flex;
+      width: max-content;
+      align-items: center;
+      animation: lojas-marquee-scroll 28s linear infinite;
+      will-change: transform;
+    }
+    .lojas-marquee:hover .lojas-marquee__track { animation-play-state: paused; }
+    .lojas-marquee__item {
+      display: inline-flex;
+      align-items: center;
+      flex: 0 0 auto;
+      margin-right: 60px;
+      opacity: .92;
+      transition: opacity var(--dur-fast, .2s) ease;
+    }
+    .lojas-marquee__item img { object-fit: contain; }
+    .lojas-marquee:hover .lojas-marquee__item { opacity: 1; }
+    @keyframes lojas-marquee-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .lojas-marquee__track { animation: none; }
+    }
+
+    @media (max-width: 880px) {
+      .hero-grid, .proof-grid, .form-grid, .method-grid, .method-close, .results-grid {
+        grid-template-columns: 1fr !important;
+      }
+      /* foto dos donos centralizada na coluna única do hero */
+      .hero-grid > div:last-child { max-width: 420px; margin-left: auto; margin-right: auto; }
+      .bignum-row { grid-template-columns: 1fr !important; gap: 6px !important; }
+
+      /* Campos a 16px = sem auto-zoom no iOS ao focar (defensivo p/ inputs futuros) */
+      input, select, textarea { font-size: 16px !important; }
+
+      /* CTA fixo do topo com alvo de toque de 44px */
+      header button { min-height: 44px; }
+
+      /* Rodapé empilha e centraliza (logo + copyright) em vez de espremer os dois lados */
+      footer > div { flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+      footer p { text-align: center !important; }
+    }
+
+    /* Botão flutuante do WhatsApp: menor e mais no canto no mobile,
+       reduz a sobreposição com os CTAs e o campo de WhatsApp do formulário. */
+    @media (max-width: 600px) {
+      .wa-float { width: 54px !important; height: 54px !important; right: 16px !important; bottom: 16px !important; }
+      .wa-float svg { width: 28px; height: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- App compilado (React + componentes, minificado). Gere com: npm run build -->
+  <script src="app.js" defer></script>
+</body>
+</html>

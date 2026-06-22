@@ -1,0 +1,43 @@
+<!doctype html>
+<!-- @dsCard group="Colors" name="Colors — Semantic Tokens" subtitle="Surfaces, foreground, accent, borders" viewport="700x260" -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:20px; background:var(--bg-page); display:grid; grid-template-columns: 1fr 1fr; gap:16px; font-family:var(--font-body); color:var(--fg-2); font-size:13px; }
+  .block { border:1px solid var(--border-1); border-radius:var(--r-md); padding:16px; background:var(--bg-card); }
+  .block h4 { margin:0 0 10px; font-family:var(--font-display); font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent);}
+  .row { display:flex; align-items:center; gap:10px; padding:6px 0; border-top:1px dashed var(--border-1); }
+  .row:first-of-type { border-top:0; }
+  .dot { width:22px; height:22px; border-radius:6px; flex:0 0 22px; border:1px solid var(--border-1); }
+  .name { font-family:var(--font-display); font-weight:600; color:var(--fg-1); flex:1; font-size:12px; }
+  .val { color:var(--fg-3); font-family:var(--font-mono); font-size:11px; }
+</style></head>
+<body>
+  <div class="block">
+    <h4>Surfaces</h4>
+    <div class="row"><span class="dot" style="background:#0A0A0A"></span><span class="name">--bg-page</span><span class="val">#0A0A0A</span></div>
+    <div class="row"><span class="dot" style="background:#111"></span><span class="name">--bg-section</span><span class="val">#111111</span></div>
+    <div class="row"><span class="dot" style="background:#1A1A1A"></span><span class="name">--bg-card</span><span class="val">#1A1A1A</span></div>
+    <div class="row"><span class="dot" style="background:#1F1F1F"></span><span class="name">--bg-card-hover</span><span class="val">#1F1F1F</span></div>
+  </div>
+  <div class="block">
+    <h4>Foreground</h4>
+    <div class="row"><span class="dot" style="background:#FFF"></span><span class="name">--fg-1</span><span class="val">#FFFFFF</span></div>
+    <div class="row"><span class="dot" style="background:#D4D4D4"></span><span class="name">--fg-2</span><span class="val">#D4D4D4</span></div>
+    <div class="row"><span class="dot" style="background:#737373"></span><span class="name">--fg-3</span><span class="val">#737373</span></div>
+    <div class="row"><span class="dot" style="background:#4D4D4D"></span><span class="name">--fg-4</span><span class="val">#4D4D4D</span></div>
+  </div>
+  <div class="block">
+    <h4>Accent</h4>
+    <div class="row"><span class="dot" style="background:#F5A623"></span><span class="name">--accent</span><span class="val">#F5A623</span></div>
+    <div class="row"><span class="dot" style="background:#E0921A"></span><span class="name">--accent-hover</span><span class="val">#E0921A</span></div>
+    <div class="row"><span class="dot" style="background:#C47C0F"></span><span class="name">--accent-active</span><span class="val">#C47C0F</span></div>
+    <div class="row"><span class="dot" style="background:rgba(245,166,35,0.12)"></span><span class="name">--accent-soft</span><span class="val">rgba(…,0.12)</span></div>
+  </div>
+  <div class="block">
+    <h4>Borders & Semantic</h4>
+    <div class="row"><span class="dot" style="background:#262626"></span><span class="name">--border-1</span><span class="val">#262626</span></div>
+    <div class="row"><span class="dot" style="background:#333"></span><span class="name">--border-2</span><span class="val">#333333</span></div>
+    <div class="row"><span class="dot" style="background:#22C55E"></span><span class="name">--success</span><span class="val">#22C55E</span></div>
+    <div class="row"><span class="dot" style="background:#EF4444"></span><span class="name">--danger</span><span class="val">#EF4444</span></div>
+  </div>
+</body></html>

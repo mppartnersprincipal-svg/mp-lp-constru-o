@@ -1,0 +1,19 @@
+{
+  "name": "mp-lp-construcao",
+  "version": "1.0.0",
+  "description": "Landing page de captação da M|P Assessoria para lojas de material de construção.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/main.jsx --bundle --minify --charset=utf8 --jsx=automatic --target=es2018 --outfile=app.js --legal-comments=none",
+    "watch": "esbuild src/main.jsx --bundle --charset=utf8 --jsx=automatic --target=es2018 --outfile=app.js --sourcemap --watch",
+    "serve": "npx --yes serve@latest -l 5050 ."
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}

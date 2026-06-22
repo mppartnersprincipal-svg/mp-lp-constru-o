@@ -1,0 +1,240 @@
+/* ============================================================
+   MP Assessoria Digital — Colors & Type tokens
+   Source of truth for colors, typography, spacing, radii, shadows.
+   Import with:  <link rel="stylesheet" href="/colors_and_type.css">
+   ============================================================ */
+
+/* ---------- Webfonts (Google Fonts — Montserrat primary) ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+  /* ============================================================
+     COLORS — base palette
+     The brand is dark-first with a single high-chroma yellow accent.
+     ============================================================ */
+
+  /* Yellows (primary accent) */
+  --yellow-50:  #FFF7E6;
+  --yellow-100: #FDEABF;
+  --yellow-200: #FBD58A;
+  --yellow-300: #F8BF55;
+  --yellow-400: #F5A623;   /* PRIMARY — CTA yellow */
+  --yellow-500: #E0921A;   /* hover */
+  --yellow-600: #C47C0F;   /* active / pressed */
+  --yellow-700: #8F5A08;
+
+  /* Neutrals — dark-first scale (0 = near-black, 1000 = white) */
+  --black:      #000000;
+  --gray-0:     #0A0A0A;   /* page background */
+  --gray-50:    #111111;   /* section background */
+  --gray-100:   #1A1A1A;   /* card background */
+  --gray-150:   #1F1F1F;   /* elevated card */
+  --gray-200:   #262626;   /* border on dark */
+  --gray-300:   #333333;   /* hairline */
+  --gray-400:   #4D4D4D;   /* disabled fg */
+  --gray-500:   #737373;   /* muted body */
+  --gray-600:   #A3A3A3;   /* secondary body */
+  --gray-700:   #D4D4D4;   /* primary body on dark */
+  --gray-800:   #E5E5E5;
+  --gray-900:   #F5F5F5;
+  --white:      #FFFFFF;
+
+  /* Semantic (sparingly — brand uses yellow for nearly all emphasis) */
+  --success:    #22C55E;
+  --danger:     #EF4444;
+  --info:       #3B82F6;
+
+  /* ============================================================
+     COLORS — semantic tokens (use these in components)
+     ============================================================ */
+
+  /* Surfaces */
+  --bg-page:        var(--gray-0);     /* #0A0A0A */
+  --bg-section:     var(--gray-50);    /* #111111 */
+  --bg-card:        var(--gray-100);   /* #1A1A1A */
+  --bg-card-hover:  var(--gray-150);
+  --bg-overlay:     rgba(10,10,10,0.85);
+
+  /* Foreground */
+  --fg-1:           var(--white);      /* primary text on dark */
+  --fg-2:           var(--gray-700);   /* body copy on dark */
+  --fg-3:           var(--gray-500);   /* muted / captions */
+  --fg-4:           var(--gray-400);   /* disabled */
+  --fg-on-yellow:   var(--black);      /* text on yellow CTA */
+
+  /* Accent */
+  --accent:         var(--yellow-400);
+  --accent-hover:   var(--yellow-500);
+  --accent-active:  var(--yellow-600);
+  --accent-soft:    rgba(245,166,35,0.12); /* subtle tints */
+
+  /* Borders */
+  --border-1:       var(--gray-200);   /* default hairline on dark */
+  --border-2:       var(--gray-300);   /* emphasized */
+  --border-accent:  var(--yellow-400);
+
+  /* Focus */
+  --focus-ring:     0 0 0 2px var(--gray-0), 0 0 0 4px var(--yellow-400);
+
+  /* ============================================================
+     TYPOGRAPHY
+     Primary family: Montserrat (Poppins-equivalent; geometric, strong bold).
+     Body fallback:  Inter (neutral sans for dense reading).
+     ============================================================ */
+
+  --font-display:   'Montserrat', 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+  --font-body:      'Inter', 'Montserrat', system-ui, sans-serif;
+  --font-mono:      'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Weights used in the system */
+  --fw-regular: 400; /* @kind font */
+  --fw-medium:  500; /* @kind font */
+  --fw-semibold:600; /* @kind font */
+  --fw-bold:    700; /* @kind font */
+  --fw-black:   900; /* @kind font */ /* hero headlines + metric numbers */
+
+  /* Type scale — designed for 1920-wide hero layouts.
+     Uses clamp() so body also looks right on mobile. */
+  --fs-display:  clamp(56px, 7vw, 112px); /* @kind font */ /* hero metric "+130%" */
+  --fs-h1:       clamp(40px, 5vw, 72px); /* @kind font */ /* page titles */
+  --fs-h2:       clamp(32px, 3.6vw, 52px); /* @kind font */ /* section titles */
+  --fs-h3:       clamp(24px, 2.4vw, 34px); /* @kind font */ /* card titles */
+  --fs-h4:       20px; /* @kind font */
+  --fs-lg:       18px; /* @kind font */
+  --fs-body:     16px; /* @kind font */
+  --fs-sm:       14px; /* @kind font */
+  --fs-xs:       12px; /* @kind font */
+  --fs-eyebrow:  12px; /* @kind font */ /* uppercase labels above section titles */
+
+  /* Line heights */
+  --lh-tight:   1.05; /* @kind font */ /* display / hero */
+  --lh-heading: 1.15; /* @kind font */
+  --lh-snug:    1.35; /* @kind font */
+  --lh-body:    1.6; /* @kind font */
+
+  /* Tracking */
+  --tr-tight:   -0.02em; /* @kind font */ /* large display */
+  --tr-normal:  0; /* @kind font */
+  --tr-wide:    0.08em; /* @kind font */ /* eyebrows, CTA labels, nav */
+  --tr-xwide:   0.18em; /* @kind font */ /* ASSESSORIA wordmark vibe */
+
+  /* ============================================================
+     SPACING — 4px grid
+     ============================================================ */
+  --s-1:   4px;
+  --s-2:   8px;
+  --s-3:   12px;
+  --s-4:   16px;
+  --s-5:   20px;
+  --s-6:   24px;
+  --s-8:   32px;
+  --s-10:  40px;
+  --s-12:  48px;
+  --s-16:  64px;
+  --s-20:  80px;
+  --s-24:  96px;
+  --s-32:  128px;
+
+  /* Section rhythm on marketing pages */
+  --section-pad-y: clamp(64px, 9vw, 128px);
+  --container-max: 1280px;
+  --container-pad-x: clamp(20px, 4vw, 48px);
+
+  /* ============================================================
+     RADII
+     Rounded but not playful — 8–14px for cards, 999 for CTA pills.
+     ============================================================ */
+  --r-xs:  4px;
+  --r-sm:  8px;
+  --r-md:  12px;   /* default card */
+  --r-lg:  16px;   /* feature card */
+  --r-xl:  24px;
+  --r-pill: 999px; /* CTA buttons, badges */
+
+  /* ============================================================
+     SHADOWS
+     Subtle on dark — mostly inner glows and yellow halos for emphasis.
+     ============================================================ */
+  --shadow-0: none;
+  --shadow-1: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-2: 0 6px 18px rgba(0,0,0,0.45);
+  --shadow-3: 0 16px 40px rgba(0,0,0,0.55);
+  --shadow-inset: inset 0 1px 0 rgba(255,255,255,0.04);
+  --shadow-yellow-glow: 0 10px 40px rgba(245,166,35,0.25);
+  --shadow-card: 0 1px 0 rgba(255,255,255,0.03) inset,
+                 0 0 0 1px var(--border-1),
+                 0 12px 24px rgba(0,0,0,0.35);
+
+  /* Motion */
+  --ease-out:  cubic-bezier(0.22, 1, 0.36, 1); /* @kind other */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* @kind other */
+  --dur-fast:  120ms; /* @kind other */
+  --dur-base:  200ms; /* @kind other */
+  --dur-slow:  400ms; /* @kind other */
+}
+
+/* ============================================================
+   BASE ELEMENTS
+   ============================================================ */
+html, body {
+  background: var(--bg-page);
+  color: var(--fg-1);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--fg-1);
+  letter-spacing: var(--tr-tight);
+  line-height: var(--lh-heading);
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--fs-h1); font-weight: var(--fw-black); line-height: var(--lh-tight); }
+h2 { font-size: var(--fs-h2); font-weight: var(--fw-bold); }
+h3 { font-size: var(--fs-h3); font-weight: var(--fw-bold); }
+h4 { font-size: var(--fs-h4); font-weight: var(--fw-semibold); letter-spacing: var(--tr-normal); }
+
+p  { margin: 0; color: var(--fg-2); text-wrap: pretty; }
+
+a  { color: var(--accent); text-decoration: none; transition: opacity var(--dur-fast) var(--ease-out); }
+a:hover { opacity: 0.8; }
+
+small { font-size: var(--fs-sm); color: var(--fg-3); }
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+  color: var(--yellow-200);
+  background: var(--gray-100);
+  padding: 0.15em 0.4em;
+  border-radius: var(--r-xs);
+}
+
+/* Utility: eyebrow label (uppercase, tracked, yellow) */
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tr-wide);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Utility: big metric number (social-proof callouts) */
+.metric {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--tr-tight);
+  line-height: var(--lh-tight);
+  color: var(--accent);
+}
+
+/* Selection — yellow on black */
+::selection { background: var(--accent); color: var(--black); }

@@ -1,0 +1,17 @@
+# Dependências
+node_modules/
+
+# Build / deploy
+.vercel/
+
+# Ferramentas locais
+.gstack/
+
+# Logs e temporários
+*.log
+npm-debug.log*
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ebook — 5 Ajustes que Aumentam a Captação de Clientes</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #050505;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  /* ---------- Page shell (A4 @96dpi) ---------- */
+  .page {
+    position: relative;
+    width: 794px;
+    min-height: 1123px;
+    background: var(--bg-page);
+    border: 1px solid var(--border-1);
+    border-radius: var(--r-lg);
+    padding: 84px 80px 96px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* running footer */
+  .page-footer {
+    position: absolute;
+    left: 80px;
+    right: 80px;
+    bottom: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--tr-wide);
+    text-transform: uppercase;
+    color: var(--fg-4);
+  }
+  .page-footer .mark { display: flex; align-items: center; gap: 8px; }
+  .page-footer svg { height: 16px; width: auto; }
+
+  /* ---------- Logo lockups ---------- */
+  .logo-mark { height: 28px; width: auto; display: block; }
+
+  /* ---------- Eyebrow ---------- */
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--fs-eyebrow);
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--tr-wide);
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+  }
+
+  /* ---------- Body copy ---------- */
+  .body p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--fg-2);
+    margin: 0 0 18px;
+  }
+  .body p.lead {
+    font-size: 19px;
+    color: var(--fg-1);
+    font-weight: var(--fw-medium);
+  }
+  .body p:last-child { margin-bottom: 0; }
+
+  .accent-rule {
+    width: 56px;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin: 0 0 28px;
+  }
+
+  /* ============================================================
+     COVER
+     ============================================================ */
+  .cover { justify-content: space-between; padding-top: 84px; }
+  .cover::before {
+    content: "";
+    position: absolute;
+    top: -180px; right: -160px;
+    width: 620px; height: 620px;
+    background: radial-gradient(circle, rgba(245,166,35,0.16) 0%, rgba(245,166,35,0) 68%);
+    pointer-events: none;
+  }
+  .cover-head { position: relative; }
+  .cover svg.logo-full { height: 92px; width: auto; }
+
+  .cover-main { position: relative; }
+  .cover .kicker {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--tr-wide);
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 24px;
+  }
+  .cover h1 {
+    font-size: 60px;
+    line-height: 1.04;
+    font-weight: var(--fw-black);
+    letter-spacing: var(--tr-tight);
+    margin: 0 0 28px;
+    max-width: 14ch;
+  }
+  .cover h1 em { color: var(--accent); font-style: normal; }
+  .cover .sub {
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--fg-2);
+    max-width: 46ch;
+    margin: 0;
+  }
+  .cover-foot {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-1);
+    padding-top: 24px;
+  }
+  .cover-foot .label {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--tr-wide);
+    text-transform: uppercase;
+    color: var(--fg-3);
+  }
+  .cover-foot .big-no {
+    font-family: var(--font-display);
+    font-weight: var(--fw-black);
+    font-size: 96px;
+    line-height: 0.9;
+    color: var(--accent);
+    letter-spacing: var(--tr-tight);
+  }
+  .cover-foot .big-no span { color: var(--fg-1); }
+
+  /* ============================================================
+     INTRO + SECTION PAGES
+     ============================================================ */
+  .section-head { margin-bottom: 36px; }
+  .section-head h2 {
+    font-size: 40px;
+    line-height: 1.1;
+    font-weight: var(--fw-black);
+    letter-spacing: var(--tr-tight);
+    margin: 14px 0 0;
+    max-width: 18ch;
+  }
+
+  /* ---------- Chapter (the 5 ajustes) ---------- */
+  .chapter-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 28px;
+    margin-bottom: 40px;
+  }
+  .chapter-no {
+    font-family: var(--font-display);
+    font-weight: var(--fw-black);
+    font-size: 110px;
+    line-height: 0.82;
+    color: var(--accent);
+    letter-spacing: var(--tr-tight);
+    flex: none;
+  }
+  .chapter-titlewrap { padding-top: 6px; }
+  .chapter-titlewrap h2 {
+    font-size: 36px;
+    line-height: 1.12;
+    font-weight: var(--fw-black);
+    letter-spacing: var(--tr-tight);
+    margin: 10px 0 0;
+    max-width: 20ch;
+  }
+
+  /* ---------- Pull quote ---------- */
+  .pull {
+    margin: 38px 0 0;
+    padding: 28px 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-1);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--r-md);
+  }
+  .pull p {
+    font-family: var(--font-display);
+    font-size: 22px;
+    line-height: 1.3;
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--tr-tight);
+    color: var(--fg-1);
+    margin: 0;
+  }
+  .pull p .hl { color: var(--accent); }
+
+  /* ---------- Metric/indicator list (Ajuste 4) ---------- */
+  .qlist { list-style: none; margin: 32px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .qlist li {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-1);
+    border-radius: var(--r-md);
+    font-size: 16px;
+    color: var(--fg-1);
+    font-weight: var(--fw-medium);
+  }
+  .qlist li .n {
+    font-family: var(--font-display);
+    font-weight: var(--fw-black);
+    font-size: 15px;
+    color: var(--accent);
+    flex: none;
+    width: 24px;
+  }
+
+  /* ============================================================
+     CLOSING / DIFFERENTIATOR
+     ============================================================ */
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 36px; }
+  .pillar {
+    padding: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-1);
+    border-radius: var(--r-md);
+  }
+  .pillar .pn {
+    font-family: var(--font-display);
+    font-weight: var(--fw-black);
+    font-size: 13px;
+    letter-spacing: var(--tr-wide);
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 8px;
+  }
+  .pillar h4 {
+    font-size: 19px;
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--tr-tight);
+    margin: 0 0 6px;
+    color: var(--fg-1);
+  }
+  .pillar p { font-size: 14px; line-height: 1.55; color: var(--fg-3); margin: 0; }
+
+  /* ============================================================
+     CTA PAGE
+     ============================================================ */
+  .cta { justify-content: center; align-items: flex-start; text-align: left; }
+  .cta::before {
+    content: "";
+    position: absolute;
+    bottom: -200px; left: -160px;
+    width: 640px; height: 640px;
+    background: radial-gradient(circle, rgba(245,166,35,0.14) 0%, rgba(245,166,35,0) 68%);
+    pointer-events: none;
+  }
+  .cta-inner { position: relative; }
+  .cta h2 {
+    font-size: 44px;
+    line-height: 1.08;
+    font-weight: var(--fw-black);
+    letter-spacing: var(--tr-tight);
+    margin: 18px 0 28px;
+    max-width: 18ch;
+  }
+  .cta .question {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1.3;
+    font-weight: var(--fw-bold);
+    color: var(--accent);
+    letter-spacing: var(--tr-tight);
+    margin: 0 0 28px;
+    max-width: 24ch;
+  }
+  .cta .body p { font-size: 17px; max-width: 50ch; }
+  .cta .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 40px;
+    background: var(--accent);
+    color: var(--fg-on-yellow);
+    font-family: var(--font-display);
+    font-weight: var(--fw-bold);
+    font-size: 15px;
+    letter-spacing: var(--tr-wide);
+    text-transform: uppercase;
+    padding: 18px 34px;
+    border-radius: var(--r-pill);
+  }
+
+  /* ============================================================
+     PRINT
+     ============================================================ */
+  @page { size: A4; margin: 0; }
+  @media print {
+    body { background: #fff; padding: 0; gap: 0; }
+    .page {
+      border: none;
+      border-radius: 0;
+      width: 210mm;
+      min-height: 297mm;
+      page-break-after: always;
+      break-after: page;
+    }
+    .page:last-child { page-break-after: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="page cover" data-screen-label="Capa">
+  <div class="cover-head">
+    <svg class="logo-full" viewBox="0 0 220 180" role="img" aria-label="MP Assessoria">
+      <g fill="#F5A623">
+        <path d="M6 120 V20 H26 L55 78 L84 20 H104 V120 H84 V62 L60 110 H50 L26 62 V120 Z"></path>
+        <rect x="108" y="20" width="4" height="100"></rect>
+        <path d="M120 120 V20 H168 C190 20 204 34 204 56 C204 78 190 92 168 92 H140 V120 Z M140 74 H166 C176 74 184 66 184 56 C184 46 176 38 166 38 H140 Z"></path>
+      </g>
+      <text x="110" y="158" text-anchor="middle" font-family="'Montserrat','Poppins',system-ui,sans-serif" font-weight="500" font-size="14" letter-spacing="5" fill="#FFFFFF">A S S E S S O R I A</text>
+    </svg>
+  </div>
+
+  <div class="cover-main">
+    <p class="kicker">Guia para Lojas de Material de Construção</p>
+    <h1>5 ajustes que aumentam a <em>captação de clientes</em></h1>
+    <p class="sub">Pequenas mudanças estratégicas que as lojas de maior crescimento já aplicam para gerar demanda de forma previsível.</p>
+  </div>
+
+  <div class="cover-foot">
+    <span class="label">MP Assessoria Digital<br>Crescimento previsível e controlado</span>
+    <div class="big-no"><span>0</span>5</div>
+  </div>
+</section>
+
+<!-- ============ INTRODUÇÃO ============ -->
+<section class="page" data-screen-label="Introdução">
+  <div class="section-head">
+    <p class="eyebrow">Introdução</p>
+    <h2>Crescer não é gastar mais. É ajustar melhor.</h2>
+  </div>
+  <div class="accent-rule"></div>
+  <div class="body">
+    <p class="lead">Muitos lojistas acreditam que captar mais clientes significa investir mais dinheiro. Na prática, o que gera crescimento é fazer ajustes estratégicos.</p>
+    <p>Pequenas mudanças podem aumentar significativamente a quantidade de pedidos de orçamento, visitas à loja e oportunidades de venda.</p>
+    <p>Neste material, você vai conhecer cinco ajustes que as lojas com maior crescimento já aplicam para gerar demanda de forma previsível.</p>
+  </div>
+
+  <div class="pull">
+    <p>O segredo não está em alcançar <span class="hl">mais pessoas</span>. Está em alcançar as <span class="hl">pessoas certas</span>.</p>
+  </div>
+
+  <div class="page-footer">
+    <span class="mark">MP Assessoria Digital</span>
+    <span>Introdução</span>
+  </div>
+</section>
+
+<!-- ============ AJUSTE 1 ============ -->
+<section class="page" data-screen-label="Ajuste 1">
+  <div class="chapter-top">
+    <div class="chapter-no">01</div>
+    <div class="chapter-titlewrap">
+      <p class="eyebrow">Ajuste</p>
+      <h2>Estar presente no momento exato da compra</h2>
+    </div>
+  </div>
+  <div class="body">
+    <p class="lead">Quando uma pessoa pesquisa por um produto específico, ela demonstra intenção.</p>
+    <p>Quem procura por <code>porcelanato acetinado</code>, <code>tinta emborrachada</code> ou <code>telha metálica</code> geralmente já está próximo da decisão.</p>
+    <p>Lojas que conseguem aparecer nesses momentos aumentam as chances de receber contatos qualificados.</p>
+  </div>
+
+  <div class="pull">
+    <p>O segredo não está em alcançar <span class="hl">mais pessoas</span>. Está em alcançar as <span class="hl">pessoas certas</span>.</p>
+  </div>
+
+  <div class="page-footer">
+    <span class="mark">MP Assessoria Digital</span>
+    <span>Ajuste 01 · Presença no momento da compra</span>
+  </div>
+</section>
+
+<!-- ============ AJUSTE 2 ============ -->
+<section class="page" data-screen-label="Ajuste 2">
+  <div class="chapter-top">
+    <div class="chapter-no">02</div>
+    <div class="chapter-titlewrap">
+      <p class="eyebrow">Ajuste</p>
+      <h2>Construir confiança antes do primeiro contato</h2>
+    </div>
+  </div>
+  <div class="body">
+    <p class="lead">Antes de solicitar um orçamento, o cliente busca sinais de credibilidade.</p>
+    <p>Ele observa avaliações, fotos, comentários, informações atualizadas e a reputação da empresa.</p>
+    <p>A decisão de compra começa antes da conversa com o vendedor.</p>
+    <p>Quanto maior a confiança transmitida pela sua presença digital, maior a chance de o cliente escolher sua loja.</p>
+  </div>
+
+  <div class="pull">
+    <p>A decisão de compra começa <span class="hl">antes</span> da conversa com o vendedor.</p>
+  </div>
+
+  <div class="page-footer">
+    <span class="mark">MP Assessoria Digital</span>
+    <span>Ajuste 02 · Confiança antes do contato</span>
+  </div>
+</section>
+
+<!-- ============ AJUSTE 3 ============ -->
+<section class="page" data-screen-label="Ajuste 3">
+  <div class="chapter-top">
+    <div class="chapter-no">03</div>
+    <div class="chapter-titlewrap">
+      <p class="eyebrow">Ajuste</p>
+      <h2>Integrar marketing e vendas</h2>
+    </div>
+  </div>
+  <div class="body">
+    <p class="lead">Atrair clientes é apenas parte do processo.</p>
+    <p>O crescimento acontece quando existe uma conexão entre a geração de demanda e o atendimento comercial.</p>
+    <p>Toda oportunidade precisa ser acompanhada com rapidez, organização e consistência.</p>
+    <p>Lojas que integram marketing e vendas conseguem aproveitar melhor cada contato recebido.</p>
+  </div>
+
+  <div class="pull">
+    <p>Toda oportunidade precisa ser acompanhada com <span class="hl">rapidez, organização e consistência</span>.</p>
+  </div>
+
+  <div class="page-footer">
+    <span class="mark">MP Assessoria Digital</span>
+    <span>Ajuste 03 · Marketing + Vendas</span>
+  </div>
+</section>
+
+<!-- ============ AJUSTE 4 ============ -->
+<section class="page" data-screen-label="Ajuste 4">
+  <div class="chapter-top">
+    <div class="chapter-no">04</div>
+    <div class="chapter-titlewrap">
+      <p class="eyebrow">Ajuste</p>
+      <h2>Medir os indicadores certos</h2>
+    </div>
+  </div>
+  <div class="body">
+    <p class="lead">Muitos empresários analisam apenas o faturamento final. Mas as lojas que crescem monitoram o caminho até a venda.</p>
+  </div>
+
+  <ul class="qlist">
+    <li><span class="n">01</span> Quantos contatos foram gerados?</li>
+    <li><span class="n">02</span> Qual foi a origem desses contatos?</li>
+    <li><span class="n">03</span> Quantos pedidos de orçamento viraram vendas?</li>
+    <li><span class="n">04</span> Quais produtos geram mais procura?</li>
+  </ul>
+
+  <div class="body" style="margin-top:32px;">
+    <p>Quem acompanha esses indicadores toma decisões mais seguras e reduz desperdícios.</p>
+  </div>
+
+  <div class="page-footer">
+    <span class="mark">MP Assessoria Digital</span>
+    <span>Ajuste 04 · Indicadores certos</span>
+  </div>
+</section>
+
+<!-- ============ AJUSTE 5 ============ -->
+<section class="page" data-screen-label="Ajuste 5">
+  <div class="chapter-top">
+    <div class="chapter-no">05</div>
+    <div class="chapter-titlewrap">
+      <p class="eyebrow">Ajuste</p>
+      <h2>Criar previsibilidade</h2>
+    </div>
+  </div>
+  <div class="body">
+    <p class="lead">A maioria das lojas ainda depende de fatores externos, como sazonalidade, indicação ou fluxo espontâneo. Isso torna o crescimento instável.</p>
+    <p>Empresas que geram resultados consistentes trabalham com processos estruturados para atrair novos clientes continuamente.</p>
+  </div>
+
+  <div class="pull">
+    <p>Previsibilidade não é adivinhar o futuro. É construir um <span class="hl">sistema que gera oportunidades de forma recorrente</span>.</p>
+  </div>
+
+  <div class="page-footer">
+    <span class="mark">MP Assessoria Digital</span>
+    <span>Ajuste 05 · Previsibilidade</span>
+  </div>
+</section>
+
+<!-- ============ DIFERENCIAL ============ -->
+<section class="page" data-screen-label="Diferencial">
+  <div class="section-head">
+    <p class="eyebrow">O que as lojas que mais vendem fazem de diferente</p>
+    <h2>Não dependem de ações isoladas. Dependem de um processo.</h2>
+  </div>
+  <div class="accent-rule"></div>
+  <div class="body">
+    <p class="lead">Quando a loja combina visibilidade, credibilidade, geração de demanda e processo comercial, o resultado é um crescimento sustentável.</p>
+  </div>
+
+  <div class="pillars">
+    <div class="pillar">
+      <p class="pn">01</p>
+      <h4>Visibilidade</h4>
+      <p>Aparecer no momento exato em que o cliente decide comprar.</p>
+    </div>
+    <div class="pillar">
+      <p class="pn">02</p>
+      <h4>Credibilidade</h4>
+      <p>Transmitir confiança antes mesmo do primeiro contato.</p>
+    </div>
+    <div class="pillar">
+      <p class="pn">03</p>
+      <h4>Geração de demanda</h4>
+      <p>Atrair contatos qualificados de forma contínua e mensurável.</p>
+    </div>
+    <div class="pillar">
+      <p class="pn">04</p>
+      <h4>Processo comercial</h4>
+      <p>Acompanhar cada oportunidade com rapidez e consistência.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="mark">MP Assessoria Digital</span>
+    <span>O diferencial</span>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="page cta" data-screen-label="Próximo passo">
+  <div class="cta-inner">
+    <p class="eyebrow">Próximo passo</p>
+    <h2>Agora, faça uma pergunta simples.</h2>
+    <p class="question">Sua loja possui um sistema previsível para atrair novos clientes — ou depende da sorte para vender mais?</p>
+    <div class="body">
+      <p>Identificar essa resposta é o primeiro passo para construir um modelo de crescimento consistente. Quanto antes você descobrir seus gargalos, mais rápido poderá transformar sua presença digital em faturamento.</p>
+    </div>
+    <a class="btn" href="https://mppartners.com.br/" target="_blank" rel="noopener">Agendar diagnóstico gratuito</a>
+  </div>
+
+  <div class="page-footer">
+    <span class="mark">
+      <svg class="logo-mark" viewBox="0 0 220 140" role="img" aria-label="MP">
+        <g fill="#F5A623">
+          <path d="M6 120 V20 H26 L55 78 L84 20 H104 V120 H84 V62 L60 110 H50 L26 62 V120 Z"></path>
+          <rect x="108" y="20" width="4" height="100"></rect>
+          <path d="M120 120 V20 H168 C190 20 204 34 204 56 C204 78 190 92 168 92 H140 V120 Z M140 74 H166 C176 74 184 66 184 56 C184 46 176 38 166 38 H140 Z"></path>
+        </g>
+      </svg>
+      MP Assessoria Digital
+    </span>
+    <span>Crescimento previsível</span>
+  </div>
+</section>
+
+</body>
+</html>

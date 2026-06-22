@@ -1,0 +1,37 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Components — Iconography (Lucide)" subtitle="Utility neutral · emphasis yellow" viewport="700x260" -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin:0; padding:24px; background:var(--bg-page); display:flex; flex-direction:column; gap:18px;}
+  .row { display:flex; align-items:center; gap:22px; flex-wrap:wrap;}
+  .row i { color:var(--fg-2);}
+  .row .accent i { color:var(--accent);}
+  .group { background:var(--bg-card); border:1px solid var(--border-1); border-radius:10px; padding:14px 18px;}
+  .lab { font-family:var(--font-display); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--fg-3); margin-bottom:10px;}
+</style></head>
+<body>
+  <div class="group">
+    <div class="lab">Utility — neutral (--fg-2)</div>
+    <div class="row">
+      <i data-lucide="menu"></i><i data-lucide="x"></i><i data-lucide="search"></i>
+      <i data-lucide="chevron-right"></i><i data-lucide="arrow-right"></i>
+      <i data-lucide="mail"></i><i data-lucide="phone"></i><i data-lucide="instagram"></i>
+    </div>
+  </div>
+  <div class="group accent">
+    <div class="lab">Emphasis — services (--accent)</div>
+    <div class="row">
+      <i data-lucide="trending-up" style="color:var(--accent)"></i>
+      <i data-lucide="target" style="color:var(--accent)"></i>
+      <i data-lucide="workflow" style="color:var(--accent)"></i>
+      <i data-lucide="bar-chart-3" style="color:var(--accent)"></i>
+      <i data-lucide="users" style="color:var(--accent)"></i>
+      <i data-lucide="rocket" style="color:var(--accent)"></i>
+      <i data-lucide="zap" style="color:var(--accent)"></i>
+      <i data-lucide="check" style="color:var(--accent)"></i>
+    </div>
+  </div>
+  <div style="font-family:var(--font-body); font-size:12px; color:var(--fg-3);">Lucide · 2px stroke · 24px default · no fills · no chip backgrounds.</div>
+<script>lucide.createIcons();</script>
+</body></html>

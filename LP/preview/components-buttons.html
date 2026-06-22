@@ -1,0 +1,29 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Components — Buttons" subtitle="Primary pill · ghost · states" viewport="700x260" -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:28px; background:var(--bg-page); display:flex; flex-direction:column; gap:16px;}
+  .btn { font-family:var(--font-display); font-weight:700; font-size:14px; letter-spacing:.08em; text-transform:uppercase; border-radius:999px; padding:16px 28px; cursor:pointer; border:0; transition:all 160ms cubic-bezier(0.22,1,0.36,1); }
+  .primary { background:var(--accent); color:#000; }
+  .primary:hover { background:var(--accent-hover); box-shadow:0 10px 40px rgba(245,166,35,0.25); transform:translateY(-1px); }
+  .ghost { background:transparent; color:var(--fg-1); border:1px solid rgba(255,255,255,.4); }
+  .ghost:hover { border-color:#fff; background:rgba(255,255,255,.04); }
+  .disabled { background:var(--gray-300); color:var(--gray-500); pointer-events:none; }
+  .row { display:flex; gap:14px; align-items:center; flex-wrap:wrap; }
+  .label { font-family:var(--font-body); font-size:11px; color:var(--fg-3); width:80px;}
+</style></head>
+<body>
+  <div class="row"><div class="label">Primary</div>
+    <button class="btn primary">AGENDAR DIAGNÓSTICO</button>
+    <button class="btn primary" style="padding:12px 20px; font-size:12px">SAIBA MAIS</button>
+  </div>
+  <div class="row"><div class="label">Ghost</div>
+    <button class="btn ghost">CONHEÇA NOSSOS CASES</button>
+    <button class="btn ghost" style="padding:12px 20px; font-size:12px">CONTATO</button>
+  </div>
+  <div class="row"><div class="label">States</div>
+    <button class="btn primary" style="background:var(--accent-hover); box-shadow:0 10px 40px rgba(245,166,35,0.25); transform:translateY(-1px)">HOVER</button>
+    <button class="btn primary" style="background:var(--accent-active); transform:scale(0.98)">ACTIVE</button>
+    <button class="btn disabled">DISABLED</button>
+  </div>
+</body></html>

@@ -1,0 +1,20 @@
+<!doctype html>
+<!-- @dsCard group="Spacing" name="Spacing — Radii" subtitle="4/8/12/16/24/pill — pill reserved for CTAs" viewport="700x180" -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:24px; background:var(--bg-page); color:var(--fg-2); }
+  .grid { display:grid; grid-template-columns: repeat(6, 1fr); gap:14px; }
+  .cell { text-align:center; font-family:var(--font-body); font-size:11px; color:var(--fg-3); }
+  .box { background:var(--bg-card); border:1px solid var(--border-1); height:80px; display:flex; align-items:center; justify-content:center; color:var(--fg-1); font-family:var(--font-display); font-weight:700; font-size:13px; margin-bottom:8px; }
+  b { color:var(--fg-1); font-family:var(--font-display); }
+</style></head>
+<body>
+  <div class="grid">
+    <div class="cell"><div class="box" style="border-radius:4px">4</div><b>--r-xs</b><br>4px</div>
+    <div class="cell"><div class="box" style="border-radius:8px">8</div><b>--r-sm</b><br>8px · inputs</div>
+    <div class="cell"><div class="box" style="border-radius:12px">12</div><b>--r-md</b><br>12px · card</div>
+    <div class="cell"><div class="box" style="border-radius:16px">16</div><b>--r-lg</b><br>16px · feature</div>
+    <div class="cell"><div class="box" style="border-radius:24px">24</div><b>--r-xl</b><br>24px</div>
+    <div class="cell"><div class="box" style="border-radius:999px; background:var(--accent); color:#000">CTA</div><b>--r-pill</b><br>999px · buttons</div>
+  </div>
+</body></html>

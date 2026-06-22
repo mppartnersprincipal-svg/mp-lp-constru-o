@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 140" role="img" aria-label="MP Assessoria">
+  <g fill="#F5A623">
+    
+    <path d="M6 120 V20 H26 L55 78 L84 20 H104 V120 H84 V62 L60 110 H50 L26 62 V120 Z"></path>
+    
+    <rect x="108" y="20" width="4" height="100"></rect>
+    
+    <path d="M120 120 V20 H168 C190 20 204 34 204 56 C204 78 190 92 168 92 H140 V120 Z M140 74 H166 C176 74 184 66 184 56 C184 46 176 38 166 38 H140 Z"></path>
+  </g>
+</svg>

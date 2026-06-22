@@ -1,0 +1,22 @@
+<!doctype html>
+<!-- @dsCard group="Spacing" name="Spacing — Shadows & Elevation" subtitle="Subtle on dark + yellow glow for CTAs" viewport="700x280" -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:28px; background:var(--bg-page); }
+  .grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:22px; }
+  .cell { text-align:center; font-family:var(--font-body); font-size:11px; color:var(--fg-3); }
+  .box { background:var(--bg-card); border-radius:12px; height:84px; margin-bottom:10px; border:1px solid var(--border-1); }
+  b { color:var(--fg-1); font-family:var(--font-display); display:block; margin-bottom:2px; font-size:12px;}
+</style></head>
+<body>
+  <div class="grid">
+    <div class="cell"><div class="box" style="box-shadow:none"></div><b>shadow-0</b>none</div>
+    <div class="cell"><div class="box" style="box-shadow:0 1px 2px rgba(0,0,0,0.4)"></div><b>shadow-1</b>subtle</div>
+    <div class="cell"><div class="box" style="box-shadow:0 6px 18px rgba(0,0,0,0.45)"></div><b>shadow-2</b>card lift</div>
+    <div class="cell"><div class="box" style="box-shadow:0 16px 40px rgba(0,0,0,0.55)"></div><b>shadow-3</b>modal</div>
+    <div class="cell"><div class="box" style="box-shadow:inset 0 1px 0 rgba(255,255,255,0.04), 0 0 0 1px var(--border-1), 0 12px 24px rgba(0,0,0,0.35)"></div><b>shadow-card</b>default</div>
+    <div class="cell"><div class="box" style="background:var(--accent); box-shadow:0 10px 40px rgba(245,166,35,0.25); border:0"></div><b>yellow-glow</b>CTA hover</div>
+    <div class="cell"><div class="box" style="background:var(--bg-card); box-shadow:inset 0 0 0 1px var(--accent)"></div><b>accent-ring</b>active state</div>
+    <div class="cell"><div class="box" style="background:var(--bg-card); box-shadow: 0 0 0 2px var(--bg-page), 0 0 0 4px var(--accent)"></div><b>focus-ring</b>accessible</div>
+  </div>
+</body></html>
