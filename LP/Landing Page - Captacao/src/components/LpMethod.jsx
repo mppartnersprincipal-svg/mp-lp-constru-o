@@ -1,6 +1,5 @@
-// LpMethod.jsx — Seção 4: O método M|P (3 frentes + vídeo do Marcos)
+// LpMethod.jsx — Seção 4: O método M|P (3 frentes + fechamento)
 import * as React from "react";
-import { VideoSlot } from "./LpProof.jsx";
 import { Reveal } from "./anim.jsx";
 
 function MethodCard({ number, icon, title, children }) {
@@ -71,11 +70,10 @@ export function LpMethod() {
           </Reveal>
         </div>
 
-        <div style={{ marginTop: "clamp(32px, 3.5vw, 48px)", display: "grid", gridTemplateColumns: "1fr 1.1fr",
-          gap: "clamp(28px, 3vw, 48px)", alignItems: "center" }} className="method-close">
-          <Reveal x={-28} y={0} duration={820} style={{
+        <div style={{ marginTop: "clamp(32px, 3.5vw, 48px)" }}>
+          <Reveal y={24} duration={820} style={{
             background: "var(--accent-soft)", border: "1px solid var(--border-accent)", borderRadius: "var(--r-lg)",
-            padding: "clamp(24px, 2.6vw, 36px)",
+            padding: "clamp(28px, 3vw, 44px)", maxWidth: 760, margin: "0 auto", textAlign: "center",
           }}>
             <p style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "clamp(20px, 2vw, 26px)",
               color: "#fff", lineHeight: 1.25, margin: "0 0 14px" }}>
@@ -83,14 +81,6 @@ export function LpMethod() {
             </p>
             <p style={{ fontFamily: "var(--font-body)", fontSize: 16, color: "var(--fg-2)", lineHeight: 1.6, margin: 0 }}>
               É por isso que a M|P não vende lead. Vende crescimento que você consegue medir, todo mês.
-            </p>
-          </Reveal>
-          <Reveal delay={140}>
-            <div style={{ maxWidth: 300, margin: "0 auto", width: "100%" }}>
-              <VideoSlot id="marcos-metodo" label="O Marcos explica o método (30s)" src="assets/marcos-metodo.mp4" ratio="9 / 16" />
-            </div>
-            <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "var(--fg-3)", textAlign: "center", margin: "14px 0 0" }}>
-              Em menos de um minuto, direto de quem vai cuidar do seu resultado.
             </p>
           </Reveal>
         </div>
