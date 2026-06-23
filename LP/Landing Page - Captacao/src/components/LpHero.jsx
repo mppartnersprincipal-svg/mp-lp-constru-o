@@ -44,6 +44,7 @@ export function LpHero({ onCta }) {
     { name: "Rodrigo Tintas", src: "assets/logo-rodrigo-tintas.png", h: 40 },
     { name: "Telhas Coral", src: "assets/logo-telhas-coral.png", h: 52 },
     { name: "Pacheco Solar", src: "assets/logo-pacheco-solar.png", h: 30 },
+    { name: "IBT Telhas", src: "assets/logo-ibt-telhas.png", h: 52 },
   ];
   return (
     <section id="inicio" style={{
