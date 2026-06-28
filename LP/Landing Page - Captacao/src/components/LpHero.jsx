@@ -45,6 +45,8 @@ export function LpHero({ onCta }) {
     { name: "Telhas Coral", src: "assets/logo-telhas-coral.png", h: 52 },
     { name: "Pacheco Solar", src: "assets/logo-pacheco-solar.png", h: 30 },
     { name: "IBT Telhas", src: "assets/logo-ibt-telhas.png", h: 52 },
+    { name: "YCON Construções", src: "assets/logo-ycon.png", h: 50 },
+    { name: "Manu Tintas e Ferragista", src: "assets/logo-manu-tintas.png", h: 50 },
   ];
   return (
     <section id="inicio" style={{
