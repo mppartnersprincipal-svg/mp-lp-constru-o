@@ -80,7 +80,7 @@ export function LpHero({ onCta }) {
             com previsibilidade e retorno comprovado. Os mesmos resultados que já entregamos para a{" "}
             <strong style={{ color: "var(--fg-1)", fontWeight: 700 }}>Rodrigo Tintas</strong>, a{" "}
             <strong style={{ color: "var(--fg-1)", fontWeight: 700 }}>Telhas Coral</strong> e a{" "}
-            <strong style={{ color: "var(--fg-1)", fontWeight: 700 }}>Pacheco Solar</strong>.
+            <strong style={{ color: "var(--fg-1)", fontWeight: 700 }}>Pacheco Solar</strong> e diversas outras empresas do setor.
           </Reveal>
           <Reveal delay={360} y={16}>
             <MpButton size="xl" onClick={onCta} iconRight="arrow-right">Quero o diagnóstico da minha loja</MpButton>
