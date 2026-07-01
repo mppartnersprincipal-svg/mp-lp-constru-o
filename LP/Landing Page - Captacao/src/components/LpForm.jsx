@@ -3,7 +3,7 @@ import * as React from "react";
 import { MpButton } from "./MpButton.jsx";
 import { Reveal } from "./anim.jsx";
 
-const WHATSAPP = "5562993887179";
+const WEBHOOK_URL = "https://hook.us1.make.com/jlpu2a7pnlsz4bhua7i27breutsxybga";
 
 function TextField({ label, value, onChange, placeholder, error, type = "text" }) {
   const [focus, setFocus] = React.useState(false);
@@ -58,37 +58,55 @@ function ChipGroup({ label, options, value, onChange, error }) {
   );
 }
 
-function buildWhatsAppUrl(f) {
-  const msg =
-    `Olá! Quero o diagnóstico da minha loja.\n\n` +
-    `Empresa: ${f.empresa}\n` +
-    `Segmento: ${f.segmento}\n` +
-    `Fatura acima de R$ 50 mil/mês: ${f.fatura}\n` +
-    `WhatsApp: ${f.whatsapp}`;
-  return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+// "(62) 99388-7179" -> "5562993887179" (formato internacional p/ o WhatsAble no Make)
+function normalizePhone(value) {
+  let d = (value || "").replace(/\D/g, "");
+  if (d.length <= 11) d = "55" + d; // sem código do país -> adiciona o 55 do Brasil
+  return d;
+}
+
+// Envia o lead para o webhook do Make. Cada chave vira uma variável separada no cenário.
+function sendToWebhook(f) {
+  const payload = {
+    nome: f.nome.trim(),
+    empresa: f.empresa.trim(),
+    segmento: f.segmento,
+    fatura: f.fatura,
+    whatsapp: f.whatsapp.trim(),
+    whatsapp_intl: normalizePhone(f.whatsapp),
+  };
+  // Fire-and-forget: uma falha de rede nunca bloqueia a confirmação para o lead.
+  try {
+    fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      keepalive: true,
+    }).catch(() => {});
+  } catch (_) {}
 }
 
 export function LpForm() {
-  const [f, setF] = React.useState({ empresa: "", segmento: "", fatura: "", whatsapp: "" });
+  const [f, setF] = React.useState({ nome: "", empresa: "", segmento: "", fatura: "", whatsapp: "" });
   const [errors, setErrors] = React.useState({});
   const [sent, setSent] = React.useState(false);
-  const [waUrl, setWaUrl] = React.useState("");
   const set = (k) => (v) => setF((p) => ({ ...p, [k]: v }));
 
   const submit = (e) => {
     e.preventDefault();
     const errs = {};
+    if (!f.nome.trim()) errs.nome = "Preencha o seu nome";
     if (!f.empresa.trim()) errs.empresa = "Preencha o nome da empresa";
     if (!f.segmento) errs.segmento = "Selecione uma opção";
     if (!f.fatura) errs.fatura = "Selecione uma opção";
     if (!f.whatsapp.trim()) errs.whatsapp = "Preencha seu WhatsApp";
     setErrors(errs);
     if (Object.keys(errs).length === 0) {
-      const url = buildWhatsAppUrl(f);
-      setWaUrl(url);
-      // Abre o WhatsApp já preenchido com os dados do lead.
-      window.open(url, "_blank", "noopener");
+      sendToWebhook(f);
       setSent(true);
+      // Coloca "sucesso" na URL para o GTM disparar (gatilho History Change).
+      // pushState não recarrega a SPA e não quebra no refresh (é só query string).
+      window.history.pushState({}, "", "?status=sucesso");
       window.scrollTo({ top: Math.max(0, document.getElementById("formulario").offsetTop - 90), behavior: "smooth" });
     }
   };
@@ -106,7 +124,7 @@ export function LpForm() {
             Descubra quanto a sua loja pode vender com método.
           </Reveal>
           <Reveal as="p" delay={200} style={{ fontFamily: "var(--font-body)", fontSize: 16, color: "var(--fg-2)", lineHeight: 1.6, margin: "0 0 24px" }}>
-            Responda 4 perguntas rápidas. Se o seu perfil for compatível, <strong style={{ color: "var(--fg-1)" }}>Marcos ou Pedro</strong> —
+            Responda 5 perguntas rápidas. Se o seu perfil for compatível, <strong style={{ color: "var(--fg-1)" }}>Marcos ou Pedro</strong> —
             os próprios donos da M|P — entram em contato para um diagnóstico do seu negócio.
           </Reveal>
           <Reveal as="ul" delay={300} style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 12 }}>
@@ -125,41 +143,35 @@ export function LpForm() {
             <div style={{ textAlign: "center", padding: "32px 8px" }}>
               <div style={{ width: 72, height: 72, borderRadius: "50%", background: "var(--accent-soft)",
                 display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 22 }}>
-                <i data-lucide="message-circle" style={{ width: 40, height: 40, color: "var(--accent)" }}></i>
+                <i data-lucide="check" style={{ width: 40, height: 40, color: "var(--accent)" }}></i>
               </div>
               <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 26, color: "#fff", margin: "0 0 12px" }}>
-                Abrimos o WhatsApp pra você.
+                Parabéns por sua decisão!
               </h3>
-              <p style={{ fontFamily: "var(--font-body)", fontSize: 16, color: "var(--fg-2)", lineHeight: 1.6, margin: "0 auto 24px", maxWidth: 400 }}>
-                Já preenchemos a mensagem com os dados da <strong style={{ color: "var(--fg-1)" }}>{f.empresa}</strong>.
-                É só tocar em <strong style={{ color: "var(--fg-1)" }}>enviar</strong> que a conversa cai direto com
-                <strong style={{ color: "var(--fg-1)" }}> Marcos ou Pedro</strong>, os donos da M|P.
-              </p>
-              <a href={waUrl} target="_blank" rel="noopener" style={{ textDecoration: "none" }}>
-                <MpButton size="lg" iconRight="arrow-right">Abrir o WhatsApp de novo</MpButton>
-              </a>
-              <p style={{ fontFamily: "var(--font-body)", fontSize: 12.5, color: "var(--fg-3)", lineHeight: 1.55, margin: "18px 0 0" }}>
-                A janela do WhatsApp não abriu? Toque no botão acima.
+              <p style={{ fontFamily: "var(--font-body)", fontSize: 16, color: "var(--fg-2)", lineHeight: 1.6, margin: "0 auto", maxWidth: 400 }}>
+                A partir de agora um dos donos da M|P irá entrar em contato com você para
+                fazer o diagnóstico da sua empresa.
               </p>
             </div>
           ) : (
             <form onSubmit={submit} style={{ display: "grid", gap: 22 }}>
-              <TextField label="1. Qual o nome da sua empresa?" value={f.empresa} onChange={set("empresa")}
+              <TextField label="1. Qual o seu nome?" value={f.nome} onChange={set("nome")}
+                placeholder="Ex.: João da Silva" error={errors.nome} />
+              <TextField label="2. Qual o nome da sua empresa?" value={f.empresa} onChange={set("empresa")}
                 placeholder="Ex.: Tintas São João" error={errors.empresa} />
-              <ChipGroup label="2. Qual opção descreve melhor o seu negócio?" options={segmentos}
+              <ChipGroup label="3. Qual opção descreve melhor o seu negócio?" options={segmentos}
                 value={f.segmento} onChange={set("segmento")} error={errors.segmento} />
-              <ChipGroup label="3. Sua empresa fatura acima de R$ 50 mil por mês?" options={["Sim", "Não"]}
+              <ChipGroup label="4. Sua empresa fatura acima de R$ 50 mil por mês?" options={["Sim", "Não"]}
                 value={f.fatura} onChange={set("fatura")} error={errors.fatura} />
-              <TextField label="4. Seu WhatsApp para contato" value={f.whatsapp} onChange={set("whatsapp")}
+              <TextField label="5. Seu WhatsApp para contato" value={f.whatsapp} onChange={set("whatsapp")}
                 placeholder="(00) 00000-0000" error={errors.whatsapp} type="tel" />
               <div style={{ marginTop: 4 }}>
                 <MpButton type="submit" size="lg" full iconRight="arrow-right">Quero meu diagnóstico</MpButton>
                 <p style={{ fontFamily: "var(--font-body)", fontSize: 12.5, color: "var(--fg-3)", lineHeight: 1.55,
                   margin: "16px 0 0", display: "flex", alignItems: "flex-start", gap: 8 }}>
                   <i data-lucide="lock" style={{ width: 15, height: 15, color: "var(--fg-3)", flexShrink: 0, marginTop: 2 }}></i>
-                  Ao enviar, você abre uma conversa no WhatsApp com os donos da M|P e concorda em ser contatado sobre o
-                  diagnóstico. Seus dados são usados só para esse contato — a gente não vende sua informação nem enche
-                  o seu WhatsApp de spam.
+                  Ao enviar, você concorda em ser contatado pelos donos da M|P sobre o diagnóstico. Seus dados são
+                  usados só para esse contato — a gente não vende sua informação nem enche o seu WhatsApp de spam.
                 </p>
               </div>
             </form>
