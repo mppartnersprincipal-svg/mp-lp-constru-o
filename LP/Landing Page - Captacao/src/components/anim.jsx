@@ -142,6 +142,9 @@ export function CountUp({
     return () => cancelAnimationFrame(rafRef.current);
   }, [inView, to, from, duration]);
 
+  // Defensivo: sem um alvo numérico válido, não renderiza nada (evita "NaN"/"0" no lugar de um número real).
+  if (!Number.isFinite(to)) return null;
+
   return (
     <span
       ref={ref}

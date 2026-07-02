@@ -4,9 +4,11 @@ import { createRoot } from "react-dom/client";
 import { Topbar } from "./components/MpButton.jsx";
 import { LpHero } from "./components/LpHero.jsx";
 import { LpProof } from "./components/LpProof.jsx";
+import { LpMath } from "./components/LpMath.jsx";
 import { LpForm } from "./components/LpForm.jsx";
 import { LpMethod } from "./components/LpMethod.jsx";
 import { LpResults, LpFooter } from "./components/LpResults.jsx";
+import { pushEvent } from "./track.js";
 
 const WHATSAPP_FLOAT =
   "https://wa.me/5562993887179?text=" +
@@ -18,6 +20,7 @@ function WhatsAppFloat() {
       href={WHATSAPP_FLOAT}
       target="_blank" rel="noopener" aria-label="Falar no WhatsApp"
       className="wa-float"
+      onClick={() => pushEvent("whatsapp_click", { location: "botao_flutuante" })}
       style={{
         position: "fixed", right: 24, bottom: 24, zIndex: 60, width: 60, height: 60,
         borderRadius: "50%", background: "#25D366", display: "flex", alignItems: "center",
@@ -64,6 +67,7 @@ function App() {
       <Topbar onCta={goForm} />
       <LpHero onCta={goForm} />
       <LpProof onCta={goForm} />
+      <LpMath onCta={goForm} />
       <LpForm />
       <LpMethod />
       <LpResults onCta={goForm} />

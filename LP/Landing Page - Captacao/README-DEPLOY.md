@@ -51,31 +51,34 @@ esse nome** e **publicar de novo** (repita o passo 1). Não precisa rodar nenhum
 
 ## 3. Para onde vão os leads
 
-O formulário **não usa banco de dados**. Quando a pessoa preenche as 4 perguntas e envia,
-abre o **WhatsApp dos donos** (`55 62 99388-7179`) já com a mensagem preenchida:
+O formulário **não usa banco de dados**. Quando a pessoa preenche as 5 perguntas e envia,
+os dados são mandados para um **webhook do Make** (a automação que avisa os donos), e em
+seguida o lead é **redirecionado para a página de sucesso** (`/sucesso`) — que mostra a
+confirmação "Parabéns pela sua decisão!". O lead **não** é jogado direto no WhatsApp.
 
-```
-Empresa: ...
-Segmento: ...
-Fatura acima de R$ 50 mil/mês: ...
-WhatsApp: ...
-```
-
-Para trocar o número, edite a constante `WHATSAPP` em `src/components/LpForm.jsx`
-(e também o link do botão flutuante em `src/main.jsx`), depois rode `npm run build`.
+Para trocar o destino do webhook, edite a constante `WEBHOOK_URL` em
+`src/components/LpForm.jsx`, depois rode `npm run build`.
 
 ---
 
-## 4. Pixel / Anúncios (recomendado antes de rodar tráfego)
+## 4. Rastreamento / Anúncios (Google Tag Manager)
 
-Como essa página vai receber tráfego pago, vale instalar o **Meta Pixel** e/ou a **Google
-Tag**. No arquivo `index.html` já existe um espaço marcado:
+O **Google Tag Manager** já está instalado no site (contêiner `GTM-MBDQT8Z7`), tanto na
+`index.html` quanto na página de sucesso (`sucesso.html`). Todo pixel de anúncio (Meta,
+Google Ads, GA4) agora é configurado **dentro do painel do GTM** — não precisa mexer no
+código do site.
 
-```html
-<!-- PIXEL / ANALYTICS — cole aqui quando tiver os IDs -->
-```
+Dois sinais já saem prontos do site para o GTM:
 
-Cole o código do pixel ali dentro do `<head>` e publique de novo.
+- **Página de sucesso** — quando o lead envia o formulário, ele cai em `/sucesso`. Use um
+  gatilho de *Pageview* com "Caminho da Página contém `sucesso`" para disparar sua tag de
+  conversão (o evento mais importante: lead gerado).
+- **Cliques no WhatsApp** — o botão flutuante e o link do rodapé empurram o evento
+  `whatsapp_click` para o `dataLayer` (com o parâmetro `location` = `botao_flutuante` ou
+  `rodape`). Use um gatilho de *Evento Personalizado* com nome `whatsapp_click`.
+
+Também sai um evento `lead_form_submit` no envio do formulário (com `segmento` e `fatura`),
+caso queira rastrear a conversão pelo evento em vez do pageview de `/sucesso`.
 
 ---
 

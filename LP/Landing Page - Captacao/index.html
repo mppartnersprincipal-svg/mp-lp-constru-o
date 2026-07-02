@@ -4,11 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>M|P Assessoria — Diagnóstico gratuito para lojas de material de construção</title>
-  <meta name="description" content="Aumente o faturamento da sua loja de material de construção em até 40% com a metodologia testada da M|P Assessoria. Demanda qualificada, conteúdo que converte e processo comercial. Peça seu diagnóstico gratuito." />
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MBDQT8Z7');</script>
+  <!-- End Google Tag Manager -->
+
+  <title>Aumente o faturamento da sua loja de material de construção de 20% a 40%</title>
+  <meta name="description" content="Aumente o faturamento da sua loja de material de construção de 20% a 40% com a metodologia testada da M|P Assessoria. Demanda qualificada, conteúdo que converte e processo comercial. Peça seu diagnóstico gratuito." />
   <meta name="theme-color" content="#0A0A0A" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://mp-lp-construcao.vercel.app/" />
+  <link rel="canonical" href="https://www.mpconstrucao.com.br/" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -16,7 +24,7 @@
   <!-- Open Graph / compartilhamento em redes -->
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="pt_BR" />
-  <meta property="og:title" content="Aumente o faturamento da sua loja de material de construção em até 40%" />
+  <meta property="og:title" content="Aumente o faturamento da sua loja de material de construção de 20% a 40%" />
   <meta property="og:description" content="A metodologia testada da M|P para lojas de material de construção venderem mais — todo mês, com previsibilidade. Peça seu diagnóstico gratuito." />
   <meta property="og:image" content="assets/telhas-coral-whatsapp.jpeg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -27,9 +35,35 @@
   <link rel="stylesheet" href="colors_and_type.css" />
 
   <!-- ============================================================
-       PIXEL / ANALYTICS — cole aqui quando tiver os IDs
-       (Meta Pixel, Google Tag Manager, Google Ads). Exemplo:
-       <script>... seu código do pixel ...</script>
+       PIXEL / ANALYTICS — descomente e troque os PLACEHOLDERS pelos
+       seus IDs reais quando for subir tráfego. Enquanto comentado,
+       nada dispara e nada quebra.
+
+       (1) META PIXEL — trocar FB_PIXEL_ID
+       <script>
+         !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+         n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+         n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+         t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+         document,'script','https://connect.facebook.net/en_US/fbevents.js');
+         fbq('init','FB_PIXEL_ID');
+         fbq('track','PageView');
+       </script>
+       <noscript><img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id=FB_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+
+       (2) GOOGLE ADS / gtag — trocar AW-XXXXXXXXX (e o CONVERSION_LABEL no LpForm.jsx)
+       <script async src="https://www.googletagmanager.com/gtag/js?id=AW-XXXXXXXXX"></script>
+       <script>
+         window.dataLayer=window.dataLayer||[];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config','AW-XXXXXXXXX');
+       </script>
+
+       O disparo de conversão (Lead) já está no sucesso do formulário
+       (src/components/LpForm.jsx), de forma defensiva — só executa se
+       window.fbq / window.gtag existirem.
        ============================================================ -->
 
   <!-- Ícones Lucide -->
@@ -87,9 +121,14 @@
       /* CTA fixo do topo com alvo de toque de 44px */
       header button { min-height: 44px; }
 
-      /* Rodapé empilha e centraliza (logo + copyright) em vez de espremer os dois lados */
-      footer > div { flex-direction: column; align-items: center; gap: 16px; text-align: center; }
-      footer p { text-align: center !important; }
+      /* Rodapé: empilha as colunas e centraliza tudo no mobile */
+      .footer-grid { grid-template-columns: 1fr !important; gap: 36px !important; text-align: center; }
+      .footer-brand { align-items: center !important; }
+      .footer-brand p { margin-left: auto !important; margin-right: auto !important; }
+      .footer-social { justify-content: center; }
+      .footer-col { align-items: center; }
+      .footer-item { justify-content: center; text-align: center; }
+      .footer-bottom { flex-direction: column; align-items: center; text-align: center; }
     }
 
     /* Botão flutuante do WhatsApp: menor e mais no canto no mobile,
@@ -101,6 +140,11 @@
   </style>
 </head>
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBDQT8Z7"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
   <div id="root"></div>
 
   <!-- App compilado (React + componentes, minificado). Gere com: npm run build -->

@@ -72,7 +72,9 @@ export function LpHero({ onCta }) {
             fontFamily: "var(--font-display)", fontWeight: 900, fontSize: "clamp(40px, 5.4vw, 76px)",
             lineHeight: 1.04, letterSpacing: "-0.02em", color: "#fff", margin: "0 0 24px", textWrap: "balance",
           }}>
-            Aumente o faturamento da sua loja em <span style={{ color: "var(--accent)" }}>até <CountUp to={40} suffix="%" /></span> com uma metodologia testada e validada.
+            {/* Opção B (teste A/B — trocar por esta linha p/ testar):
+                R$ 579 mil em 4 meses. Sem sorte, sem achismo — com método. */}
+            Aumente o faturamento da sua loja de material de construção <span style={{ color: "var(--accent)" }}>de <CountUp to={20} suffix="%" /> a <CountUp to={40} suffix="%" /></span> — todo mês, com uma metodologia testada e validada.
           </Reveal>
           <Reveal as="p" delay={260} style={{ fontFamily: "var(--font-body)", fontSize: "clamp(16px, 1.4vw, 19px)", color: "var(--fg-2)",
             maxWidth: 600, lineHeight: 1.6, margin: "0 0 36px" }}>
@@ -87,6 +89,7 @@ export function LpHero({ onCta }) {
           </Reveal>
 
           <Reveal delay={460} style={{ marginTop: 40, paddingTop: 28, borderTop: "1px solid var(--border-1)" }}>
+            {/* TODO: inserir número real. Ex.: "+12 lojas de material de construção atendidas · +R$ X em faturamento gerado" */}
             <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "var(--fg-3)", textTransform: "uppercase",
               letterSpacing: ".1em", margin: "0 0 14px" }}>Lojas que já crescem com a M|P</p>
             {/* Carrossel automático (marquee infinito). Repetimos a lista um nº par de vezes

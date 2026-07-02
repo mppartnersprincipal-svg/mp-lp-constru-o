@@ -2,6 +2,7 @@
 import * as React from "react";
 import { MpButton } from "./MpButton.jsx";
 import { Reveal } from "./anim.jsx";
+import { pushEvent } from "../track.js";
 
 const WEBHOOK_URL = "https://hook.us1.make.com/jlpu2a7pnlsz4bhua7i27breutsxybga";
 
@@ -104,10 +105,15 @@ export function LpForm() {
     if (Object.keys(errs).length === 0) {
       sendToWebhook(f);
       setSent(true);
-      // Coloca "sucesso" na URL para o GTM disparar (gatilho History Change).
-      // pushState não recarrega a SPA e não quebra no refresh (é só query string).
-      window.history.pushState({}, "", "?status=sucesso");
-      window.scrollTo({ top: Math.max(0, document.getElementById("formulario").offsetTop - 90), behavior: "smooth" });
+      // Evento de lead para o GTM. Fica no dataLayer antes de navegar, então o
+      // GTM captura o envio mesmo com o redirect logo em seguida.
+      pushEvent("lead_form_submit", { segmento: f.segmento, fatura: f.fatura });
+      // Conversões diretas (defensivo: só dispara se as libs existirem — não quebra sem Pixel/Ads).
+      window.fbq && window.fbq("track", "Lead");
+      window.gtag && window.gtag("event", "conversion");
+      // Redireciona para a página de sucesso (thank-you page). NÃO abre o WhatsApp.
+      // O fetch do webhook usa keepalive, então o lead chega ao Make mesmo saindo da página agora.
+      window.location.assign("sucesso.html");
     }
   };
 
