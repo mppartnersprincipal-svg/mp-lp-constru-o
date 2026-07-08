@@ -3,6 +3,7 @@ node_modules/
 
 # Build / deploy
 .vercel/
+dashboard/dist/
 
 # Ferramentas locais
 .gstack/

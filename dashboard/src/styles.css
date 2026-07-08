@@ -1,0 +1,106 @@
+:root {
+  --bg: #0b0b0d;
+  --card: #151518;
+  --card-border: #26262b;
+  --fg: #f4f4f5;
+  --fg-2: #a1a1aa;
+  --fg-3: #6b6b74;
+  --accent: #f59e0b;
+  --green: #22c55e;
+  --blue: #38bdf8;
+  --red: #ef4444;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px 64px; }
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px; margin-bottom: 24px;
+}
+.topbar h1 { font-size: 20px; font-weight: 700; }
+.topbar h1 span { color: var(--accent); }
+.topbar .sub { color: var(--fg-3); font-size: 13px; margin-top: 2px; }
+
+.period { display: flex; gap: 8px; }
+.period button {
+  background: var(--card); color: var(--fg-2); border: 1px solid var(--card-border);
+  border-radius: 999px; padding: 8px 16px; font-size: 13px; cursor: pointer;
+  transition: all 120ms;
+}
+.period button:hover { color: var(--fg); border-color: var(--fg-3); }
+.period button.active { background: var(--accent); border-color: var(--accent); color: #0b0b0d; font-weight: 700; }
+
+.kpis {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px; margin-bottom: 24px;
+}
+.kpi {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 14px; padding: 16px;
+}
+.kpi .label { color: var(--fg-3); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+.kpi .value { font-size: 26px; font-weight: 800; margin-top: 6px; }
+.kpi .hint { color: var(--fg-3); font-size: 12px; margin-top: 4px; }
+
+.grid { display: grid; gap: 12px; margin-bottom: 12px; }
+.grid.cols-2 { grid-template-columns: 1fr 1fr; }
+@media (max-width: 860px) { .grid.cols-2 { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 14px; padding: 20px;
+}
+.card h2 { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+.card h2 small { color: var(--fg-3); font-weight: 400; margin-left: 8px; }
+
+.funnel-step { margin-bottom: 12px; }
+.funnel-step .row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+.funnel-step .row b { font-size: 14px; }
+.funnel-step .bar { height: 26px; border-radius: 6px; background: #202024; overflow: hidden; }
+.funnel-step .fill { height: 100%; border-radius: 6px; transition: width 400ms; }
+.funnel-step .rate { color: var(--fg-3); font-size: 12px; margin-top: 3px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; color: var(--fg-3); font-weight: 600; padding: 8px 10px; border-bottom: 1px solid var(--card-border); white-space: nowrap; }
+td { padding: 9px 10px; border-bottom: 1px solid #1d1d21; }
+tr:last-child td { border-bottom: none; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.num { text-align: right; }
+.table-scroll { overflow-x: auto; }
+
+.error {
+  background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5; border-radius: 10px; padding: 12px 16px; font-size: 13px; margin-bottom: 12px;
+}
+.loading { color: var(--fg-3); padding: 40px 0; text-align: center; font-size: 14px; }
+
+/* Login */
+.login {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.login .box {
+  background: var(--card); border: 1px solid var(--card-border); border-radius: 16px;
+  padding: 36px; width: 100%; max-width: 380px; text-align: center;
+}
+.login h1 { font-size: 20px; margin-bottom: 6px; }
+.login h1 span { color: var(--accent); }
+.login p { color: var(--fg-3); font-size: 13px; margin-bottom: 24px; }
+.login input {
+  width: 100%; background: #0f0f11; border: 1px solid var(--card-border); color: var(--fg);
+  border-radius: 10px; padding: 12px 14px; font-size: 15px; margin-bottom: 12px; outline: none;
+}
+.login input:focus { border-color: var(--accent); }
+.login button {
+  width: 100%; background: var(--accent); color: #0b0b0d; border: none; border-radius: 10px;
+  padding: 12px; font-size: 15px; font-weight: 700; cursor: pointer;
+}
+.login .err { color: #fca5a5; font-size: 13px; margin-top: 10px; }

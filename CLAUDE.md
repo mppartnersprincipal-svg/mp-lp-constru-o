@@ -27,6 +27,11 @@ LP/Landing Page - Captacao/   ← projeto da landing page (todo o trabalho é aq
 │   └── components/           ← LpForm.jsx (formulário/webhook/Lead), LpHero, etc.
 ├── README-DEPLOY.md          ← guia de deploy e sinais de GTM (manter atualizado)
 └── package.json              ← scripts esbuild
+dashboard/                    ← painel de métricas (React/Vite + /api serverless na Vercel)
+├── api/                      ← rotas server-side: meta.js, ga4.js, leads.js (segredos aqui)
+├── src/                      ← frontend (App.jsx com todos os gráficos)
+├── README.md                 ← rotas, variáveis de ambiente e deploy
+└── .env.local                ← segredos locais (gitignored — NUNCA commitar)
 docs/
 ├── HISTORICO.md              ← diário de sessões (ler antes, registrar depois)
 └── RASTREAMENTO.md           ← fonte da verdade do tracking
