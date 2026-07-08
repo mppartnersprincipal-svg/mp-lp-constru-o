@@ -6,6 +6,29 @@ com data, o que mudou, por quê, e pendências deixadas.
 
 ---
 
+## 2026-07-08 (noite) — Dashboard: filtros de data iguais aos do Gerenciador de Anúncios
+
+Pedido do usuário: trocar os botões fixos de período (7/14/30/90 dias) por um
+dropdown com os mesmos filtros do Gerenciador de Anúncios do Meta.
+
+- **Novo seletor** (`dashboard/src/period.js` + componente `PeriodDropdown` no
+  `App.jsx`): Máximo, Hoje, Ontem, Últimos 7/14/28/30 dias, Esta semana, Semana
+  passada, Este mês, Mês passado e Personalizado (dois campos de data + Aplicar).
+- **Semântica idêntica à do Meta**: "Últimos N dias" termina **ontem** (regra dos
+  `date_preset` da API), semana começa no domingo, tudo no fuso de Brasília —
+  assim os números do dashboard batem com os do Gerenciador no mesmo filtro.
+  "Máximo" começa em `DATA_START = 2026-07-01` (constante em `period.js`).
+- **API**: as 3 rotas passam a receber `?since=YYYY-MM-DD&until=YYYY-MM-DD`
+  (`periodFromQuery` em `api/_lib/auth.js` valida, corrige datas invertidas e
+  trava `until` em hoje; `?days=N` segue aceito como legado).
+- **Correção de borda em `/api/leads`**: antes só filtrava a data inicial —
+  períodos como "Ontem"/"Semana passada" incluiriam leads de hoje. Adicionado
+  limite superior exclusivo (`created_at < dia seguinte ao fim do período`).
+- Validado: build do Vite ok + teste em Node dos 12 presets e do parser da query
+  (datas invertidas, futuras, malformadas e legado `days`).
+
+---
+
 ## 2026-07-08 (noite) — Validação obrigatória do formulário + investigação do lead vazio
 
 ### Validação do formulário (código incluído no commit `c170316`, junto com a rodada 3)

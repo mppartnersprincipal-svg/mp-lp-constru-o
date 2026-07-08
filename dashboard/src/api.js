@@ -5,8 +5,8 @@ export const getPassword = () => localStorage.getItem(KEY) || "";
 export const setPassword = (p) => localStorage.setItem(KEY, p);
 export const clearPassword = () => localStorage.removeItem(KEY);
 
-export async function apiGet(path, days) {
-  const res = await fetch(`${path}?days=${days}`, {
+export async function apiGet(path, { since, until }) {
+  const res = await fetch(`${path}?since=${since}&until=${until}`, {
     headers: { Authorization: `Bearer ${getPassword()}` },
   });
   if (res.status === 401) {

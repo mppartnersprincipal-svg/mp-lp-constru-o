@@ -8,9 +8,16 @@ o frontend fala só com `/api/*`, que roda no servidor.
 
 | Rota | Fonte | Retorna |
 |---|---|---|
-| `/api/meta?days=N` | Meta Marketing API | gasto/impressões/cliques/leads: totais, série diária e por campanha |
-| `/api/ga4?days=N` | GA4 Data API | sessões, eventos (`cta_click`, `whatsapp_click`, `lead_form_submit`), quebra por `location` |
-| `/api/leads?days=N` | Supabase (service role) | total, por segmento/fatura/dia e últimos leads |
+| `/api/meta?since=YYYY-MM-DD&until=YYYY-MM-DD` | Meta Marketing API | gasto/impressões/cliques/leads: totais, série diária e por campanha |
+| `/api/ga4?since=...&until=...` | GA4 Data API | sessões, eventos (`cta_click`, `whatsapp_click`, `lead_form_submit`), quebra por `location` |
+| `/api/leads?since=...&until=...` | Supabase (service role) | total, por segmento/fatura/dia e últimos leads |
+
+O período vem do seletor do frontend (`src/period.js`), com presets idênticos aos do
+Gerenciador de Anúncios do Meta (Hoje, Ontem, Últimos 7/14/28/30 dias, Esta semana,
+Semana passada, Este mês, Mês passado, Máximo e Personalizado). Regras do Meta:
+"Últimos N dias" termina **ontem** e a semana começa no **domingo**; tudo no fuso de
+Brasília. O preset "Máximo" começa em `DATA_START` (`src/period.js`). O formato
+antigo `?days=N` segue aceito como legado (`api/_lib/auth.js`).
 
 ## Variáveis de ambiente (Vercel → Settings → Environment Variables)
 

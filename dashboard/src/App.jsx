@@ -4,6 +4,7 @@ import {
   Tooltip, Legend, CartesianGrid, PieChart, Pie, Cell,
 } from "recharts";
 import { apiGet, getPassword, setPassword } from "./api.js";
+import { PRESETS, resolvePeriod, todayYMD, DATA_START } from "./period.js";
 
 const BRL = (v) =>
   v == null ? "—" : v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -77,9 +78,72 @@ function Login({ onEnter }) {
   );
 }
 
+// Seletor de período no formato do Gerenciador de Anúncios: lista de presets
+// + intervalo personalizado (aplicado só ao clicar em "Aplicar").
+function PeriodDropdown({ preset, custom, onChange }) {
+  const [open, setOpen] = React.useState(false);
+  const [draft, setDraft] = React.useState(custom);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    if (!open) return;
+    setDraft(custom);
+    const close = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    const esc = (e) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("mousedown", close);
+    document.addEventListener("keydown", esc);
+    return () => {
+      document.removeEventListener("mousedown", close);
+      document.removeEventListener("keydown", esc);
+    };
+  }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const label =
+    preset === "custom"
+      ? `${shortDate(custom.since)} – ${shortDate(custom.until)}`
+      : (PRESETS.find((p) => p.id === preset) || PRESETS[0]).label;
+
+  return (
+    <div className="period-dd" ref={ref}>
+      <button className={"period-btn" + (open ? " open" : "")} onClick={() => setOpen(!open)}>
+        <span>{label}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+      </button>
+      {open && (
+        <div className="period-menu">
+          {PRESETS.map((p) => (
+            <button key={p.id} className={"item" + (p.id === preset ? " active" : "")}
+              onClick={() => { onChange(p.id, custom); setOpen(false); }}>
+              {p.label}
+            </button>
+          ))}
+          <div className="custom">
+            <div className={"custom-title" + (preset === "custom" ? " active" : "")}>Personalizado</div>
+            <div className="custom-dates">
+              <input type="date" value={draft.since} min={DATA_START} max={todayYMD()}
+                onChange={(e) => setDraft({ ...draft, since: e.target.value })} />
+              <span>a</span>
+              <input type="date" value={draft.until} min={DATA_START} max={todayYMD()}
+                onChange={(e) => setDraft({ ...draft, until: e.target.value })} />
+            </div>
+            <button className="apply" disabled={!draft.since || !draft.until}
+              onClick={() => { onChange("custom", draft); setOpen(false); }}>
+              Aplicar
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function App() {
   const [authed, setAuthed] = React.useState(!!getPassword());
-  const [days, setDays] = React.useState(7);
+  const [preset, setPreset] = React.useState("last_7d");
+  const [custom, setCustom] = React.useState({ since: "", until: "" });
   const [meta, setMeta] = React.useState(null);
   const [ga4, setGa4] = React.useState(null);
   const [leads, setLeads] = React.useState(null);
@@ -89,10 +153,11 @@ export default function App() {
   const load = React.useCallback(async () => {
     setLoading(true);
     setErrors([]);
+    const period = resolvePeriod(preset, custom);
     const results = await Promise.allSettled([
-      apiGet("/api/meta", days),
-      apiGet("/api/ga4", days),
-      apiGet("/api/leads", days),
+      apiGet("/api/meta", period),
+      apiGet("/api/ga4", period),
+      apiGet("/api/leads", period),
     ]);
     const [m, g, l] = results;
     const errs = [];
@@ -106,13 +171,18 @@ export default function App() {
     l.status === "fulfilled" ? setLeads(l.value) : errs.push("Leads: " + l.reason.message);
     setErrors(errs);
     setLoading(false);
-  }, [days]);
+  }, [preset, custom]);
 
   React.useEffect(() => {
     if (authed) load();
   }, [authed, load]);
 
   if (!authed) return <Login onEnter={() => setAuthed(true)} />;
+
+  const period = resolvePeriod(preset, custom);
+  const rangeText = period.since === period.until
+    ? shortDate(period.since)
+    : `${shortDate(period.since)} a ${shortDate(period.until)}`;
 
   const spend = meta?.totals.spend ?? null;
   const nLeads = leads?.total ?? null;
@@ -141,17 +211,10 @@ export default function App() {
       <div className="topbar">
         <div>
           <h1>M<span>|</span>P — Dashboard LP Construção</h1>
-          <div className="sub">
-            {meta ? `${shortDate(meta.since)} a ${shortDate(meta.until)}` : ""} · mpconstrucao.com.br
-          </div>
+          <div className="sub">{rangeText} · mpconstrucao.com.br</div>
         </div>
-        <div className="period">
-          {[7, 14, 30, 90].map((d) => (
-            <button key={d} className={days === d ? "active" : ""} onClick={() => setDays(d)}>
-              {d} dias
-            </button>
-          ))}
-        </div>
+        <PeriodDropdown preset={preset} custom={custom}
+          onChange={(p, c) => { setPreset(p); setCustom(c); }} />
       </div>
 
       {errors.map((e) => <div className="error" key={e}>{e}</div>)}
