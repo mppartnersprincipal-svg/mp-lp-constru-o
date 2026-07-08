@@ -6,6 +6,9 @@ import { Icon } from "./Icon.jsx";
 import { pushEvent } from "../track.js";
 
 const WEBHOOK_URL = "https://hook.us1.make.com/jlpu2a7pnlsz4bhua7i27breutsxybga";
+// Anti-spam: o filtro no Make exige este token — requisições diretas ao webhook
+// (bots/scanners que acham a URL no bundle) chegam sem ele e são descartadas.
+const FORM_TOKEN = "mplp-7947819f30e54035";
 
 function TextField({ id, label, value, onChange, placeholder, error, type = "text" }) {
   const [focus, setFocus] = React.useState(false);
@@ -71,6 +74,7 @@ function normalizePhone(value) {
 // Envia o lead para o webhook do Make. Cada chave vira uma variável separada no cenário.
 function sendToWebhook(f) {
   const payload = {
+    token: FORM_TOKEN,
     nome: f.nome.trim(),
     empresa: f.empresa.trim(),
     segmento: f.segmento,
