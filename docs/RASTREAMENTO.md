@@ -41,16 +41,21 @@ para testá-lo, use a aba "Testar eventos" do Gerenciador de Eventos do Meta.
 
 ## Tags publicadas no painel do GTM (contêiner GTM-PCD4K574)
 
-| Tag | Tipo | Evento enviado ao Meta | Acionador |
+| Tag | Tipo | O que envia | Acionador |
 |---|---|---|---|
 | Meta Pixel - PageView | Meta Pixel (galeria) | Standard `PageView` | All Pages |
 | Meta — CTA Click | Meta Pixel | Custom `cta_click` (+ `location`) | Evento personalizado `cta_click` |
 | Meta — WhatsApp Click | Meta Pixel | Custom `whatsapp_click` (+ `location`) | Evento personalizado `whatsapp_click` |
+| GA4 — Base | Tag do Google | Config GA4 `G-W59B5D77T3` (pageviews automáticos) | Initialization - All Pages |
+| GA4 — Eventos | Google Analytics: evento do GA4 | `{{Event}}` + parâmetros `location`, `segmento`, `fatura` | Evento personalizado (regex) `^(cta_click\|whatsapp_click\|lead_form_submit)$` |
 
-Variável definida pelo usuário: **`DL - location`** (variável da camada de dados
-`location`) — usada nas Object Properties das tags custom.
+Variáveis definidas pelo usuário (todas "Variável da camada de dados"):
+**`DL - location`**, **`DL - segmento`**, **`DL - fatura`**.
 
 Config das tags Meta Pixel: Pixel ID `1732259497966479`, Consent Granted (GDPR) = True.
+
+GA4 instalado e coletando desde 2026-07-08 (validado no Tempo real). Dimensões
+personalizadas criadas na propriedade (escopo Evento): `location`, `segmento`, `fatura`.
 
 ## Setup no Meta (Gerenciador de Eventos / Anúncios)
 
@@ -93,6 +98,8 @@ Infraestrutura de dados do dashboard próprio (hospedagem futura: Vercel):
 |---|---|
 | GA4 da LP (propriedade nova, dedicada) | **`G-W59B5D77T3`** — propriedade "LP Construção", fluxo `15222467490` |
 | GA4 do site institucional (NÃO usar na LP) | `G-XNM42NM1CX` → mppartners.com.br |
+| Conta de anúncio Meta (fonte do dashboard) | **`act_2643219305863486`** — "M|P - Assessoria" (Business: Marcos Goulart) |
+| Campanha da LP | `120250865648840153` — "[M\|P] [LP] [LEAD] [FRIO] [CONSTRUÇÃO] [JULHO]" (ativa desde 2026-07-08) |
 | Supabase — projeto | `mp-lp-construcao`, ref `tjtvtvlymissdebyiuko`, região `sa-east-1` |
 | Supabase — URL da API | `https://tjtvtvlymissdebyiuko.supabase.co` |
 | Supabase — chave publishable (só INSERT via RLS) | `sb_publishable_9Iu7Y1bLEup3X-CktzA0gA_U8GVFKy4` |
@@ -104,10 +111,12 @@ HTTP após a notificação), não pelo site.
 
 ## Pendências conhecidas
 
-- [ ] **GA4 e Google Ads não migrados:** as tags `G-XNM42NM1CX` (GA4) e
-  `AW-17258791328` (Ads) existiam dentro do contêiner antigo `GTM-MBDQT8Z7` e
-  **sumiram do site** na troca de contêiner. Se GA4/Google Ads voltarem a ser
-  necessários, recriar (ou exportar/importar) essas tags dentro do `GTM-PCD4K574`.
+- [x] ~~GA4 não migrado~~ → **Resolvido em 2026-07-08**: criada propriedade GA4
+  dedicada da LP (`G-W59B5D77T3`) e instalada via GTM. O `G-XNM42NM1CX` era do site
+  institucional (mppartners.com.br) e nunca deveria ter estado na LP.
+- [ ] **Google Ads não migrado:** a tag `AW-17258791328` existia no contêiner antigo
+  e sumiu do site na troca. Recriar dentro do `GTM-PCD4K574` se campanhas de
+  Google Ads voltarem a rodar para a LP.
 - [ ] Conversão personalizada do `cta_click` no Meta ainda não criada (aguardava
   indexação do evento; opcional — público personalizado cobre o caso de remarketing).
 - [ ] Público personalizado de remarketing (`cta_click` sem `Lead`) ainda não criado.
