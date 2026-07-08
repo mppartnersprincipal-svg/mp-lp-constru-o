@@ -6,6 +6,50 @@ com data, o que mudou, por quê, e pendências deixadas.
 
 ---
 
+## 2026-07-08 (noite) — Validação obrigatória do formulário + investigação do lead vazio
+
+### Validação do formulário (código incluído no commit `c170316`, junto com a rodada 3)
+
+Pedido do usuário: todas as perguntas obrigatórias para enviar o formulário.
+Mudanças em `src/components/LpForm.jsx`:
+
+- **WhatsApp agora exige número válido com DDD** (10–11 dígitos, aceita com ou sem
+  o prefixo 55) — antes qualquer texto não-vazio passava (ex.: "abc").
+- **Erro some na hora** que o usuário corrige o campo (antes só no próximo envio).
+- **Rolagem automática até a primeira pergunta pendente** ao bloquear o envio
+  (no mobile o erro ficava fora da tela e o formulário parecia travado).
+- `aria-required`/`aria-invalid` nos inputs; `id="campo-*"` em cada pergunta.
+
+Obs.: esta sessão e a da rodada 3 de performance rodaram em paralelo; o commit
+`c170316` levou as duas mudanças juntas (o bundle `app.js` já saiu com ambas).
+
+**Verificado em produção** (navegador headless): envio vazio bloqueado com os 5
+erros visíveis; "abc" e "12345678" rejeitados no WhatsApp; caminho feliz testado
+localmente com fetch/fbq/gtag stubados — payload completo com `whatsapp_intl`
+normalizado ("5562993887179", sem duplicar o 55), `Lead` e `lead_form_submit`
+disparados, redirect para `/sucesso`. Nenhum lead/evento de teste real foi enviado.
+
+### Lead vazio das 18:07 (investigação)
+
+Chegou um registro com todos os campos vazios (Supabase `created_at` 18:07:54
+local). Evidências: o Pixel registrou só **1 Lead** na faixa 18h–19h (o teste
+manual "pedro/trenheira" das 18:52) — ou seja, o vazio **não veio do formulário**
+(a validação, antiga e nova, impede envio vazio; o `fetch` só dispara após passar).
+Conclusão: algo chamou a **URL do webhook do Make diretamente** (a URL fica
+exposta no `app.js`; qualquer GET/POST dispara o cenário com campos vazios).
+Provável bot/scanner (o anúncio foi ao ar hoje — crawler de revisão da Meta é
+candidato, mas sem os headers da requisição não dá para atribuir).
+
+**Pendências recomendadas (fazer no painel do Make):**
+1. **Filtro após o webhook**: só continuar se `nome` e `whatsapp` não estiverem
+   vazios — mata notificações/linhas de lixo.
+2. Ativar "Get request headers" no webhook para identificar a origem de próximos
+   disparos suspeitos.
+3. Opcional (código): campo `token` fixo no payload + filtro no Make conferindo.
+4. Limpar do Supabase/Sheets a linha vazia (id `9e0ba359-...`) e o teste das 18:52.
+
+---
+
 ## 2026-07-08 (noite) — Rodada 2 de performance: PageSpeed 42 → alvo 75+ (commit `484ab31`)
 
 **Gatilho:** PageSpeed mobile 42 (LCP 8,4s, TBT 1.460ms) mesmo após a rodada 1.
