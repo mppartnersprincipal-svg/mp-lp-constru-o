@@ -66,6 +66,10 @@ GitHub: `mppartnersprincipal-svg/mp-lp-constru-o`). Após o push, verifique a pr
 - Não remover a metatag `facebook-domain-verification` do `index.html`
   (verificação de domínio do Meta).
 - Idioma do projeto: PT-BR (código, comentários, docs e comunicação com o usuário).
+- **NUNCA editar arquivos-fonte com PowerShell** (`Get-Content`/`Set-Content`/
+  `-replace` em lote): o PowerShell 5.1 lê UTF-8 sem BOM como ANSI e corrompe a
+  acentuação ao regravar (aconteceu em 2026-07-08; reparado). Use sempre as
+  ferramentas Edit/Write, mesmo para substituições repetitivas em vários arquivos.
 
 ## Contexto de negócio
 
