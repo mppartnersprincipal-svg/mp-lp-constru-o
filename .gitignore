@@ -7,6 +7,11 @@ node_modules/
 # Ferramentas locais
 .gstack/
 
+# Segredos / variáveis de ambiente (NUNCA commitar)
+.env
+.env.*
+*.credentials.json
+
 # Logs e temporários
 *.log
 npm-debug.log*
