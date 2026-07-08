@@ -1,0 +1,96 @@
+# Rastreamento — Fonte da Verdade
+
+Toda a stack de tracking da LP: GTM, Meta Pixel, eventos e configuração de campanha.
+Atualize este arquivo sempre que o tracking mudar.
+
+_Última atualização: 2026-07-08_
+
+## IDs e contas
+
+| Item | Valor |
+|---|---|
+| Contêiner GTM ativo | `GTM-PCD4K574` |
+| Contêiner GTM antigo (desativado) | `GTM-MBDQT8Z7` |
+| Meta Pixel | **Pixel LP Construção** — ID `1732259497966479` |
+| Business Manager | M|P Assessoria (264321…) |
+| Domínio verificado no Meta | `mpconstrucao.com.br` (metatag no `<head>` do `index.html`) |
+| GA4 (não migrado — pendência) | `G-XNM42NM1CX` |
+| Google Ads (não migrado — pendência) | `AW-17258791328` |
+
+## Eventos do dataLayer (disparados pelo código do site)
+
+Todos via `pushEvent()` de `src/track.js`:
+
+| Evento | Parâmetros | Quando dispara | Onde no código |
+|---|---|---|---|
+| `lead_form_submit` | `segmento`, `fatura` | Formulário validado e enviado ao webhook | `src/components/LpForm.jsx` |
+| `cta_click` | `location`: `topbar`, `hero`, `prova_social`, `matematica`, `cta_final` | Clique em qualquer CTA "Quero..." (rola até o formulário) | `src/main.jsx` (função `goForm`) |
+| `whatsapp_click` | `location`: `botao_flutuante`, `rodape` | Clique no botão flutuante ou link do rodapé | `src/main.jsx` e `src/components/LpResults.jsx` |
+
+## Disparos diretos no código (NÃO passam pelo GTM)
+
+No envio do formulário (`src/components/LpForm.jsx`), além do `lead_form_submit`:
+
+- `window.fbq('track', 'Lead')` — evento padrão **Lead** do Meta Pixel.
+- `window.gtag('event', 'conversion')` — conversão do Google Ads (inativo enquanto
+  o gtag não existir na página; ver pendência GA4/Ads abaixo).
+
+⚠️ **Regra anti-duplicação:** por causa do `fbq` direto, NÃO deve existir tag de
+`Lead` no GTM. O `Lead` também não aparece como tag disparada no debug do GTM —
+para testá-lo, use a aba "Testar eventos" do Gerenciador de Eventos do Meta.
+
+## Tags publicadas no painel do GTM (contêiner GTM-PCD4K574)
+
+| Tag | Tipo | Evento enviado ao Meta | Acionador |
+|---|---|---|---|
+| Meta Pixel - PageView | Meta Pixel (galeria) | Standard `PageView` | All Pages |
+| Meta — CTA Click | Meta Pixel | Custom `cta_click` (+ `location`) | Evento personalizado `cta_click` |
+| Meta — WhatsApp Click | Meta Pixel | Custom `whatsapp_click` (+ `location`) | Evento personalizado `whatsapp_click` |
+
+Variável definida pelo usuário: **`DL - location`** (variável da camada de dados
+`location`) — usada nas Object Properties das tags custom.
+
+Config das tags Meta Pixel: Pixel ID `1732259497966479`, Consent Granted (GDPR) = True.
+
+## Setup no Meta (Gerenciador de Eventos / Anúncios)
+
+- Domínio `mpconstrucao.com.br` **verificado** via metatag
+  (`029gctpncy3rs2b2oxrbp5wjoqyswn`, no `<head>` do `index.html`).
+- Fluxo testado e validado em 2026-07-08: `PageView` → `cta_click` → `Lead`
+  chegando como "Processado" nos Eventos de teste.
+- Eventos `SubscribedButtonClick` que aparecem no pixel = rastreamento automático
+  de botões do Meta. Normais, podem ser ignorados.
+
+### Diretrizes de campanha
+
+- **Local da conversão: "Site"** (não usar "Formulários no site e instantâneos" —
+  o formulário instantâneo desviaria o lead do funil LP → Make → /sucesso).
+- **Evento de conversão da campanha: `Lead`** (evento padrão; conta e otimiza por
+  envio real de formulário).
+- `cta_click` = sinal de topo de funil. Usar para público personalizado de
+  remarketing (ex.: disparou `cta_click` e não disparou `Lead`) ou conversão
+  personalizada com categoria "Exibição de conteúdo"/"Contato" — **nunca** categoria
+  Lead e nunca como evento de otimização da campanha.
+- Aviso "Configurar evento de conversão" no conjunto de anúncios é orientativo
+  (aparece enquanto o `Lead` não indexa na lista de eventos do dataset) — não
+  bloqueia a publicação da campanha.
+
+## Como testar o tracking
+
+1. **GTM:** modo Visualizar (Tag Assistant) → conferir tags disparadas e o
+   `location` na aba Camada de dados.
+2. **Meta:** Gerenciador de Eventos → pixel → "Testar eventos" → navegar no site,
+   clicar CTAs e enviar formulário de teste. Esperado: `PageView`, `cta_click`,
+   `whatsapp_click` e `Lead` como "Processado".
+3. **Produção:** conferir contêiner servido:
+   `(Invoke-WebRequest https://www.mpconstrucao.com.br/).Content | Select-String "GTM-"`
+
+## Pendências conhecidas
+
+- [ ] **GA4 e Google Ads não migrados:** as tags `G-XNM42NM1CX` (GA4) e
+  `AW-17258791328` (Ads) existiam dentro do contêiner antigo `GTM-MBDQT8Z7` e
+  **sumiram do site** na troca de contêiner. Se GA4/Google Ads voltarem a ser
+  necessários, recriar (ou exportar/importar) essas tags dentro do `GTM-PCD4K574`.
+- [ ] Conversão personalizada do `cta_click` no Meta ainda não criada (aguardava
+  indexação do evento; opcional — público personalizado cobre o caso de remarketing).
+- [ ] Público personalizado de remarketing (`cta_click` sem `Lead`) ainda não criado.
