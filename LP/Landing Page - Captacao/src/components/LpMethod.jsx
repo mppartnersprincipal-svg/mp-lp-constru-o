@@ -1,6 +1,7 @@
 // LpMethod.jsx — Seção 4: O método M|P (3 frentes + fechamento)
 import * as React from "react";
 import { Reveal } from "./anim.jsx";
+import { Icon } from "./Icon.jsx";
 
 function MethodCard({ number, icon, title, children }) {
   const [hover, setHover] = React.useState(false);
@@ -17,7 +18,7 @@ function MethodCard({ number, icon, title, children }) {
         <span style={{ fontFamily: "var(--font-display)", fontWeight: 900, fontSize: 40, color: "var(--accent)", lineHeight: 1 }}>{number}</span>
         <span style={{ width: 44, height: 44, borderRadius: "var(--r-sm)", background: "var(--accent-soft)",
           display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
-          <i data-lucide={icon} style={{ width: 22, height: 22, color: "var(--accent)" }}></i>
+          <Icon name={icon} style={{ width: 22, height: 22, color: "var(--accent)" }} />
         </span>
       </div>
       <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 20, color: "#fff", letterSpacing: "-0.01em", margin: 0 }}>{title}</h3>

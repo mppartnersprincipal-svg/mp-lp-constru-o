@@ -38,25 +38,6 @@ function WhatsAppFloat() {
 }
 
 function App() {
-  // Re-renderiza os ícones Lucide sempre que o DOM muda (componentes montam <i data-lucide>).
-  React.useEffect(() => {
-    let scheduled = false;
-    const render = () => { window.lucide && window.lucide.createIcons(); };
-    const obs = new MutationObserver(() => {
-      if (scheduled) return;
-      scheduled = true;
-      requestAnimationFrame(() => {
-        obs.disconnect();
-        render();
-        obs.observe(document.body, { childList: true, subtree: true });
-        scheduled = false;
-      });
-    });
-    render();
-    obs.observe(document.body, { childList: true, subtree: true });
-    return () => obs.disconnect();
-  }, []);
-
   // Rola até o formulário e registra no GTM de qual CTA veio o clique.
   const goForm = (location) => {
     pushEvent("cta_click", { location });

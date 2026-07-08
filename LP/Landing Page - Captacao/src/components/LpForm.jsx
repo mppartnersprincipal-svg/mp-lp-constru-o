@@ -2,6 +2,7 @@
 import * as React from "react";
 import { MpButton } from "./MpButton.jsx";
 import { Reveal } from "./anim.jsx";
+import { Icon } from "./Icon.jsx";
 import { pushEvent } from "../track.js";
 
 const WEBHOOK_URL = "https://hook.us1.make.com/jlpu2a7pnlsz4bhua7i27breutsxybga";
@@ -137,7 +138,7 @@ export function LpForm() {
             {["Sem robô", "Sem estagiário", "Sem enrolação"].map((x) => (
               <li key={x} style={{ display: "flex", alignItems: "center", gap: 12, fontFamily: "var(--font-body)",
                 fontSize: 15, color: "var(--fg-2)" }}>
-                <i data-lucide="check" style={{ width: 18, height: 18, color: "var(--accent)" }}></i>{x}
+                <Icon name="check" style={{ width: 18, height: 18, color: "var(--accent)", flexShrink: 0 }} />{x}
               </li>
             ))}
           </Reveal>
@@ -149,7 +150,7 @@ export function LpForm() {
             <div style={{ textAlign: "center", padding: "32px 8px" }}>
               <div style={{ width: 72, height: 72, borderRadius: "50%", background: "var(--accent-soft)",
                 display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 22 }}>
-                <i data-lucide="check" style={{ width: 40, height: 40, color: "var(--accent)" }}></i>
+                <Icon name="check" style={{ width: 40, height: 40, color: "var(--accent)" }} />
               </div>
               <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 26, color: "#fff", margin: "0 0 12px" }}>
                 Parabéns por sua decisão!
@@ -175,7 +176,7 @@ export function LpForm() {
                 <MpButton type="submit" size="lg" full iconRight="arrow-right">Quero meu diagnóstico</MpButton>
                 <p style={{ fontFamily: "var(--font-body)", fontSize: 12.5, color: "var(--fg-3)", lineHeight: 1.55,
                   margin: "16px 0 0", display: "flex", alignItems: "flex-start", gap: 8 }}>
-                  <i data-lucide="lock" style={{ width: 15, height: 15, color: "var(--fg-3)", flexShrink: 0, marginTop: 2 }}></i>
+                  <Icon name="lock" style={{ width: 15, height: 15, color: "var(--fg-3)", flexShrink: 0, marginTop: 2 }} />
                   Ao enviar, você concorda em ser contatado pelos donos da M|P sobre o diagnóstico. Seus dados são
                   usados só para esse contato — a gente não vende sua informação nem enche o seu WhatsApp de spam.
                 </p>

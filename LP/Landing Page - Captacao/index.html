@@ -25,7 +25,9 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
   <!-- Foto do hero (LCP): baixa em paralelo com o app.js, sem esperar o React montar -->
-  <link rel="preload" as="image" href="assets/donos-hero.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/donos-hero.jpg"
+    imagesrcset="assets/donos-hero-640.jpg 640w, assets/donos-hero.jpg 1086w"
+    imagesizes="(max-width: 768px) 92vw, 520px" fetchpriority="high" />
 
   <!-- Open Graph / compartilhamento em redes -->
   <meta property="og:type" content="website" />
@@ -38,6 +40,9 @@
   <!-- Fontes: o @import está em colors_and_type.css; o preconnect acelera o download -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Fontes sem bloquear a renderização: o texto aparece com fonte de sistema e troca quando carregam -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" /></noscript>
   <link rel="stylesheet" href="colors_and_type.css" />
 
   <!-- ============================================================
@@ -73,7 +78,6 @@
        ============================================================ -->
 
   <!-- Ícones Lucide -->
-  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js" defer></script>
 
   <style>
     html, body { margin: 0; padding: 0; background: var(--bg-page); color: var(--fg-1); scroll-behavior: smooth; }

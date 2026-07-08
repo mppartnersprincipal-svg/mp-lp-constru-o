@@ -1,5 +1,6 @@
 // MpButton.jsx — MP Assessoria primary / ghost CTA pills + Topbar
 import * as React from "react";
+import { Icon } from "./Icon.jsx";
 
 export function MpButton({ children, variant = "primary", size = "md", onClick, type = "button", full = false, iconRight = null, iconLeft = null }) {
   const base = {
@@ -43,9 +44,9 @@ export function MpButton({ children, variant = "primary", size = "md", onClick, 
       onMouseLeave={() => setHover(false)}
       style={{ ...base, ...sizes[size], ...variants[variant], ...hoverStyle }}
     >
-      {iconLeft && <i data-lucide={iconLeft} style={{ width: 18, height: 18 }}></i>}
+      {iconLeft && <Icon name={iconLeft} style={{ width: 18, height: 18 }} />}
       {children}
-      {iconRight && <i data-lucide={iconRight} style={{ width: 18, height: 18 }}></i>}
+      {iconRight && <Icon name={iconRight} style={{ width: 18, height: 18 }} />}
     </button>
   );
 }

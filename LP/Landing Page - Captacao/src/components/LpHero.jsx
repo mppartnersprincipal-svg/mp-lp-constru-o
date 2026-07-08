@@ -2,6 +2,7 @@
 import * as React from "react";
 import { MpButton } from "./MpButton.jsx";
 import { Reveal, CountUp } from "./anim.jsx";
+import { Icon } from "./Icon.jsx";
 
 function HeroPhoto({ label, sub, ratio = "4 / 5" }) {
   const [failed, setFailed] = React.useState(false);
@@ -14,6 +15,8 @@ function HeroPhoto({ label, sub, ratio = "4 / 5" }) {
       }} data-photo-slot="donos">
         <img
           src="assets/donos-hero.jpg"
+          srcSet="assets/donos-hero-640.jpg 640w, assets/donos-hero.jpg 1086w"
+          sizes="(max-width: 768px) 92vw, 520px"
           alt="Marcos e Pedro, os donos da M|P Assessoria"
           fetchpriority="high"
           onError={() => setFailed(true)}
@@ -31,7 +34,7 @@ function HeroPhoto({ label, sub, ratio = "4 / 5" }) {
       display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
       textAlign: "center", padding: 24,
     }} data-photo-slot="donos">
-      <i data-lucide="image" style={{ width: 40, height: 40, color: "var(--fg-4)", marginBottom: 14 }}></i>
+      <Icon name="image" style={{ width: 40, height: 40, color: "var(--fg-4)", marginBottom: 14 }} />
       <p style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 14, color: "var(--fg-2)",
         textTransform: "uppercase", letterSpacing: ".08em", margin: "0 0 6px" }}>{label}</p>
       {sub && <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "var(--fg-3)", margin: 0, maxWidth: 240 }}>{sub}</p>}
@@ -133,7 +136,7 @@ export function LpHero({ onCta }) {
             borderRadius: "var(--r-pill)", padding: "12px 20px", fontFamily: "var(--font-display)", fontWeight: 800,
             fontSize: 14, boxShadow: "var(--shadow-yellow-glow)", display: "flex", alignItems: "center", gap: 8,
           }}>
-            <i data-lucide="badge-check" style={{ width: 18, height: 18 }}></i>
+            <Icon name="badge-check" style={{ width: 18, height: 18 }} />
             Você fala com os donos
           </div>
         </Reveal>

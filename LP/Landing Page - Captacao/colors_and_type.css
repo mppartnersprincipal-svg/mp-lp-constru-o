@@ -4,8 +4,9 @@
    Import with:  <link rel="stylesheet" href="/colors_and_type.css">
    ============================================================ */
 
-/* ---------- Webfonts (Google Fonts — Montserrat primary) ---------- */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+/* ---------- Webfonts ----------
+   Carregadas de forma assíncrona no <head> do index.html (link com media swap),
+   para não bloquear a renderização. NÃO usar @import aqui. */
 
 :root {
   /* ============================================================

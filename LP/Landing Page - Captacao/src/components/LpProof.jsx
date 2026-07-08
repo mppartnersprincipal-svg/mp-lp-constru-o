@@ -2,6 +2,7 @@
 import * as React from "react";
 import { MpButton } from "./MpButton.jsx";
 import { Reveal, CountUp } from "./anim.jsx";
+import { Icon } from "./Icon.jsx";
 
 function VideoPlaceholder({ label, ratio, id }) {
   return (
@@ -14,7 +15,7 @@ function VideoPlaceholder({ label, ratio, id }) {
         width: 76, height: 76, borderRadius: "50%", background: "var(--accent)", display: "flex",
         alignItems: "center", justifyContent: "center", boxShadow: "var(--shadow-yellow-glow)", marginBottom: 16,
       }}>
-        <i data-lucide="play" style={{ width: 30, height: 30, color: "#000", marginLeft: 4 }}></i>
+        <Icon name="play" style={{ width: 30, height: 30, color: "#000", marginLeft: 4 }} />
       </div>
       <p style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 13, color: "var(--fg-3)",
         textTransform: "uppercase", letterSpacing: ".1em", margin: 0 }}>{label}</p>
@@ -82,7 +83,7 @@ export function VideoSlot({ id, label, ratio = "16 / 9", src, autoPlayInView = f
             width: 76, height: 76, borderRadius: "50%", background: "var(--accent)", display: "flex",
             alignItems: "center", justifyContent: "center", boxShadow: "var(--shadow-yellow-glow)",
           }}>
-            <i data-lucide="play" style={{ width: 30, height: 30, color: "#000", marginLeft: 4 }}></i>
+            <Icon name="play" style={{ width: 30, height: 30, color: "#000", marginLeft: 4 }} />
           </span>
           <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 13, color: "#fff",
             textTransform: "uppercase", letterSpacing: ".1em" }}>{label}</span>
@@ -96,7 +97,7 @@ export function VideoSlot({ id, label, ratio = "16 / 9", src, autoPlayInView = f
           fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 12,
           textTransform: "uppercase", letterSpacing: ".08em",
         }}>
-          <i data-lucide="volume-2" style={{ width: 16, height: 16 }}></i>
+          <Icon name="volume-2" style={{ width: 16, height: 16 }} />
           Ativar som
         </button>
       )}
