@@ -63,12 +63,12 @@ Para trocar o destino do webhook, edite a constante `WEBHOOK_URL` em
 
 ## 4. Rastreamento / Anúncios (Google Tag Manager)
 
-O **Google Tag Manager** já está instalado no site (contêiner `GTM-MBDQT8Z7`), tanto na
+O **Google Tag Manager** já está instalado no site (contêiner `GTM-PCD4K574`), tanto na
 `index.html` quanto na página de sucesso (`sucesso.html`). Todo pixel de anúncio (Meta,
 Google Ads, GA4) agora é configurado **dentro do painel do GTM** — não precisa mexer no
 código do site.
 
-Dois sinais já saem prontos do site para o GTM:
+Três sinais já saem prontos do site para o GTM:
 
 - **Página de sucesso** — quando o lead envia o formulário, ele cai em `/sucesso`. Use um
   gatilho de *Pageview* com "Caminho da Página contém `sucesso`" para disparar sua tag de
@@ -76,6 +76,10 @@ Dois sinais já saem prontos do site para o GTM:
 - **Cliques no WhatsApp** — o botão flutuante e o link do rodapé empurram o evento
   `whatsapp_click` para o `dataLayer` (com o parâmetro `location` = `botao_flutuante` ou
   `rodape`). Use um gatilho de *Evento Personalizado* com nome `whatsapp_click`.
+- **Cliques nos CTAs** — os cinco botões "Quero..." empurram o evento `cta_click` para o
+  `dataLayer` (com o parâmetro `location` = `topbar`, `hero`, `prova_social`, `matematica`
+  ou `cta_final`). Use um gatilho de *Evento Personalizado* com nome `cta_click`. É sinal
+  de topo de funil — bom para remarketing; otimize campanhas pelo lead, não por ele.
 
 Também sai um evento `lead_form_submit` no envio do formulário (com `segmento` e `fatura`),
 caso queira rastrear a conversão pelo evento em vez do pageview de `/sucesso`.

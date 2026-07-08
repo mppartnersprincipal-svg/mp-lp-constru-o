@@ -57,20 +57,22 @@ function App() {
     return () => obs.disconnect();
   }, []);
 
-  const goForm = () => {
+  // Rola até o formulário e registra no GTM de qual CTA veio o clique.
+  const goForm = (location) => {
+    pushEvent("cta_click", { location });
     const el = document.getElementById("formulario");
     if (el) window.scrollTo({ top: Math.max(0, el.offsetTop - 80), behavior: "smooth" });
   };
 
   return (
     <>
-      <Topbar onCta={goForm} />
-      <LpHero onCta={goForm} />
-      <LpProof onCta={goForm} />
-      <LpMath onCta={goForm} />
+      <Topbar onCta={() => goForm("topbar")} />
+      <LpHero onCta={() => goForm("hero")} />
+      <LpProof onCta={() => goForm("prova_social")} />
+      <LpMath onCta={() => goForm("matematica")} />
       <LpForm />
       <LpMethod />
-      <LpResults onCta={goForm} />
+      <LpResults onCta={() => goForm("cta_final")} />
       <LpFooter />
       <WhatsAppFloat />
     </>
