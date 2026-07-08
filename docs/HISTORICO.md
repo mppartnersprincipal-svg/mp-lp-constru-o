@@ -50,6 +50,12 @@ confirmando que é recorrente. Providências tomadas (commit `4a997b3`):
 - Confirmado via Pixel (dataset stats) que os disparos vazios **não** geraram
   evento `Lead` — não vieram do formulário.
 
+**Atualização 2 (mesma noite):** URL do webhook **rotacionada** (commit `e9260f8`)
+— a antiga (`...jlpu2a7pn...`) estava queimada (2 disparos de bot). Nova:
+`hook.us1.make.com/q6yefdvx5a3bgfse6l3aseom6hplw9l2`, criada pelo usuário no Make,
+publicada e verificada em produção. Amostra de estrutura (com `token`) enviada ao
+webhook novo (aceita, aguardando processamento do cenário).
+
 **Pendências (fazer no painel do Make):**
 1. **Filtro após o webhook** (hoje): `nome` *is not empty* E `whatsapp` *is not
    empty* — mata notificações/linhas de lixo.
@@ -57,9 +63,13 @@ confirmando que é recorrente. Providências tomadas (commit `4a997b3`):
    `token` *equal to* `mplp-7947819f30e54035`. Não exigir o token de imediato:
    o `app.js` tem cache de 1h — visitante com bundle antigo enviaria lead real
    sem token e seria descartado.
-3. Ativar "Get request headers" no webhook para identificar a origem de próximos
+3. **Deletar o webhook antigo amanhã** — antes, conferir a fila dele: um lead
+   real de visitante com bundle em cache pode ter caído lá (recuperável).
+4. Ativar "Get request headers" no webhook para identificar a origem de próximos
    disparos suspeitos.
-4. Limpar manualmente do Google Sheets as linhas vazias/teste (sem acesso daqui).
+5. Limpar manualmente do Google Sheets as linhas vazias/teste (sem acesso daqui).
+6. Apagar do Supabase a linha "TESTE ESTRUTURA (pode ignorar)" quando o cenário
+   processar a amostra.
 
 ---
 
