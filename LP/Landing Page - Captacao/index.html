@@ -24,6 +24,9 @@
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
+  <!-- Foto do hero (LCP): baixa em paralelo com o app.js, sem esperar o React montar -->
+  <link rel="preload" as="image" href="assets/donos-hero.jpg" fetchpriority="high" />
+
   <!-- Open Graph / compartilhamento em redes -->
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="pt_BR" />

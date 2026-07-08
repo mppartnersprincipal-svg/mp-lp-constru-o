@@ -14,7 +14,7 @@ function ResultCard({ name, to, period, logo, logoH = 34, plate = false }) {
       textTransform: "uppercase", color: "var(--fg-3)", margin: 0 }}>{name}</p>
   );
   const logoImg = (
-    <img src={logo} alt={name} decoding="async" onError={() => setLogoFailed(true)}
+    <img src={logo} alt={name} loading="lazy" decoding="async" onError={() => setLogoFailed(true)}
       style={{ maxHeight: logoH, maxWidth: plate ? "none" : "78%", width: "auto", height: "auto",
         objectFit: "contain", display: "block" }} />
   );
@@ -52,7 +52,7 @@ function BigNumber({ name, logo, logoH = 32, children }) {
     <div style={{ borderTop: "1px solid var(--border-2)", padding: "24px 0", display: "grid",
       gridTemplateColumns: "200px 1fr", gap: 24, alignItems: "center" }} className="bignum-row">
       {logo ? (
-        <img src={logo} alt={name} decoding="async"
+        <img src={logo} alt={name} loading="lazy" decoding="async"
           style={{ maxHeight: logoH, maxWidth: "100%", width: "auto", height: "auto", objectFit: "contain", display: "block" }} />
       ) : (
         <p style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15, letterSpacing: ".06em",

@@ -15,6 +15,7 @@ function HeroPhoto({ label, sub, ratio = "4 / 5" }) {
         <img
           src="assets/donos-hero.jpg"
           alt="Marcos e Pedro, os donos da M|P Assessoria"
+          fetchpriority="high"
           onError={() => setFailed(true)}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
@@ -111,6 +112,7 @@ export function LpHero({ onCta }) {
                           src={c.src}
                           alt={isClone ? "" : c.name}
                           height={c.h}
+                          loading="lazy"
                           decoding="async"
                           draggable="false"
                           style={{ height: c.h, width: "auto", display: "block", userSelect: "none" }}

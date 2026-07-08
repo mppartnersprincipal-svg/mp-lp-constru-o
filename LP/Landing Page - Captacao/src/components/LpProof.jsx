@@ -68,7 +68,7 @@ export function VideoSlot({ id, label, ratio = "16 / 9", src, autoPlayInView = f
       position: "relative", width: "100%", aspectRatio: ratio, borderRadius: "var(--r-lg)", overflow: "hidden",
       background: "#000", border: "1px solid var(--border-1)", boxShadow: "var(--shadow-2)",
     }} data-video-slot={id}>
-      <video ref={videoRef} src={src} controls={playing} playsInline preload={autoPlayInView ? "auto" : "none"}
+      <video ref={videoRef} src={src} controls={playing} playsInline preload={autoPlayInView ? "metadata" : "none"}
         muted={muted}
         onError={() => setFailed(true)}
         onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
@@ -111,7 +111,7 @@ function WhatsAppSlot({ id, label, src }) {
       borderRadius: 28, overflow: "hidden", background: "#0b141a",
       border: "8px solid #1a1a1a", boxShadow: "var(--shadow-3)",
     }} data-whatsapp-slot={id}>
-      <img src={src} alt={label} style={{ width: "100%", height: "auto", display: "block" }} />
+      <img src={src} alt={label} loading="lazy" decoding="async" style={{ width: "100%", height: "auto", display: "block" }} />
     </div>
   );
 }
