@@ -85,6 +85,23 @@ Config das tags Meta Pixel: Pixel ID `1732259497966479`, Consent Granted (GDPR) 
 3. **Produção:** conferir contêiner servido:
    `(Invoke-WebRequest https://www.mpconstrucao.com.br/).Content | Select-String "GTM-"`
 
+## Dashboard de métricas (em construção — ver HISTORICO.md)
+
+Infraestrutura de dados do dashboard próprio (hospedagem futura: Vercel):
+
+| Item | Valor |
+|---|---|
+| GA4 da LP (propriedade nova, dedicada) | **`G-W59B5D77T3`** — propriedade "LP Construção", fluxo `15222467490` |
+| GA4 do site institucional (NÃO usar na LP) | `G-XNM42NM1CX` → mppartners.com.br |
+| Supabase — projeto | `mp-lp-construcao`, ref `tjtvtvlymissdebyiuko`, região `sa-east-1` |
+| Supabase — URL da API | `https://tjtvtvlymissdebyiuko.supabase.co` |
+| Supabase — chave publishable (só INSERT via RLS) | `sb_publishable_9Iu7Y1bLEup3X-CktzA0gA_U8GVFKy4` |
+| Tabela de leads | `public.leads` (nome, whatsapp, segmento, fatura, origem, created_at) |
+
+RLS da tabela `leads`: `anon` só insere (é a chave que o Make usa); leitura exige
+service role (server-side do dashboard). Os leads são gravados pelo **Make** (módulo
+HTTP após a notificação), não pelo site.
+
 ## Pendências conhecidas
 
 - [ ] **GA4 e Google Ads não migrados:** as tags `G-XNM42NM1CX` (GA4) e
