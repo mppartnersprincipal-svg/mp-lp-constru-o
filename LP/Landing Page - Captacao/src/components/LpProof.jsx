@@ -169,7 +169,7 @@ export function LpProof({ onCta }) {
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: "clamp(32px, 5vw, 72px)", alignItems: "center" }} className="proof-grid">
           <Reveal x={-28} y={0} duration={820}>
-            <WhatsAppSlot id="telhas-coral" label="Conversa com o cliente Telhas Coral" src="assets/telhas-coral-whatsapp.jpeg" />
+            <WhatsAppSlot id="telhas-coral" label="Conversa com o cliente Telhas Coral" src="assets/telhas-coral-whatsapp.webp" />
           </Reveal>
           <Reveal delay={140}>
             <p style={{ fontFamily: "var(--font-display)", fontWeight: 900, fontSize: "clamp(30px, 3.4vw, 48px)",

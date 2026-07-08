@@ -66,10 +66,10 @@ function BigNumber({ name, logo, logoH = 32, children }) {
 
 export function LpResults({ onCta }) {
   const cards = [
-    { name: "Manu Tintas", to: 22, period: "de faturamento em 33 dias", logo: "assets/logo-manu-tintas.png", logoH: 40 },
-    { name: "Rodrigo Tintas", to: 15, period: "de faturamento em 45 dias", logo: "assets/logo-rodrigo-tintas.png", logoH: 34 },
+    { name: "Manu Tintas", to: 22, period: "de faturamento em 33 dias", logo: "assets/logo-manu-tintas.webp", logoH: 40 },
+    { name: "Rodrigo Tintas", to: 15, period: "de faturamento em 45 dias", logo: "assets/logo-rodrigo-tintas.webp", logoH: 34 },
     // Logo colorida sobre fundo branco → exibida numa placa branca arredondada (plate).
-    { name: "Mundo das Bombas", to: 30, period: "de faturamento em 60 dias", logo: "assets/logo-mundo-das-bombas.jpg", logoH: 30, plate: true },
+    { name: "Mundo das Bombas", to: 30, period: "de faturamento em 60 dias", logo: "assets/logo-mundo-das-bombas.webp", logoH: 30, plate: true },
   // Defensivo: um card sem número real (to inválido) não é renderizado — em vez de virar buraco.
   ].filter((c) => Number.isFinite(c.to));
   return (
@@ -100,12 +100,12 @@ export function LpResults({ onCta }) {
           <Reveal as="p" y={14} style={{ fontFamily: "var(--font-body)", fontSize: 15, color: "var(--fg-3)", textTransform: "uppercase",
             letterSpacing: ".08em", margin: "0 0 4px" }}>E os números que mostram o tamanho do que a gente faz</Reveal>
           <Reveal>
-            <BigNumber name="Telhas Coral" logo="assets/logo-telhas-coral.png" logoH={44}>
+            <BigNumber name="Telhas Coral" logo="assets/logo-telhas-coral.webp" logoH={44}>
               <span style={{ color: "var(--accent)", fontWeight: 900 }}>R$ <CountUp to={250} /> mil a R$ <CountUp to={350} /> mil</span> a mais de faturamento — todo mês.
             </BigNumber>
           </Reveal>
           <Reveal delay={120}>
-            <BigNumber name="Pacheco Solar" logo="assets/logo-pacheco-solar.png" logoH={28}>
+            <BigNumber name="Pacheco Solar" logo="assets/logo-pacheco-solar.webp" logoH={28}>
               <span style={{ color: "var(--accent)", fontWeight: 900 }}><CountUp to={20} prefix="+" suffix="%" /></span> no faturamento e <span style={{ color: "var(--accent)", fontWeight: 900 }}>R$ <CountUp to={579} /> mil</span> em vendas nos primeiros 4 meses.
             </BigNumber>
           </Reveal>

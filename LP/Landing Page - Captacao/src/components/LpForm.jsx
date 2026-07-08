@@ -7,14 +7,15 @@ import { pushEvent } from "../track.js";
 
 const WEBHOOK_URL = "https://hook.us1.make.com/jlpu2a7pnlsz4bhua7i27breutsxybga";
 
-function TextField({ label, value, onChange, placeholder, error, type = "text" }) {
+function TextField({ id, label, value, onChange, placeholder, error, type = "text" }) {
   const [focus, setFocus] = React.useState(false);
   return (
-    <div>
+    <div id={id}>
       <label style={{ display: "block", fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 13,
         color: "var(--fg-2)", marginBottom: 10, letterSpacing: ".01em" }}>{label}</label>
       <input
         type={type} value={value} placeholder={placeholder}
+        aria-required="true" aria-invalid={!!error}
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
         style={{
@@ -31,9 +32,9 @@ function TextField({ label, value, onChange, placeholder, error, type = "text" }
   );
 }
 
-function ChipGroup({ label, options, value, onChange, error }) {
+function ChipGroup({ id, label, options, value, onChange, error }) {
   return (
-    <div>
+    <div id={id}>
       <label style={{ display: "block", fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 13,
         color: "var(--fg-2)", marginBottom: 12, letterSpacing: ".01em" }}>{label}</label>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
@@ -92,7 +93,11 @@ export function LpForm() {
   const [f, setF] = React.useState({ nome: "", empresa: "", segmento: "", fatura: "", whatsapp: "" });
   const [errors, setErrors] = React.useState({});
   const [sent, setSent] = React.useState(false);
-  const set = (k) => (v) => setF((p) => ({ ...p, [k]: v }));
+  // Ao editar/selecionar, limpa o erro daquele campo na hora (feedback imediato).
+  const set = (k) => (v) => {
+    setF((p) => ({ ...p, [k]: v }));
+    setErrors((p) => (p[k] ? { ...p, [k]: undefined } : p));
+  };
 
   const submit = (e) => {
     e.preventDefault();
@@ -101,21 +106,29 @@ export function LpForm() {
     if (!f.empresa.trim()) errs.empresa = "Preencha o nome da empresa";
     if (!f.segmento) errs.segmento = "Selecione uma opção";
     if (!f.fatura) errs.fatura = "Selecione uma opção";
+    const wpp = f.whatsapp.replace(/\D/g, "");
+    const wppLocal = wpp.length > 11 && wpp.startsWith("55") ? wpp.slice(2) : wpp; // aceita com ou sem o 55
     if (!f.whatsapp.trim()) errs.whatsapp = "Preencha seu WhatsApp";
+    else if (wppLocal.length < 10 || wppLocal.length > 11) errs.whatsapp = "Informe um WhatsApp válido com DDD (ex.: 62 99388-7179)";
     setErrors(errs);
-    if (Object.keys(errs).length === 0) {
-      sendToWebhook(f);
-      setSent(true);
-      // Evento de lead para o GTM. Fica no dataLayer antes de navegar, então o
-      // GTM captura o envio mesmo com o redirect logo em seguida.
-      pushEvent("lead_form_submit", { segmento: f.segmento, fatura: f.fatura });
-      // Conversões diretas (defensivo: só dispara se as libs existirem — não quebra sem Pixel/Ads).
-      window.fbq && window.fbq("track", "Lead");
-      window.gtag && window.gtag("event", "conversion");
-      // Redireciona para a página de sucesso (thank-you page). NÃO abre o WhatsApp.
-      // O fetch do webhook usa keepalive, então o lead chega ao Make mesmo saindo da página agora.
-      window.location.assign("sucesso.html");
+    const pendente = Object.keys(errs).find((k) => errs[k]);
+    if (pendente) {
+      // Leva o usuário até a primeira pergunta pendente (no mobile o erro fica fora da tela).
+      const el = document.getElementById(`campo-${pendente}`);
+      el && el.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
     }
+    sendToWebhook(f);
+    setSent(true);
+    // Evento de lead para o GTM. Fica no dataLayer antes de navegar, então o
+    // GTM captura o envio mesmo com o redirect logo em seguida.
+    pushEvent("lead_form_submit", { segmento: f.segmento, fatura: f.fatura });
+    // Conversões diretas (defensivo: só dispara se as libs existirem — não quebra sem Pixel/Ads).
+    window.fbq && window.fbq("track", "Lead");
+    window.gtag && window.gtag("event", "conversion");
+    // Redireciona para a página de sucesso (thank-you page). NÃO abre o WhatsApp.
+    // O fetch do webhook usa keepalive, então o lead chega ao Make mesmo saindo da página agora.
+    window.location.assign("sucesso.html");
   };
 
   const segmentos = ["Loja de tintas", "Ferragista", "Material de construção em geral", "Pisos e porcelanatos", "Distribuidor", "Atacadista", "Outro segmento"];
@@ -162,15 +175,15 @@ export function LpForm() {
             </div>
           ) : (
             <form onSubmit={submit} style={{ display: "grid", gap: 22 }}>
-              <TextField label="1. Qual o seu nome?" value={f.nome} onChange={set("nome")}
+              <TextField id="campo-nome" label="1. Qual o seu nome?" value={f.nome} onChange={set("nome")}
                 placeholder="Ex.: João da Silva" error={errors.nome} />
-              <TextField label="2. Qual o nome da sua empresa?" value={f.empresa} onChange={set("empresa")}
+              <TextField id="campo-empresa" label="2. Qual o nome da sua empresa?" value={f.empresa} onChange={set("empresa")}
                 placeholder="Ex.: Tintas São João" error={errors.empresa} />
-              <ChipGroup label="3. Qual opção descreve melhor o seu negócio?" options={segmentos}
+              <ChipGroup id="campo-segmento" label="3. Qual opção descreve melhor o seu negócio?" options={segmentos}
                 value={f.segmento} onChange={set("segmento")} error={errors.segmento} />
-              <ChipGroup label="4. Sua empresa fatura acima de R$ 50 mil por mês?" options={["Sim", "Não"]}
+              <ChipGroup id="campo-fatura" label="4. Sua empresa fatura acima de R$ 50 mil por mês?" options={["Sim", "Não"]}
                 value={f.fatura} onChange={set("fatura")} error={errors.fatura} />
-              <TextField label="5. Seu WhatsApp para contato" value={f.whatsapp} onChange={set("whatsapp")}
+              <TextField id="campo-whatsapp" label="5. Seu WhatsApp para contato" value={f.whatsapp} onChange={set("whatsapp")}
                 placeholder="(00) 00000-0000" error={errors.whatsapp} type="tel" />
               <div style={{ marginTop: 4 }}>
                 <MpButton type="submit" size="lg" full iconRight="arrow-right">Quero meu diagnóstico</MpButton>

@@ -24,10 +24,11 @@
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
-  <!-- Foto do hero (LCP): baixa em paralelo com o app.js, sem esperar o React montar -->
-  <link rel="preload" as="image" href="assets/donos-hero.jpg"
-    imagesrcset="assets/donos-hero-640.jpg 640w, assets/donos-hero.jpg 1086w"
-    imagesizes="(max-width: 768px) 92vw, 520px" fetchpriority="high" />
+  <!-- Foto do hero (LCP): descoberta cedo, mas SEM prioridade alta — numa página
+       renderizada pelo React, o app.js é quem destrava a pintura e vence a fila. -->
+  <link rel="preload" as="image" href="assets/donos-hero.webp"
+    imagesrcset="assets/donos-hero-640.webp 640w, assets/donos-hero.webp 1086w"
+    imagesizes="(max-width: 768px) 92vw, 520px" />
 
   <!-- Open Graph / compartilhamento em redes -->
   <meta property="og:type" content="website" />

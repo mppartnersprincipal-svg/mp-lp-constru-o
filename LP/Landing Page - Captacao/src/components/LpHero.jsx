@@ -14,8 +14,8 @@ function HeroPhoto({ label, sub, ratio = "4 / 5" }) {
         border: "1px solid var(--border-1)", background: "#121212",
       }} data-photo-slot="donos">
         <img
-          src="assets/donos-hero.jpg"
-          srcSet="assets/donos-hero-640.jpg 640w, assets/donos-hero.jpg 1086w"
+          src="assets/donos-hero.webp"
+          srcSet="assets/donos-hero-640.webp 640w, assets/donos-hero.webp 1086w"
           sizes="(max-width: 768px) 92vw, 520px"
           alt="Marcos e Pedro, os donos da M|P Assessoria"
           fetchpriority="high"
@@ -45,12 +45,12 @@ function HeroPhoto({ label, sub, ratio = "4 / 5" }) {
 export function LpHero({ onCta }) {
   // Logos das lojas (altura de exibição ajustada por logo p/ equilíbrio visual)
   const clients = [
-    { name: "Rodrigo Tintas", src: "assets/logo-rodrigo-tintas.png", h: 40 },
-    { name: "Telhas Coral", src: "assets/logo-telhas-coral.png", h: 52 },
-    { name: "Pacheco Solar", src: "assets/logo-pacheco-solar.png", h: 30 },
-    { name: "IBT Telhas", src: "assets/logo-ibt-telhas.png", h: 52 },
-    { name: "YCON Construções", src: "assets/logo-ycon.png", h: 50 },
-    { name: "Manu Tintas e Ferragista", src: "assets/logo-manu-tintas.png", h: 50 },
+    { name: "Rodrigo Tintas", src: "assets/logo-rodrigo-tintas.webp", h: 40 },
+    { name: "Telhas Coral", src: "assets/logo-telhas-coral.webp", h: 52 },
+    { name: "Pacheco Solar", src: "assets/logo-pacheco-solar.webp", h: 30 },
+    { name: "IBT Telhas", src: "assets/logo-ibt-telhas.webp", h: 52 },
+    { name: "YCON Construções", src: "assets/logo-ycon.webp", h: 50 },
+    { name: "Manu Tintas e Ferragista", src: "assets/logo-manu-tintas.webp", h: 50 },
   ];
   return (
     <section id="inicio" style={{

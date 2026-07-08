@@ -5,8 +5,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "esbuild src/main.jsx --bundle --minify --charset=utf8 --jsx=automatic --target=es2018 --outfile=app.js --legal-comments=none",
-    "watch": "esbuild src/main.jsx --bundle --charset=utf8 --jsx=automatic --target=es2018 --outfile=app.js --sourcemap --watch",
+    "build": "esbuild src/main.jsx --bundle --minify --charset=utf8 --jsx=automatic --target=es2020 --outfile=app.js --legal-comments=none",
+    "watch": "esbuild src/main.jsx --bundle --charset=utf8 --jsx=automatic --target=es2020 --outfile=app.js --sourcemap --watch",
     "serve": "npx --yes serve@latest -l 5050 ."
   },
   "dependencies": {
