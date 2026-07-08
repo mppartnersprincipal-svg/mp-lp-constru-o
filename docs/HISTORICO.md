@@ -56,20 +56,24 @@ confirmando que é recorrente. Providências tomadas (commit `4a997b3`):
 publicada e verificada em produção. Amostra de estrutura (com `token`) enviada ao
 webhook novo (aceita, aguardando processamento do cenário).
 
-**Pendências (fazer no painel do Make):**
-1. **Filtro após o webhook** (hoje): `nome` *is not empty* E `whatsapp` *is not
-   empty* — mata notificações/linhas de lixo.
-2. **Endurecer o filtro** (a partir do dia seguinte): adicionar condição
-   `token` *equal to* `mplp-7947819f30e54035`. Não exigir o token de imediato:
-   o `app.js` tem cache de 1h — visitante com bundle antigo enviaria lead real
-   sem token e seria descartado.
-3. **Deletar o webhook antigo amanhã** — antes, conferir a fila dele: um lead
-   real de visitante com bundle em cache pode ter caído lá (recuperável).
-4. Ativar "Get request headers" no webhook para identificar a origem de próximos
-   disparos suspeitos.
-5. Limpar manualmente do Google Sheets as linhas vazias/teste (sem acesso daqui).
-6. Apagar do Supabase a linha "TESTE ESTRUTURA (pode ignorar)" quando o cenário
-   processar a amostra.
+**Desfecho (mesma noite) — tudo validado:**
+
+- **Filtro "Só leads reais" criado e salvo** pelo usuário na posição correta
+  (entre Webhooks e HTTP), condição única: `token` *Text operators: Equal to*
+  `mplp-7947819f30e54035`. Como a URL foi rotacionada, não foi preciso o
+  período de carência do token (bundle antigo aponta para a URL antiga).
+- **Testado ao vivo**: POST vazio (simulando o bot) → barrado pelo filtro, sem
+  linha no Supabase e sem notificação; POST com token e payload real → passou
+  inteiro (notificação + Supabase). Linhas de teste removidas do Supabase.
+- **Webhook antigo deletado** pelo usuário na mesma noite. Janela residual:
+  visitante com `app.js` em cache (~1h após as ~20h) enviaria para a URL morta
+  e o lead se perderia — probabilidade baixa (tráfego ~60 pageviews/dia); sinal
+  de ocorrência: evento `Lead` no Pixel sem linha correspondente no Supabase.
+- Supabase zerado, pronto para leads reais.
+
+**Pendência restante:** limpar manualmente do Google Sheets as linhas
+vazias/teste de 08/07 (incluindo "TESTE FINAL"). Opcional: ativar "Get request
+headers" no webhook novo (menu Webhooks do Make) para forense futura.
 
 ---
 
