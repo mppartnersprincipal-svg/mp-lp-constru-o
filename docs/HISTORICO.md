@@ -6,6 +6,26 @@ com data, o que mudou, por quê, e pendências deixadas.
 
 ---
 
+## 2026-07-08 (noite) — Rodada 2 de performance: PageSpeed 42 → alvo 75+ (commit `484ab31`)
+
+**Gatilho:** PageSpeed mobile 42 (LCP 8,4s, TBT 1.460ms) mesmo após a rodada 1.
+
+- **Fontes:** removido `@import` do Google Fonts do `colors_and_type.css` (bloqueava
+  a renderização ~2s); agora carregam assíncronas no `<head>` (`media="print"`
+  + onload swap + fallback noscript).
+- **Ícones:** criado `src/components/Icon.jsx` com os 10 SVGs usados (mesmos
+  desenhos Lucide); eliminados o script unpkg de 348 KB e o MutationObserver de
+  re-render em `main.jsx` (fonte de TBT/reflow forçado). Nenhum `data-lucide` resta.
+- **Cache:** `vercel.json` — assets 30 dias + swr; app.js/css 1h + swr.
+  ⚠️ Se substituir um asset mantendo o nome, visitantes recorrentes podem ver a
+  versão antiga por até 30 dias — renomeie o arquivo nesses casos.
+- **Imagens:** `donos-hero-640.jpg` (60 KB) via srcset para mobile (preload com
+  `imagesrcset` casando com o `<img>`); `telhas-coral-whatsapp.jpeg` 168→78 KB.
+
+Verificado em produção. Conferir nota nova no PageSpeed após alguns minutos.
+
+---
+
 ## 2026-07-08 (fim do dia) — Otimização de carregamento da LP (commit `90b2130`)
 
 **Gatilho:** Meta mostrava 5 cliques no link e só 1 visualização da página de destino.
