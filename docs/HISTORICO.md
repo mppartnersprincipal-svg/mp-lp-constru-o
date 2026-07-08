@@ -6,6 +6,28 @@ com data, o que mudou, por quê, e pendências deixadas.
 
 ---
 
+## 2026-07-08 (fim do dia) — Otimização de carregamento da LP (commit `90b2130`)
+
+**Gatilho:** Meta mostrava 5 cliques no link e só 1 visualização da página de destino.
+Diagnóstico: página com ~11,5 MB de payload inicial no mobile.
+
+- `donos-hero.jpg` 1.776→127 KB (recompressão q5, mesma dimensão 1086×1448).
+- `logo-mundo-das-bombas.jpg` 179→7 KB (2250px→200px altura).
+- `pacheco-solar.mp4` 8,9→4,9 MB (540p, crf 28, faststart) **e** `preload` de
+  `auto`→`metadata` no `VideoSlot` (LpProof.jsx) — o vídeo não baixa mais no load.
+- Hero: `fetchpriority="high"` + `<link rel="preload">` no index.html (o LCP baixa
+  em paralelo ao app.js, sem esperar o React montar).
+- `loading="lazy"` + `decoding="async"` nas imagens abaixo da dobra.
+- Payload inicial: **~11,5 MB → ~0,7 MB**. Originais recuperáveis no histórico do git
+  (até o commit `f58f742`).
+- Pendência futura opcional: substituir Lucide via unpkg (348 KB) por SVGs inline
+  dos ~15 ícones usados.
+
+Acompanhar nos próximos dias: razão "cliques no link → visualizações da página de
+destino" no Meta (estava 1/5; esperado subir para 60–90%).
+
+---
+
 ## 2026-07-08 (tarde) — Dashboard de métricas da LP: infraestrutura + construção
 
 **Objetivo:** dashboard próprio com senha (Vercel) unindo Meta Ads + funil do site
