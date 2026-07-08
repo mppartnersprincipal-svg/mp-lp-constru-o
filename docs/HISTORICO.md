@@ -6,6 +6,46 @@ com data, o que mudou, por quê, e pendências deixadas.
 
 ---
 
+## 2026-07-08 (tarde) — Dashboard de métricas da LP: infraestrutura + construção
+
+**Objetivo:** dashboard próprio com senha (Vercel) unindo Meta Ads + funil do site
+(GA4) + leads (Supabase). Detalhes técnicos em `dashboard/README.md` e na seção
+"Dashboard" do `RASTREAMENTO.md`.
+
+### Infraestrutura criada (Fase 1)
+
+- **Supabase** `mp-lp-construcao` (ref `tjtvtvlymissdebyiuko`, sa-east-1): tabela
+  `public.leads` com RLS — `anon` só insere (chave usada pelo Make), leitura só com
+  service role. **Make grava cada lead** via módulo HTTP após a notificação (testado).
+- **GA4 dedicado da LP**: propriedade "LP Construção" (`G-W59B5D77T3`, ID `544749733`)
+  criada porque o `G-XNM42NM1CX` antigo era do site institucional. Instalado via GTM
+  (tags `GA4 — Base` e `GA4 — Eventos` com regex dos 3 eventos + params location/
+  segmento/fatura). Dimensões personalizadas criadas. Coleta validada no Tempo real.
+
+### Credenciais (Fase 2) — valores em `dashboard/.env.local` (gitignored)
+
+- **Meta:** app "MP Dashboard" + usuário de sistema `dashboard-lp` (ads_read,
+  read_insights), token validado lendo a campanha ativa.
+- **Google:** conta de serviço `dashboard-ga4@mp-dashboard-501816.iam.gserviceaccount.com`
+  (Leitor na propriedade GA4); JSON em `dashboard/ga4.credentials.json` (gitignored).
+- **Supabase:** service role key (leitura de leads).
+
+### Dashboard construído (Fase 3)
+
+- `dashboard/`: React (Vite) + Recharts + 3 rotas serverless (`/api/meta`, `/api/ga4`,
+  `/api/leads`) protegidas por `DASHBOARD_PASSWORD` via Bearer. Todas as 3 rotas
+  **testadas localmente com dados reais** em 2026-07-08.
+- Campanha ativa na conta `act_2643219305863486`:
+  "[M|P] [LP] [LEAD] [FRIO] [CONSTRUÇÃO] [JULHO]" (`120250865648840153`).
+
+### Pendências deixadas
+
+- **Deploy na Vercel** (usuário faz): novo projeto no mesmo repo com Root Directory
+  `dashboard` + colar as 7 variáveis de ambiente do `dashboard/README.md`.
+- GA4 acumula histórico só a partir de 2026-07-08 (não retroativo).
+
+---
+
 ## 2026-07-08 — Troca de contêiner GTM, evento cta_click e setup completo do Meta
 
 **Contexto:** migração do tracking para um contêiner GTM novo e preparação da

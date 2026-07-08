@@ -96,7 +96,9 @@ Infraestrutura de dados do dashboard próprio (hospedagem futura: Vercel):
 
 | Item | Valor |
 |---|---|
-| GA4 da LP (propriedade nova, dedicada) | **`G-W59B5D77T3`** — propriedade "LP Construção", fluxo `15222467490` |
+| GA4 da LP (propriedade nova, dedicada) | **`G-W59B5D77T3`** — propriedade "LP Construção" (ID `544749733`), fluxo `15222467490` |
+| Conta de serviço Google (leitura GA4) | `dashboard-ga4@mp-dashboard-501816.iam.gserviceaccount.com` (papel Leitor na propriedade) |
+| Usuário de sistema Meta (leitura Ads) | `dashboard-lp` (app "MP Dashboard", perms `ads_read` + `read_insights`) |
 | GA4 do site institucional (NÃO usar na LP) | `G-XNM42NM1CX` → mppartners.com.br |
 | Conta de anúncio Meta (fonte do dashboard) | **`act_2643219305863486`** — "M|P - Assessoria" (Business: Marcos Goulart) |
 | Campanha da LP | `120250865648840153` — "[M\|P] [LP] [LEAD] [FRIO] [CONSTRUÇÃO] [JULHO]" (ativa desde 2026-07-08) |
