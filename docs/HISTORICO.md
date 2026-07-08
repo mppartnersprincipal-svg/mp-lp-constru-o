@@ -40,13 +40,26 @@ exposta no `app.js`; qualquer GET/POST dispara o cenário com campos vazios).
 Provável bot/scanner (o anúncio foi ao ar hoje — crawler de revisão da Meta é
 candidato, mas sem os headers da requisição não dá para atribuir).
 
-**Pendências recomendadas (fazer no painel do Make):**
-1. **Filtro após o webhook**: só continuar se `nome` e `whatsapp` não estiverem
-   vazios — mata notificações/linhas de lixo.
-2. Ativar "Get request headers" no webhook para identificar a origem de próximos
+**Atualização (mesma noite):** um **segundo disparo vazio** chegou às 19:38 —
+confirmando que é recorrente. Providências tomadas (commit `4a997b3`):
+
+- **Token anti-spam no payload**: `token: "mplp-7947819f30e54035"` (constante
+  `FORM_TOKEN` em `LpForm.jsx`, enviada junto com o lead). Verificado em produção.
+- **Supabase limpo** (a pedido do usuário): removidas as 2 linhas vazias (18:07 e
+  19:38) e o teste manual "pedro" das 18:52. Tabela `leads` zerada.
+- Confirmado via Pixel (dataset stats) que os disparos vazios **não** geraram
+  evento `Lead` — não vieram do formulário.
+
+**Pendências (fazer no painel do Make):**
+1. **Filtro após o webhook** (hoje): `nome` *is not empty* E `whatsapp` *is not
+   empty* — mata notificações/linhas de lixo.
+2. **Endurecer o filtro** (a partir do dia seguinte): adicionar condição
+   `token` *equal to* `mplp-7947819f30e54035`. Não exigir o token de imediato:
+   o `app.js` tem cache de 1h — visitante com bundle antigo enviaria lead real
+   sem token e seria descartado.
+3. Ativar "Get request headers" no webhook para identificar a origem de próximos
    disparos suspeitos.
-3. Opcional (código): campo `token` fixo no payload + filtro no Make conferindo.
-4. Limpar do Supabase/Sheets a linha vazia (id `9e0ba359-...`) e o teste das 18:52.
+4. Limpar manualmente do Google Sheets as linhas vazias/teste (sem acesso daqui).
 
 ---
 
