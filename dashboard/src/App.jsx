@@ -10,6 +10,11 @@ const BRL = (v) =>
   v == null ? "—" : v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const NUM = (v) => (v == null ? "—" : v.toLocaleString("pt-BR"));
 const PCT = (v) => (v == null || !isFinite(v) ? "—" : (v * 100).toFixed(1).replace(".", ",") + "%");
+const DUR = (s) => {
+  if (s == null || !isFinite(s)) return "—";
+  const t = Math.round(s);
+  return t < 60 ? `${t}s` : `${Math.floor(t / 60)}min ${String(t % 60).padStart(2, "0")}s`;
+};
 const shortDate = (d) => (d ? d.slice(8, 10) + "/" + d.slice(5, 7) : "");
 
 const LOCATION_LABELS = {
@@ -227,6 +232,9 @@ export default function App() {
             <Kpi label="Leads" value={NUM(nLeads)} hint="formulários enviados" />
             <Kpi label="Custo por lead" value={BRL(cpl)} />
             <Kpi label="Visitas" value={NUM(sessions)} hint="sessões (GA4)" />
+            <Kpi label="Visualizações" value={NUM(ga4?.totals.pageviews)} hint="páginas vistas (GA4)" />
+            <Kpi label="Tempo médio na LP" value={DUR(ga4?.totals.avg_engagement_seconds)}
+              hint="por usuário ativo (GA4)" />
             <Kpi label="Conversão da LP" value={PCT(convRate)} hint="leads ÷ visitas" />
             <Kpi label="Cliques no WhatsApp" value={NUM(ga4?.totals.whatsapp_click)} />
           </div>

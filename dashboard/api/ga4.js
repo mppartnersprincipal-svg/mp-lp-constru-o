@@ -9,10 +9,13 @@ export default async function handler(req, res) {
 
   try {
     const [overview, dailyReport, eventsReport, locationReport] = await Promise.all([
-      // Totais do período: sessões, usuários, pageviews
+      // Totais do período: sessões, usuários, pageviews e tempo de engajamento
       runReport({
         dateRanges,
-        metrics: [{ name: "sessions" }, { name: "totalUsers" }, { name: "screenPageViews" }],
+        metrics: [
+          { name: "sessions" }, { name: "totalUsers" }, { name: "screenPageViews" },
+          { name: "activeUsers" }, { name: "userEngagementDuration" },
+        ],
       }),
       // Sessões por dia
       runReport({
@@ -47,7 +50,8 @@ export default async function handler(req, res) {
       }),
     ]);
 
-    const totalsRow = rowsToObjects(overview)[0] || { sessions: 0, totalUsers: 0, screenPageViews: 0 };
+    const totalsRow = rowsToObjects(overview)[0] ||
+      { sessions: 0, totalUsers: 0, screenPageViews: 0, activeUsers: 0, userEngagementDuration: 0 };
     const daily = rowsToObjects(dailyReport).map((r) => ({
       // GA4 devolve a data como YYYYMMDD
       date: `${r.date.slice(0, 4)}-${r.date.slice(4, 6)}-${r.date.slice(6, 8)}`,
@@ -69,6 +73,12 @@ export default async function handler(req, res) {
         sessions: totalsRow.sessions,
         users: totalsRow.totalUsers,
         pageviews: totalsRow.screenPageViews,
+        // Tempo médio de permanência por usuário ativo (mesma conta do card
+        // "Tempo médio de engajamento" do GA4), em segundos.
+        avg_engagement_seconds:
+          totalsRow.activeUsers > 0
+            ? totalsRow.userEngagementDuration / totalsRow.activeUsers
+            : null,
         cta_click: events.cta_click || 0,
         whatsapp_click: events.whatsapp_click || 0,
         lead_form_submit: events.lead_form_submit || 0,

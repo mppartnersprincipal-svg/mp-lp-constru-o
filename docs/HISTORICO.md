@@ -6,6 +6,20 @@ com data, o que mudou, por quê, e pendências deixadas.
 
 ---
 
+## 2026-07-09 — Dashboard: KPIs de visualizações de página e tempo médio na LP
+
+- `/api/ga4` passa a pedir `activeUsers` e `userEngagementDuration` no relatório
+  de totais e devolve `avg_engagement_seconds` = engajamento ÷ usuários ativos
+  (mesma conta do card "Tempo médio de engajamento" do GA4).
+- Dois KPIs novos no painel: **Visualizações** (`screenPageViews`, que a rota já
+  devolvia mas não era exibido) e **Tempo médio na LP** (formatado `Xmin YYs`).
+- Grade de KPIs mudou de `auto-fit` para 4 colunas fixas (8 cartões → 4×2 no
+  desktop; 2 colunas até 900px, 1 coluna até 420px).
+- Testado localmente com dados reais (07/01–07/09: 53 pageviews, ~6s de
+  engajamento médio) + build do Vite ok.
+
+---
+
 ## 2026-07-08 (noite) — Dashboard: filtros de data iguais aos do Gerenciador de Anúncios
 
 Pedido do usuário: trocar os botões fixos de período (7/14/30/90 dias) por um
