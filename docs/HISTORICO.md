@@ -26,8 +26,13 @@ preparado para o canal novo:
 
 - Colunas text nullable novas em `public.leads`: `utm_source, utm_medium,
   utm_campaign, utm_term, utm_content, gclid, fbclid`. RLS inalterada.
-- **Pendência:** o Make ainda precisa mapear esses campos no módulo HTTP do INSERT
-  (até lá entram nulos e `origem` fica no default `lp_construcao`).
+- **Make remapeado no mesmo dia** (usuário, com acompanhamento): estrutura do
+  webhook redeterminada com payload completo e os 8 campos mapeados no corpo JSON
+  do módulo HTTP. Teste de ponta a ponta ok — lead TESTE gravado no Supabase com
+  `origem` e todos os UTMs/click IDs preenchidos (linha removida após a validação).
+- Campanha do Google Ads publicada com sufixos de UTM por grupo de anúncios
+  (`utm_content`: loja-de-tintas, ferragista, piso-e-porcelanato,
+  material-de-construcao).
 
 ### Dashboard — Google Ads separado do Meta
 

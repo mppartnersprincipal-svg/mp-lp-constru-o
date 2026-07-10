@@ -158,9 +158,11 @@ HTTP após a notificação), não pelo site.
 - [x] ~~Google Ads não migrado~~ → **Resolvido em 2026-07-09**: tag do Google
   `AW-17258791328` + Vinculador de conversões + tag de conversão "Envio de Forms -
   LP Construção" recriados no `GTM-PCD4K574` (ver seção "Setup no Google Ads").
-- [ ] **Make: mapear os campos novos do lead** (`origem`, `utm_*`, `gclid`, `fbclid`)
-  no módulo HTTP que insere no Supabase (re-determinar a estrutura do webhook antes).
-  Até lá, os leads entram com `origem` no default `lp_construcao` e UTMs nulos.
+- [x] ~~Make: mapear os campos novos do lead~~ → **Resolvido em 2026-07-10**: estrutura
+  do webhook redeterminada e os 8 campos (`origem`, `utm_*`, `gclid`, `fbclid`)
+  mapeados no corpo JSON do módulo HTTP. Teste de ponta a ponta validado (lead TESTE
+  chegou ao Supabase com todos os campos; removido depois). Cenário do Make:
+  Webhook → filtro token → HTTP/Supabase → WhatsAble → Google Sheets.
 - [ ] Conferir no Google Ads se a "Contato (whatsapp_click)" está como **ação
   secundária** e a contagem da conversão de Lead está em **"Uma"** por clique.
 - [ ] Aplicar o sufixo de UTM na campanha do Google e os parâmetros de URL nos
