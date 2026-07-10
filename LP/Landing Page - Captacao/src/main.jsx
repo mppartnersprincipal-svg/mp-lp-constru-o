@@ -9,6 +9,10 @@ import { LpForm } from "./components/LpForm.jsx";
 import { LpMethod } from "./components/LpMethod.jsx";
 import { LpResults, LpFooter } from "./components/LpResults.jsx";
 import { pushEvent } from "./track.js";
+import { captureUtms } from "./utm.js";
+
+// Captura os UTMs da URL logo na carga (o lead navega sem recarregar a página).
+captureUtms();
 
 const WHATSAPP_FLOAT =
   "https://wa.me/5562993887179?text=" +

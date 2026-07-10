@@ -4,6 +4,7 @@ import { MpButton } from "./MpButton.jsx";
 import { Reveal } from "./anim.jsx";
 import { Icon } from "./Icon.jsx";
 import { pushEvent } from "../track.js";
+import { getUtms } from "../utm.js";
 
 const WEBHOOK_URL = "https://hook.us1.make.com/q6yefdvx5a3bgfse6l3aseom6hplw9l2";
 // Anti-spam: o filtro no Make exige este token — requisições diretas ao webhook
@@ -81,6 +82,8 @@ function sendToWebhook(f) {
     fatura: f.fatura,
     whatsapp: f.whatsapp.trim(),
     whatsapp_intl: normalizePhone(f.whatsapp),
+    // Origem do lead (google/meta/direto) + UTMs capturados na chegada à LP.
+    ...getUtms(),
   };
   // Fire-and-forget: uma falha de rede nunca bloqueia a confirmação para o lead.
   try {
