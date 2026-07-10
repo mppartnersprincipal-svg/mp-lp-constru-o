@@ -6,7 +6,43 @@ com data, o que mudou, por quê, e pendências deixadas.
 
 ---
 
-## 2026-07-09 — Dashboard: KPIs de visualizações de página e tempo médio na LP
+## 2026-07-10 — Google Ads no ar: conversões, UTMs nos leads e seção no dashboard
+
+Contexto: a conta do Google Ads da mppartners foi reaproveitada para a LP Construção
+(decisão de 2026-07-09, quando foram criadas as conversões no painel do Ads + tags no
+GTM — ver `RASTREAMENTO.md`, seção "Setup no Google Ads"). Nesta sessão o código foi
+preparado para o canal novo:
+
+### LP — captura de UTMs (`src/utm.js` novo)
+
+- `captureUtms()` roda na carga (`main.jsx`) e guarda `utm_source/medium/campaign/
+  term/content`, `gclid` e `fbclid` no `sessionStorage` (a LP é SPA — a URL some da
+  barra mas a sessão da aba preserva).
+- O payload do webhook (`LpForm.jsx`) ganhou `origem` (utm_source → senão google/
+  meta/direto via gclid/fbclid) + os 7 parâmetros. O `token` anti-spam segue igual.
+- `app.js` rebuildado e commitado.
+
+### Supabase — migração `add_utm_columns_to_leads`
+
+- Colunas text nullable novas em `public.leads`: `utm_source, utm_medium,
+  utm_campaign, utm_term, utm_content, gclid, fbclid`. RLS inalterada.
+- **Pendência:** o Make ainda precisa mapear esses campos no módulo HTTP do INSERT
+  (até lá entram nulos e `origem` fica no default `lp_construcao`).
+
+### Dashboard — Google Ads separado do Meta
+
+- **Nova rota `api/google-ads.js`**: 4 `runReport` na GA4 Data API (custo/cliques/
+  impressões por dia e por campanha via `advertiserAdCost/AdClicks/AdImpressions`,
+  leads `lead_form_submit` do canal `google / cpc`), reusando o service account e o
+  cliente de `_lib/ga4.js`. Sem env nova. Resposta no mesmo formato do `/api/meta`.
+  Obs.: custo no GA4 só existe a partir do vínculo Ads↔GA4 (2026-07-09).
+- **`api/leads.js`**: select ganhou `origem, utm_source, utm_medium, utm_campaign`
+  e a resposta ganhou `byOrigem` (countBy).
+- **`App.jsx`**: títulos de seção por canal (classe `.section-title`); seção
+  **Google Ads** com 4 KPIs próprios (Investido, Cliques, Leads, CPL) + tabela
+  "Campanhas (Google Ads)"; pie **"Leads por origem"** ao lado do card WhatsApp;
+  "Últimos leads" virou card full-width com coluna **Origem**.
+- Builds validados (esbuild da LP e Vite do dashboard).
 
 - `/api/ga4` passa a pedir `activeUsers` e `userEngagementDuration` no relatório
   de totais e devolve `avg_engagement_seconds` = engajamento ÷ usuários ativos

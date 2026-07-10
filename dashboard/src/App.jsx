@@ -152,6 +152,7 @@ export default function App() {
   const [meta, setMeta] = React.useState(null);
   const [ga4, setGa4] = React.useState(null);
   const [leads, setLeads] = React.useState(null);
+  const [googleAds, setGoogleAds] = React.useState(null);
   const [errors, setErrors] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
 
@@ -163,8 +164,9 @@ export default function App() {
       apiGet("/api/meta", period),
       apiGet("/api/ga4", period),
       apiGet("/api/leads", period),
+      apiGet("/api/google-ads", period),
     ]);
-    const [m, g, l] = results;
+    const [m, g, l, ga] = results;
     const errs = [];
     if (results.some((r) => r.status === "rejected" && r.reason?.message === "unauthorized")) {
       setAuthed(false);
@@ -174,6 +176,7 @@ export default function App() {
     m.status === "fulfilled" ? setMeta(m.value) : errs.push("Meta Ads: " + m.reason.message);
     g.status === "fulfilled" ? setGa4(g.value) : errs.push("GA4: " + g.reason.message);
     l.status === "fulfilled" ? setLeads(l.value) : errs.push("Leads: " + l.reason.message);
+    ga.status === "fulfilled" ? setGoogleAds(ga.value) : errs.push("Google Ads: " + ga.reason.message);
     setErrors(errs);
     setLoading(false);
   }, [preset, custom]);
@@ -194,6 +197,10 @@ export default function App() {
   const cpl = spend != null && nLeads > 0 ? spend / nLeads : null;
   const sessions = ga4?.totals.sessions ?? null;
   const convRate = sessions > 0 && nLeads != null ? nLeads / sessions : null;
+
+  const gSpend = googleAds?.totals.spend ?? null;
+  const gLeads = googleAds?.totals.leads ?? null;
+  const gCpl = gSpend != null && gLeads > 0 ? gSpend / gLeads : null;
 
   // Série diária combinada (gasto + leads + sessões)
   const dayMap = {};
@@ -343,6 +350,7 @@ export default function App() {
             </div>
           </div>
 
+          <div className="section-title">Meta Ads</div>
           <div className="card" style={{ marginBottom: 12 }}>
             <h2>Campanhas (Meta Ads)</h2>
             <div className="table-scroll">
@@ -372,6 +380,43 @@ export default function App() {
             </div>
           </div>
 
+          <div className="section-title">Google Ads</div>
+          <div className="kpis">
+            <Kpi label="Investido" value={BRL(gSpend)} hint="Google Ads (via GA4)" />
+            <Kpi label="Cliques" value={NUM(googleAds?.totals.clicks)} hint="cliques no anúncio" />
+            <Kpi label="Leads" value={NUM(gLeads)} hint="GA4 · google/cpc" />
+            <Kpi label="Custo por lead" value={BRL(gCpl)} />
+          </div>
+
+          <div className="card" style={{ marginBottom: 12 }}>
+            <h2>Campanhas (Google Ads)</h2>
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Campanha</th><th className="num">Investido</th><th className="num">Impressões</th>
+                    <th className="num">Cliques</th><th className="num">Leads (GA4)</th><th className="num">CPL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(googleAds?.byCampaign || []).map((c) => (
+                    <tr key={c.name}>
+                      <td>{c.name}</td>
+                      <td className="num">{BRL(c.spend)}</td>
+                      <td className="num">{NUM(c.impressions)}</td>
+                      <td className="num">{NUM(c.clicks)}</td>
+                      <td className="num">{NUM(c.leads)}</td>
+                      <td className="num">{BRL(c.cpl)}</td>
+                    </tr>
+                  ))}
+                  {(!googleAds || googleAds.byCampaign.length === 0) && (
+                    <tr><td colSpan={6} style={{ color: "var(--fg-3)" }}>Sem veiculação no período</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <div className="grid cols-2">
             <div className="card">
               <h2>WhatsApp <small>cliques por origem</small></h2>
@@ -391,31 +436,52 @@ export default function App() {
             </div>
 
             <div className="card">
-              <h2>Últimos leads</h2>
-              <div className="table-scroll">
-                <table>
-                  <thead>
-                    <tr><th>Nome</th><th>Empresa</th><th>Segmento</th><th>+50k?</th><th>Quando</th></tr>
-                  </thead>
-                  <tbody>
-                    {(leads?.recent || []).slice(0, 10).map((l) => (
-                      <tr key={l.id}>
-                        <td>{l.nome}</td>
-                        <td>{l.empresa || "—"}</td>
-                        <td>{l.segmento}</td>
-                        <td>{l.fatura}</td>
-                        <td>{new Date(l.created_at).toLocaleString("pt-BR", {
-                          timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit",
-                          hour: "2-digit", minute: "2-digit",
-                        })}</td>
-                      </tr>
-                    ))}
-                    {(!leads || leads.recent.length === 0) && (
-                      <tr><td colSpan={5} style={{ color: "var(--fg-3)" }}>Sem leads no período</td></tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
+              <h2>Leads por origem <small>google × meta × direto</small></h2>
+              {!leads || !leads.byOrigem || leads.byOrigem.length === 0 ? (
+                <div className="loading">Sem leads no período</div>
+              ) : (
+                <ResponsiveContainer width="100%" height={230}>
+                  <PieChart>
+                    <Pie data={leads.byOrigem} dataKey="value" nameKey="name"
+                      innerRadius={55} outerRadius={85} paddingAngle={2}>
+                      {leads.byOrigem.map((_, i) => (
+                        <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} stroke="none" />
+                      ))}
+                    </Pie>
+                    <Tooltip {...tooltipStyle} formatter={(v) => NUM(v)} />
+                    <Legend wrapperStyle={{ fontSize: 12 }} />
+                  </PieChart>
+                </ResponsiveContainer>
+              )}
+            </div>
+          </div>
+
+          <div className="card">
+            <h2>Últimos leads</h2>
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr><th>Nome</th><th>Empresa</th><th>Origem</th><th>Segmento</th><th>+50k?</th><th>Quando</th></tr>
+                </thead>
+                <tbody>
+                  {(leads?.recent || []).slice(0, 10).map((l) => (
+                    <tr key={l.id}>
+                      <td>{l.nome}</td>
+                      <td>{l.empresa || "—"}</td>
+                      <td>{l.origem || "—"}</td>
+                      <td>{l.segmento}</td>
+                      <td>{l.fatura}</td>
+                      <td>{new Date(l.created_at).toLocaleString("pt-BR", {
+                        timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit",
+                        hour: "2-digit", minute: "2-digit",
+                      })}</td>
+                    </tr>
+                  ))}
+                  {(!leads || leads.recent.length === 0) && (
+                    <tr><td colSpan={6} style={{ color: "var(--fg-3)" }}>Sem leads no período</td></tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         </>

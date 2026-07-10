@@ -3,7 +3,7 @@
 Toda a stack de tracking da LP: GTM, Meta Pixel, eventos e configuração de campanha.
 Atualize este arquivo sempre que o tracking mudar.
 
-_Última atualização: 2026-07-08_
+_Última atualização: 2026-07-10_
 
 ## IDs e contas
 
@@ -14,8 +14,10 @@ _Última atualização: 2026-07-08_
 | Meta Pixel | **Pixel LP Construção** — ID `1732259497966479` |
 | Business Manager | M|P Assessoria (264321…) |
 | Domínio verificado no Meta | `mpconstrucao.com.br` (metatag no `<head>` do `index.html`) |
-| GA4 (não migrado — pendência) | `G-XNM42NM1CX` |
-| Google Ads (não migrado — pendência) | `AW-17258791328` |
+| GA4 do site institucional (NÃO usar na LP) | `G-XNM42NM1CX` |
+| Google Ads (ativo desde 2026-07-09; conta reaproveitada da mppartners) | Tag `AW-17258791328` |
+| Conversão principal do Google Ads | **"Envio de Forms - LP Construção"** — rótulo `9LJNCLTsx80cEKCD0aVA`, via tag no GTM |
+| Conversão secundária do Google Ads | "Contato (whatsapp_click)" — importada do GA4, só observação |
 
 ## Eventos do dataLayer (disparados pelo código do site)
 
@@ -32,8 +34,10 @@ Todos via `pushEvent()` de `src/track.js`:
 No envio do formulário (`src/components/LpForm.jsx`), além do `lead_form_submit`:
 
 - `window.fbq('track', 'Lead')` — evento padrão **Lead** do Meta Pixel.
-- `window.gtag('event', 'conversion')` — conversão do Google Ads (inativo enquanto
-  o gtag não existir na página; ver pendência GA4/Ads abaixo).
+- `window.gtag('event', 'conversion')` — permanece **inerte** (o gtag standalone não
+  existe na página; tudo roda via GTM). A conversão do Google Ads é medida pela tag
+  "Envio de Forms - LP Construção" no GTM, acionada pelo `lead_form_submit` — sem
+  duplicação.
 
 ⚠️ **Regra anti-duplicação:** por causa do `fbq` direto, NÃO deve existir tag de
 `Lead` no GTM. O `Lead` também não aparece como tag disparada no debug do GTM —
@@ -48,6 +52,9 @@ para testá-lo, use a aba "Testar eventos" do Gerenciador de Eventos do Meta.
 | Meta — WhatsApp Click | Meta Pixel | Custom `whatsapp_click` (+ `location`) | Evento personalizado `whatsapp_click` |
 | GA4 — Base | Tag do Google | Config GA4 `G-W59B5D77T3` (pageviews automáticos) | Initialization - All Pages |
 | GA4 — Eventos | Google Analytics: evento do GA4 | `{{Event}}` + parâmetros `location`, `segmento`, `fatura` | Evento personalizado (regex) `^(cta_click\|whatsapp_click\|lead_form_submit)$` |
+| Envio de Forms - LP Construção | Acompanhamento de conversões do Google Ads | Conversão ID `17258791328`, rótulo `9LJNCLTsx80cEKCD0aVA` | Evento personalizado `lead_form_submit` |
+| Tag do Google AW-17258791328 | Tag do Google | Tag base da conta do Google Ads | Initialization - All Pages |
+| Vinculador de conversões | Vinculador de conversões | Salva o GCLID em cookie 1st-party | All Pages |
 
 Variáveis definidas pelo usuário (todas "Variável da camada de dados"):
 **`DL - location`**, **`DL - segmento`**, **`DL - fatura`**.
@@ -80,6 +87,38 @@ personalizadas criadas na propriedade (escopo Evento): `location`, `segmento`, `
   (aparece enquanto o `Lead` não indexa na lista de eventos do dataset) — não
   bloqueia a publicação da campanha.
 
+## Setup no Google Ads (conta reaproveitada da mppartners — desde 2026-07-09)
+
+- A **tag do Google (`AW-17258791328`) é da conta**, não de um site: o que separa as
+  conversões da LP Construção das da mppartners é o **rótulo** da ação de conversão
+  e o fato de a tag só disparar no `GTM-PCD4K574` (que só existe na LP Construção).
+- **Conversão principal: "Envio de Forms - LP Construção"** (categoria "Envio de
+  formulário de lead", contagem "Uma"), medida pela tag do GTM no `lead_form_submit`.
+  É ela que as campanhas devem otimizar.
+- **Conversão secundária: "Contato (whatsapp_click)"**, importada do GA4. Deve ficar
+  como **ação secundária (observação)** — se virar principal, a campanha otimiza por
+  clique de WhatsApp em vez de lead.
+- **Ao criar campanha:** em Metas, usar "configurações de meta específicas desta
+  campanha" e selecionar só a "Envio de Forms - LP Construção" — nunca as conversões
+  da outra LP (e vice-versa).
+- Codificação automática (GCLID) ativa na conta; GA4 `LP Construção` (544749733)
+  vinculado ao Ads (é daí que o dashboard lê custo/cliques do Google).
+
+## UTMs e origem do lead (desde 2026-07-10)
+
+O site captura os parâmetros da URL na chegada (`src/utm.js`, sessionStorage) e envia
+no payload do webhook: `origem` (derivada: `utm_source`, senão `google` se `gclid`,
+`meta` se `fbclid`, senão `direto`) + `utm_source, utm_medium, utm_campaign,
+utm_term, utm_content, gclid, fbclid`.
+
+Padrão de UTM por canal (manter `utm_source/utm_medium` EXATAMENTE assim — o
+dashboard filtra o GA4 por `google / cpc`):
+
+| Canal | Onde configurar | Valor |
+|---|---|---|
+| Google Ads | Campanha → Sufixo do URL final | `utm_source=google&utm_medium=cpc&utm_campaign=<nome-da-campanha>` |
+| Meta Ads | Anúncio → Parâmetros de URL | `utm_source=meta&utm_medium=cpc&utm_campaign={{campaign.name}}` |
+
 ## Como testar o tracking
 
 1. **GTM:** modo Visualizar (Tag Assistant) → conferir tags disparadas e o
@@ -105,7 +144,7 @@ Infraestrutura de dados do dashboard próprio (hospedagem futura: Vercel):
 | Supabase — projeto | `mp-lp-construcao`, ref `tjtvtvlymissdebyiuko`, região `sa-east-1` |
 | Supabase — URL da API | `https://tjtvtvlymissdebyiuko.supabase.co` |
 | Supabase — chave publishable (só INSERT via RLS) | `sb_publishable_9Iu7Y1bLEup3X-CktzA0gA_U8GVFKy4` |
-| Tabela de leads | `public.leads` (nome, whatsapp, segmento, fatura, origem, created_at) |
+| Tabela de leads | `public.leads` (nome, empresa, whatsapp, segmento, fatura, origem, utm_source, utm_medium, utm_campaign, utm_term, utm_content, gclid, fbclid, created_at) |
 
 RLS da tabela `leads`: `anon` só insere (é a chave que o Make usa); leitura exige
 service role (server-side do dashboard). Os leads são gravados pelo **Make** (módulo
@@ -116,9 +155,16 @@ HTTP após a notificação), não pelo site.
 - [x] ~~GA4 não migrado~~ → **Resolvido em 2026-07-08**: criada propriedade GA4
   dedicada da LP (`G-W59B5D77T3`) e instalada via GTM. O `G-XNM42NM1CX` era do site
   institucional (mppartners.com.br) e nunca deveria ter estado na LP.
-- [ ] **Google Ads não migrado:** a tag `AW-17258791328` existia no contêiner antigo
-  e sumiu do site na troca. Recriar dentro do `GTM-PCD4K574` se campanhas de
-  Google Ads voltarem a rodar para a LP.
+- [x] ~~Google Ads não migrado~~ → **Resolvido em 2026-07-09**: tag do Google
+  `AW-17258791328` + Vinculador de conversões + tag de conversão "Envio de Forms -
+  LP Construção" recriados no `GTM-PCD4K574` (ver seção "Setup no Google Ads").
+- [ ] **Make: mapear os campos novos do lead** (`origem`, `utm_*`, `gclid`, `fbclid`)
+  no módulo HTTP que insere no Supabase (re-determinar a estrutura do webhook antes).
+  Até lá, os leads entram com `origem` no default `lp_construcao` e UTMs nulos.
+- [ ] Conferir no Google Ads se a "Contato (whatsapp_click)" está como **ação
+  secundária** e a contagem da conversão de Lead está em **"Uma"** por clique.
+- [ ] Aplicar o sufixo de UTM na campanha do Google e os parâmetros de URL nos
+  anúncios Meta (tabela na seção "UTMs e origem do lead").
 - [ ] Conversão personalizada do `cta_click` no Meta ainda não criada (aguardava
   indexação do evento; opcional — público personalizado cobre o caso de remarketing).
 - [ ] Público personalizado de remarketing (`cta_click` sem `Lead`) ainda não criado.

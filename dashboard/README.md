@@ -1,6 +1,7 @@
 # Dashboard — LP Construção
 
-Painel de métricas da LP (Meta Ads + GA4 + leads do Supabase), protegido por senha.
+Painel de métricas da LP (Meta Ads + Google Ads + GA4 + leads do Supabase), protegido
+por senha.
 React (Vite) + funções serverless da Vercel. Nenhum segredo vai para o navegador:
 o frontend fala só com `/api/*`, que roda no servidor.
 
@@ -10,7 +11,8 @@ o frontend fala só com `/api/*`, que roda no servidor.
 |---|---|---|
 | `/api/meta?since=YYYY-MM-DD&until=YYYY-MM-DD` | Meta Marketing API | gasto/impressões/cliques/leads: totais, série diária e por campanha |
 | `/api/ga4?since=...&until=...` | GA4 Data API | sessões, eventos (`cta_click`, `whatsapp_click`, `lead_form_submit`), quebra por `location` |
-| `/api/leads?since=...&until=...` | Supabase (service role) | total, por segmento/fatura/dia e últimos leads |
+| `/api/leads?since=...&until=...` | Supabase (service role) | total, por segmento/fatura/origem/dia e últimos leads (com `origem` e `utm_*`) |
+| `/api/google-ads?since=...&until=...` | GA4 Data API (métricas `advertiserAd*` do vínculo Ads↔GA4) | gasto/impressões/cliques/leads do canal `google / cpc`: totais, série diária e por campanha (mesmo formato do `/api/meta`) |
 
 O período vem do seletor do frontend (`src/period.js`), com presets idênticos aos do
 Gerenciador de Anúncios do Meta (Hoje, Ontem, Últimos 7/14/28/30 dias, Esta semana,

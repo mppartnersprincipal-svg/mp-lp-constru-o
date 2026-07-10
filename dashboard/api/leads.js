@@ -20,7 +20,7 @@ export default async function handler(req, res) {
 
   try {
     const r = await fetch(
-      `${url}/rest/v1/leads?select=id,nome,empresa,whatsapp,segmento,fatura,created_at` +
+      `${url}/rest/v1/leads?select=id,nome,empresa,whatsapp,segmento,fatura,origem,utm_source,utm_medium,utm_campaign,created_at` +
         `&created_at=gte.${since}T00:00:00-03:00&created_at=lt.${afterUntil}T00:00:00-03:00` +
         `&order=created_at.desc&limit=1000`,
       { headers: { apikey: key, Authorization: `Bearer ${key}` } }
@@ -55,6 +55,7 @@ export default async function handler(req, res) {
       total: leads.length,
       bySegmento: countBy("segmento"),
       byFatura: countBy("fatura"),
+      byOrigem: countBy("origem"),
       byDay: Object.entries(byDay)
         .map(([date, count]) => ({ date, count }))
         .sort((a, b) => a.date.localeCompare(b.date)),
