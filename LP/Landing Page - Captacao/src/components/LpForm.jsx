@@ -10,6 +10,11 @@ const WEBHOOK_URL = "https://hook.us1.make.com/q6yefdvx5a3bgfse6l3aseom6hplw9l2"
 // Anti-spam: o filtro no Make exige este token — requisições diretas ao webhook
 // (bots/scanners que acham a URL no bundle) chegam sem ele e são descartadas.
 const FORM_TOKEN = "mplp-7947819f30e54035";
+// WhatsApp usado nos testes internos (Pedro). Envios com este número seguem para o
+// webhook (para testar o fluxo do Make de ponta a ponta), mas NÃO disparam os eventos
+// de conversão (Lead do Meta, lead_form_submit do GA4, conversion do Google Ads) —
+// e o dashboard também os exclui das métricas (filtro em dashboard/api/leads.js).
+const TEST_PHONES = ["5562982862428"];
 
 function TextField({ id, label, value, onChange, placeholder, error, type = "text" }) {
   const [focus, setFocus] = React.useState(false);
@@ -127,12 +132,15 @@ export function LpForm() {
     }
     sendToWebhook(f);
     setSent(true);
-    // Evento de lead para o GTM. Fica no dataLayer antes de navegar, então o
-    // GTM captura o envio mesmo com o redirect logo em seguida.
-    pushEvent("lead_form_submit", { segmento: f.segmento, fatura: f.fatura });
-    // Conversões diretas (defensivo: só dispara se as libs existirem — não quebra sem Pixel/Ads).
-    window.fbq && window.fbq("track", "Lead");
-    window.gtag && window.gtag("event", "conversion");
+    const isTest = TEST_PHONES.includes(normalizePhone(f.whatsapp));
+    if (!isTest) {
+      // Evento de lead para o GTM. Fica no dataLayer antes de navegar, então o
+      // GTM captura o envio mesmo com o redirect logo em seguida.
+      pushEvent("lead_form_submit", { segmento: f.segmento, fatura: f.fatura });
+      // Conversões diretas (defensivo: só dispara se as libs existirem — não quebra sem Pixel/Ads).
+      window.fbq && window.fbq("track", "Lead");
+      window.gtag && window.gtag("event", "conversion");
+    }
     // Redireciona para a página de sucesso (thank-you page). NÃO abre o WhatsApp.
     // O fetch do webhook usa keepalive, então o lead chega ao Make mesmo saindo da página agora.
     window.location.assign("sucesso.html");

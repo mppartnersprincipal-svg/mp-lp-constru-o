@@ -6,6 +6,28 @@ com data, o que mudou, por quê, e pendências deixadas.
 
 ---
 
+## 2026-07-10 — Número de teste interno: leads de teste fora do dashboard
+
+Pedido do usuário: testes do formulário (sempre feitos com o WhatsApp
+**62 98286-2428**) não devem aparecer no dashboard nem contar como conversão.
+
+- **LP (`LpForm.jsx`)**: constante `TEST_PHONES = ["5562982862428"]`. Envio com
+  esse número segue para o webhook (fluxo do Make testável de ponta a ponta),
+  mas **não dispara** `lead_form_submit`, `fbq('track','Lead')` nem
+  `gtag('event','conversion')`. `app.js` rebuildado.
+- **Dashboard (`api/leads.js`)**: mesmo filtro `TEST_PHONES` (normaliza o
+  `whatsapp` e adiciona o 55 se faltar) exclui os testes de total, gráficos e
+  "Últimos leads" — mesmo que o Make grave a linha no Supabase.
+- **Supabase limpo**: removida a única linha da tabela (teste "PEDRO/Brejão" de
+  09/07 com o número de teste). Obs.: o teste "Pedro/Tintas Tik" das 16:52 de
+  10/07 que aparecia no dashboard **não estava no Supabase** (possível falha no
+  cenário do Make ou remoção manual — conferir se novos leads estão gravando).
+- Documentado em `RASTREAMENTO.md` (seção "Número de teste interno"): pageviews
+  de teste no GA4 continuam contando (inevitável) e eventos já enviados a
+  GA4/Meta não são apagáveis.
+
+---
+
 ## 2026-07-10 — Google Ads no ar: conversões, UTMs nos leads e seção no dashboard
 
 Contexto: a conta do Google Ads da mppartners foi reaproveitada para a LP Construção

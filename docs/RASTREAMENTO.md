@@ -43,6 +43,24 @@ No envio do formulário (`src/components/LpForm.jsx`), além do `lead_form_submi
 `Lead` no GTM. O `Lead` também não aparece como tag disparada no debug do GTM —
 para testá-lo, use a aba "Testar eventos" do Gerenciador de Eventos do Meta.
 
+## Número de teste interno (desde 2026-07-10)
+
+WhatsApp **62 98286-2428** (Pedro) = teste. Quando o formulário é enviado com esse
+número (com ou sem 55/máscara — normalizado para `5562982862428`):
+
+- O **webhook do Make roda normalmente** (notificação + Supabase + Sheets), para
+  testar o fluxo de ponta a ponta.
+- **Nenhum evento de conversão dispara**: `lead_form_submit` (GA4/Google Ads),
+  `Lead` (Meta) e `conversion` são suprimidos (`TEST_PHONES` em
+  `src/components/LpForm.jsx`).
+- O **dashboard exclui** esses leads de todas as métricas (total, gráficos,
+  "Últimos leads") — filtro `TEST_PHONES` em `dashboard/api/leads.js`.
+
+Limitações: o `PageView`/pageview do GA4 da visita de teste ainda conta (não dá
+para saber o número antes do envio), e eventos já enviados a GA4/Meta no passado
+não podem ser apagados. Para testar o disparo real do `Lead`/pixel, use outro
+número (e apague a linha do Supabase depois) ou os Eventos de teste do Meta.
+
 ## Tags publicadas no painel do GTM (contêiner GTM-PCD4K574)
 
 | Tag | Tipo | O que envia | Acionador |

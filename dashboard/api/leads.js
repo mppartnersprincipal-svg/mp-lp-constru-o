@@ -1,6 +1,17 @@
 // Leads gravados pelo Make no Supabase: lista recente + agregados por dia/segmento/fatura.
 import { requireAuth, periodFromQuery } from "./_lib/auth.js";
 
+// WhatsApp usados em testes internos (Pedro) — leads com esses números chegam ao
+// Supabase (o webhook segue funcionando para testar o fluxo), mas nunca entram nas
+// métricas do dashboard. A LP também suprime os eventos de conversão para eles
+// (ver TEST_PHONES em LP/.../src/components/LpForm.jsx).
+const TEST_PHONES = new Set(["5562982862428"]);
+function isTestLead(l) {
+  let d = String(l.whatsapp || "").replace(/\D/g, "");
+  if (d.length <= 11) d = "55" + d; // sem código do país -> adiciona o 55 do Brasil
+  return TEST_PHONES.has(d);
+}
+
 export default async function handler(req, res) {
   if (!requireAuth(req, res)) return;
   const { since, until } = periodFromQuery(req);
@@ -26,7 +37,7 @@ export default async function handler(req, res) {
       { headers: { apikey: key, Authorization: `Bearer ${key}` } }
     );
     if (!r.ok) throw new Error(`Supabase ${r.status}: ${await r.text()}`);
-    const leads = await r.json();
+    const leads = (await r.json()).filter((l) => !isTestLead(l));
 
     const countBy = (field) => {
       const acc = {};
