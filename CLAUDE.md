@@ -18,15 +18,19 @@ para um webhook do Make → redirect para a página de sucesso (`/sucesso`).
 
 ```
 LP/Landing Page - Captacao/   ← projeto da landing page (todo o trabalho é aqui)
-├── index.html                ← página principal (GTM snippet, metatag do Meta, SEO)
+├── index.html                ← página principal (GTM, SEO) — o conteúdo do #root é
+│                               GERADO pelo build (pré-render); não editar à mão
 ├── sucesso.html              ← thank-you page /sucesso (noindex, GTM snippet)
 ├── app.js                    ← bundle COMPILADO e COMMITADO (gerado pelo esbuild)
 ├── src/                      ← código-fonte React 18
-│   ├── main.jsx              ← entrada; goForm() centraliza o evento cta_click
+│   ├── App.jsx               ← composição da página; goForm() centraliza o cta_click
+│   ├── main.jsx              ← entrada do cliente: HIDRATA o HTML pré-renderizado
+│   ├── prerender-entry.jsx   ← roda no Node no build: renderToString → index.html
 │   ├── track.js              ← pushEvent() → dataLayer do GTM
 │   └── components/           ← LpForm.jsx (formulário/webhook/Lead), LpHero, etc.
+├── assets/fonts/             ← Montserrat/Inter self-hosted (woff2 variáveis)
 ├── README-DEPLOY.md          ← guia de deploy e sinais de GTM (manter atualizado)
-└── package.json              ← scripts esbuild
+└── package.json              ← scripts esbuild (build = build:app + build:html)
 dashboard/                    ← painel de métricas (React/Vite + /api serverless na Vercel)
 ├── api/                      ← rotas server-side: meta.js, ga4.js, leads.js (segredos aqui)
 ├── src/                      ← frontend (App.jsx com todos os gráficos)
@@ -42,8 +46,10 @@ As demais pastas em `LP/` (assets, ui_kits, ebook, etc.) são material de apoio/
 
 ## Comandos (rodar dentro de `LP/Landing Page - Captacao/`)
 
-- `npm run build` — gera `app.js` (esbuild, minificado). **Obrigatório após qualquer
-  mudança em `src/`** — o bundle é commitado, não é gerado na nuvem.
+- `npm run build` — gera `app.js` (esbuild, minificado) **e** o HTML pré-renderizado
+  dentro do `#root` do `index.html` (LCP: o hero pinta sem esperar o JS).
+  **Obrigatório após qualquer mudança em `src/`** — bundle e `index.html` são
+  commitados, não são gerados na nuvem. Commite os dois juntos.
 - `npm run watch` — build contínuo com sourcemap.
 - `npm run serve` — servidor local na porta 5050.
 
@@ -58,8 +64,13 @@ GitHub: `mppartnersprincipal-svg/mp-lp-constru-o`). Após o push, verifique a pr
 - **NUNCA criar tag de `Lead` no GTM.** O evento padrão `Lead` do Meta é disparado
   direto pelo código ([LpForm.jsx](LP/Landing%20Page%20-%20Captacao/src/components/LpForm.jsx),
   `fbq('track','Lead')`) no envio do formulário. Tag no GTM = conversão duplicada.
-- **Sempre rebuildar** (`npm run build`) e commitar o `app.js` junto com mudanças
-  em `src/` — sem isso a produção não muda.
+- **Sempre rebuildar** (`npm run build`) e commitar `app.js` **e** `index.html`
+  junto com mudanças em `src/` — sem isso a produção não muda. O conteúdo do
+  `<div id="root">` no `index.html` é gerado pelo build (não editar à mão).
+- **O hero (acima da dobra) não pode nascer com `opacity: 0`** — o `h1` é o
+  elemento LCP; esconder o hero até o React montar foi a causa do LCP de 4–5s
+  (corrigido em 2026-07-11). Animação de entrada no hero: só `transform`
+  (classe `.hero-in`); `<Reveal>`/`<CountUp>` apenas abaixo da dobra.
 - Alterações no site só valem em produção após **commit + push** (Vercel auto-deploy).
 - Contêiner GTM ativo: **GTM-PCD4K574** (em `index.html` e `sucesso.html`).
   O antigo `GTM-MBDQT8Z7` foi desativado — ver pendências no `docs/RASTREAMENTO.md`.

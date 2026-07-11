@@ -72,6 +72,9 @@ export function Reveal({
     <Tag
       ref={ref}
       className={className}
+      // Sem JS (HTML pré-renderizado), o <noscript> do index.html força
+      // opacity/transform via [data-reveal] — o conteúdo nunca fica oculto.
+      data-reveal=""
       style={{
         ...style,
         opacity: inView ? 1 : 0,

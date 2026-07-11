@@ -4,6 +4,8 @@ node_modules/
 # Build / deploy
 .vercel/
 dashboard/dist/
+# bundle temporário do pré-render da LP (gerado por npm run build:html)
+.prerender.cjs
 
 # Ferramentas locais
 .gstack/

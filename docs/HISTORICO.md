@@ -6,6 +6,52 @@ com data, o que mudou, por quê, e pendências deixadas.
 
 ---
 
+## 2026-07-11 — Rodada 3 de performance: LCP 4,3s → 2,5s (pré-render + hero sem fade + fontes locais)
+
+**Gatilho:** usuário mediu LCP de 5,39s no DevTools; meta ≤ 3s (tráfego pago sendo
+desperdiçado). Lighthouse mobile na produção confirmou: score 59, LCP 4,3s com
+**3.580ms de Render Delay no `h1`** — o texto só pintava depois de
+React montar → IntersectionObserver → fade de 720ms (o `<Reveal>` nascia com
+`opacity: 0`).
+
+Três mudanças estruturais:
+
+1. **HTML pré-renderizado no build (SSG + hidratação).** Novo `src/App.jsx`
+   (composição da página, compartilhado) + `src/prerender-entry.jsx` (roda no Node
+   via `npm run build:html`, faz `renderToString` e injeta o HTML no
+   `<div id="root">` do `index.html` entre marcadores `prerender:start/end`).
+   `src/main.jsx` agora **hidrata** (`hydrateRoot`) em vez de montar do zero —
+   o `app.js` saiu do caminho crítico do LCP. Fallback: se o `#root` vier vazio,
+   monta com `createRoot` como antes. `npm run build` = `build:app` + `build:html`;
+   o `index.html` gerado é commitado junto com o `app.js`.
+2. **Hero sem opacity-gating.** `LpHero.jsx` não usa mais `<Reveal>`/`<CountUp>`
+   acima da dobra: entrada via classe `.hero-in` (keyframe no `index.html` que anima
+   **só transform**, opacity fica em 1) — o `h1` (elemento LCP) pinta no primeiro
+   frame. Os "20%/40%" do título viraram texto estático. `<Reveal>` segue nas seções
+   abaixo da dobra, agora com `data-reveal` + `<noscript>` que força visibilidade
+   sem JS.
+3. **Fontes self-hosted.** Montserrat e Inter em woff2 **variáveis** (um arquivo por
+   família, 38+48 KB, subset latin) em `assets/fonts/`, `@font-face` no
+   `colors_and_type.css`, `<link rel="preload">` das duas no `index.html`. Saíram os
+   preconnects/CSS do Google Fonts (o truque `media="print"` baixava com prioridade
+   mínima e atrasava o swap do Montserrat 900 do `h1`). `sucesso.html` idem.
+
+**Resultado (Lighthouse 12 mobile, mesma metodologia do PSI):** produção antes =
+score 59, FCP 1,1s, **LCP 4,3s**, TBT 1.490ms; local depois = score 77, FCP 0,9s,
+**LCP 2,5s**, TBT 890ms, CLS 0, **zero erros de console** (hidratação limpa).
+GTM/tracking intocados (mesmos eventos, mesma ordem de carga).
+
+Pendências/notas:
+- TBT ~900ms restante é dominado por gtm.js (150 KB) + hidratação — decidiu-se
+  **não** atrasar o GTM para não distorcer a atribuição de anúncios.
+- O candidato final de LCP local é o repaint do swap da fonte (~2s no 4G simulado);
+  em rede real chega bem antes. `font-display: optional` eliminaria isso ao custo
+  de primeira visita sem a fonte da marca — não aplicado.
+- PSI (API anônima) estourou cota no dia; medição de produção pós-deploy feita com
+  Lighthouse local apontando para a URL de produção.
+
+---
+
 ## 2026-07-10 — Número de teste interno: leads de teste fora do dashboard
 
 Pedido do usuário: testes do formulário (sempre feitos com o WhatsApp

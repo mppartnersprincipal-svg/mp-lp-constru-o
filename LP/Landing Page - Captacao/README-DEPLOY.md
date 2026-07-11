@@ -98,8 +98,21 @@ No painel da Vercel: **Project → Settings → Domains → Add**. Aponte o seu 
 O código-fonte fica em `src/`. Depois de editar, recompile:
 ```bash
 npm install   # só na primeira vez
-npm run build # gera o app.js atualizado
+npm run build # gera o app.js E o HTML pré-renderizado dentro do index.html
 ```
+O `npm run build` faz **duas** coisas (desde 2026-07-11):
+
+1. `build:app` — esbuild compila `src/main.jsx` → `app.js` (bundle commitado).
+2. `build:html` — renderiza o `<App />` no Node (`src/prerender-entry.jsx`) e injeta
+   o HTML estático dentro do `<div id="root">` do `index.html`, entre os marcadores
+   `<!-- prerender:start -->` / `<!-- prerender:end -->`. É isso que faz o hero
+   pintar sem esperar o JavaScript (LCP baixo). **Nunca edite o conteúdo do `#root`
+   à mão** — ele é sobrescrito a cada build. Commite o `index.html` junto com o
+   `app.js`.
+
+As fontes (Montserrat/Inter) são **self-hosted** em `assets/fonts/` (woff2 variáveis,
+`@font-face` no `colors_and_type.css`) — o site não depende mais do Google Fonts.
+
 Para testar localmente antes de publicar:
 ```bash
 npm run serve   # abre em http://localhost:5050

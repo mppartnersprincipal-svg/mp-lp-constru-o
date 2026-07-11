@@ -1,7 +1,11 @@
 // LpHero.jsx — Seção 1: Headline + CTA + foto dos donos
+//
+// IMPORTANTE (LCP): nada aqui usa <Reveal>/<CountUp>. O hero está acima da
+// dobra e o <h1> é o elemento LCP — ele precisa estar VISÍVEL no primeiro
+// paint do HTML pré-renderizado. A entrada usa a classe .hero-in (definida no
+// index.html), que anima só o transform e mantém opacity em 1.
 import * as React from "react";
 import { MpButton } from "./MpButton.jsx";
-import { Reveal, CountUp } from "./anim.jsx";
 import { Icon } from "./Icon.jsx";
 
 function HeroPhoto({ label, sub, ratio = "4 / 5" }) {
@@ -68,31 +72,32 @@ export function LpHero({ onCta }) {
         {/* minWidth:0 evita que o marquee de logos (width:max-content) estoure
             a coluna do grid e empurre o <h1> para fora da viewport. */}
         <div style={{ minWidth: 0 }}>
-          <Reveal as="p" delay={60} y={16} className="eyebrow" style={{ display: "inline-flex", alignItems: "center", gap: 8, margin: "0 0 22px" }}>
+          <p className="eyebrow hero-in" style={{ display: "inline-flex", alignItems: "center", gap: 8, margin: "0 0 22px" }}>
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--accent)" }}></span>
             Para lojas de material de construção
-          </Reveal>
-          <Reveal as="h1" delay={140} style={{
+          </p>
+          <h1 className="hero-in" style={{
+            animationDelay: "70ms",
             fontFamily: "var(--font-display)", fontWeight: 900, fontSize: "clamp(40px, 5.4vw, 76px)",
             lineHeight: 1.04, letterSpacing: "-0.02em", color: "#fff", margin: "0 0 24px", textWrap: "balance",
           }}>
             {/* Opção B (teste A/B — trocar por esta linha p/ testar):
                 R$ 579 mil em 4 meses. Sem sorte, sem achismo — com método. */}
-            Aumente o faturamento da sua loja de material de construção <span style={{ color: "var(--accent)" }}>de <CountUp to={20} suffix="%" /> a <CountUp to={40} suffix="%" /></span> — todo mês, com uma metodologia testada e validada.
-          </Reveal>
-          <Reveal as="p" delay={260} style={{ fontFamily: "var(--font-body)", fontSize: "clamp(16px, 1.4vw, 19px)", color: "var(--fg-2)",
+            Aumente o faturamento da sua loja de material de construção <span style={{ color: "var(--accent)" }}>de 20% a 40%</span> — todo mês, com uma metodologia testada e validada.
+          </h1>
+          <p className="hero-in" style={{ animationDelay: "140ms", fontFamily: "var(--font-body)", fontSize: "clamp(16px, 1.4vw, 19px)", color: "var(--fg-2)",
             maxWidth: 600, lineHeight: 1.6, margin: "0 0 36px" }}>
             A M|P estrutura uma metodologia para lojas de material de construção no Brasil venderem mais — todo mês,
             com previsibilidade e retorno comprovado. Os mesmos resultados que já entregamos para a{" "}
             <strong style={{ color: "var(--fg-1)", fontWeight: 700 }}>Rodrigo Tintas</strong>, a{" "}
             <strong style={{ color: "var(--fg-1)", fontWeight: 700 }}>Telhas Coral</strong> e a{" "}
             <strong style={{ color: "var(--fg-1)", fontWeight: 700 }}>Pacheco Solar</strong> e diversas outras empresas do setor.
-          </Reveal>
-          <Reveal delay={360} y={16}>
+          </p>
+          <div className="hero-in" style={{ animationDelay: "210ms" }}>
             <MpButton size="xl" onClick={onCta} iconRight="arrow-right">Quero o diagnóstico da minha loja</MpButton>
-          </Reveal>
+          </div>
 
-          <Reveal delay={460} style={{ marginTop: 40, paddingTop: 28, borderTop: "1px solid var(--border-1)" }}>
+          <div className="hero-in" style={{ animationDelay: "280ms", marginTop: 40, paddingTop: 28, borderTop: "1px solid var(--border-1)" }}>
             {/* TODO: inserir número real. Ex.: "+12 lojas de material de construção atendidas · +R$ X em faturamento gerado" */}
             <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "var(--fg-3)", textTransform: "uppercase",
               letterSpacing: ".1em", margin: "0 0 14px" }}>Lojas que já crescem com a M|P</p>
@@ -126,10 +131,10 @@ export function LpHero({ onCta }) {
                 )}
               </div>
             </div>
-          </Reveal>
+          </div>
         </div>
 
-        <Reveal style={{ position: "relative" }} delay={240} x={36} y={0} duration={820}>
+        <div className="hero-in" style={{ position: "relative", animationDelay: "140ms" }}>
           <HeroPhoto label="Foto: Marcos e Pedro" sub="Os donos da M|P, olhando pra câmera. Foto real — sem banco de imagem." ratio="4 / 5" />
           <div style={{
             position: "absolute", bottom: -18, left: -18, background: "var(--accent)", color: "#000",
@@ -139,7 +144,7 @@ export function LpHero({ onCta }) {
             <Icon name="badge-check" style={{ width: 18, height: 18 }} />
             Você fala com os donos
           </div>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

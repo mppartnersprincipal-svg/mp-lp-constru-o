@@ -5,7 +5,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "esbuild src/main.jsx --bundle --minify --charset=utf8 --jsx=automatic --target=es2020 --outfile=app.js --legal-comments=none",
+    "build": "npm run build:app && npm run build:html",
+    "build:app": "esbuild src/main.jsx --bundle --minify --charset=utf8 --jsx=automatic --target=es2020 --outfile=app.js --legal-comments=none",
+    "build:html": "esbuild src/prerender-entry.jsx --bundle --charset=utf8 --jsx=automatic --platform=node --format=cjs --target=node18 --outfile=scripts/.prerender.cjs --log-level=warning && node scripts/.prerender.cjs",
     "watch": "esbuild src/main.jsx --bundle --charset=utf8 --jsx=automatic --target=es2020 --outfile=app.js --sourcemap --watch",
     "serve": "npx --yes serve@latest -l 5050 ."
   },
