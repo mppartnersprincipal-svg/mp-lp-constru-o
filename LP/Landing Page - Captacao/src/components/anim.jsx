@@ -112,7 +112,12 @@ export function CountUp({
   className,
 }) {
   const [ref, inView] = useInView({ threshold: 0.6 });
-  const [value, setValue] = React.useState(from);
+  // Estado inicial = `to` (valor FINAL), não `from`: o primeiro render é o que
+  // vai para o HTML pré-renderizado do build — com `from` (0), a página estática
+  // mostrava "+0%" / "R$ 0" sem JS e para crawlers. O valor inicial do cliente
+  // PRECISA ser igual ao do HTML estático (mismatch de hidratação re-renderiza
+  // a página inteira). A contagem 0 → alvo só começa após entrar na viewport.
+  const [value, setValue] = React.useState(to);
   const rafRef = React.useRef(0);
   const startedRef = React.useRef(false);
 

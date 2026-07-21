@@ -18,3 +18,20 @@ if (root.firstElementChild) {
   // monta do zero como antes — a página nunca fica em branco.
   createRoot(root).render(<App />);
 }
+
+// Sitelinks do Google Ads chegam por /#secao: o navegador ancora durante o
+// parse do HTML, mas o swap das webfonts muda a altura das seções e o alvo
+// "desliza" algumas centenas de px. Quando as fontes terminam de carregar,
+// re-ancora no lugar certo — a menos que o usuário já tenha rolado a página.
+if (window.location.hash) {
+  let usuarioRolou = false;
+  const marcaRolagem = () => { usuarioRolou = true; };
+  window.addEventListener("wheel", marcaRolagem, { once: true, passive: true });
+  window.addEventListener("touchstart", marcaRolagem, { once: true, passive: true });
+  const reancora = () => {
+    if (usuarioRolou) return;
+    const el = document.getElementById(window.location.hash.slice(1));
+    if (el) el.scrollIntoView({ behavior: "instant", block: "start" });
+  };
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(reancora);
+}

@@ -81,21 +81,21 @@ export function LpHero({ onCta }) {
             fontFamily: "var(--font-display)", fontWeight: 900, fontSize: "clamp(40px, 5.4vw, 76px)",
             lineHeight: 1.04, letterSpacing: "-0.02em", color: "#fff", margin: "0 0 24px", textWrap: "balance",
           }}>
-            {/* Opção B (teste A/B — trocar por esta linha p/ testar):
-                R$ 579 mil em 4 meses. Sem sorte, sem achismo — com método. */}
-            Aumente o faturamento da sua loja de material de construção <span style={{ color: "var(--accent)" }}>de 20% a 40%</span> — todo mês, com uma metodologia testada e validada.
+            Sua loja de material de construção pode faturar <span style={{ color: "var(--accent)" }}>de 20% a 40% a mais</span> — todo mês. Sem depender de indicação de pedreiro nem de post impulsionado.
           </h1>
           <p className="hero-in" style={{ animationDelay: "140ms", fontFamily: "var(--font-body)", fontSize: "clamp(16px, 1.4vw, 19px)", color: "var(--fg-2)",
             maxWidth: 600, lineHeight: 1.6, margin: "0 0 36px" }}>
-            A M|P estrutura uma metodologia para lojas de material de construção no Brasil venderem mais — todo mês,
-            com previsibilidade e retorno comprovado. Os mesmos resultados que já entregamos para a{" "}
-            <strong style={{ color: "var(--fg-1)", fontWeight: 700 }}>Rodrigo Tintas</strong>, a{" "}
-            <strong style={{ color: "var(--fg-1)", fontWeight: 700 }}>Telhas Coral</strong> e a{" "}
-            <strong style={{ color: "var(--fg-1)", fontWeight: 700 }}>Pacheco Solar</strong> e diversas outras empresas do setor.
+            O mesmo método que fez a{" "}
+            <strong style={{ color: "var(--fg-1)", fontWeight: 700 }}>Pacheco Solar</strong> faturar
+            R$ 579 mil a mais em 4 meses. A gente monta, roda e mede. Você só atende os clientes que chegam.
           </p>
           <div className="hero-in" style={{ animationDelay: "210ms" }}>
-            <MpButton size="xl" onClick={onCta} iconRight="arrow-right">Quero o diagnóstico da minha loja</MpButton>
+            <MpButton size="xl" onClick={onCta} iconRight="arrow-right">Quero o diagnóstico gratuito da minha loja</MpButton>
           </div>
+          <p className="hero-in" style={{ animationDelay: "240ms", fontFamily: "var(--font-body)", fontSize: 14, color: "var(--fg-3)",
+            lineHeight: 1.6, margin: "14px 0 0", maxWidth: 520 }}>
+            Você fala direto com os donos da M|P. Sem robô, sem estagiário, sem contrato que te prende.
+          </p>
 
           <div className="hero-in" style={{ animationDelay: "280ms", marginTop: 40, paddingTop: 28, borderTop: "1px solid var(--border-1)" }}>
             {/* TODO: inserir número real. Ex.: "+12 lojas de material de construção atendidas · +R$ X em faturamento gerado" */}

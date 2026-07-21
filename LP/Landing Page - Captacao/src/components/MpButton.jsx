@@ -51,7 +51,18 @@ export function MpButton({ children, variant = "primary", size = "md", onClick, 
   );
 }
 
-// Topbar — logo only + single CTA. No nav menu (focus on lead capture).
+// Links de navegação da topbar — âncoras das seções (as mesmas URLs servem de
+// sitelinks no Google Ads: https://www.mpconstrucao.com.br/#metodo etc.).
+// <a> puro de propósito: com o HTML pré-renderizado, o scroll funciona mesmo
+// antes de o app.js hidratar e também chegando direto por /#secao.
+const NAV_LINKS = [
+  { href: "#metodo", label: "O método" },
+  { href: "#resultados", label: "Resultados" },
+  { href: "#clientes", label: "Clientes" },
+  { href: "#diagnostico", label: "Diagnóstico" },
+];
+
+// Topbar — logo + menu de âncoras (some no mobile via .topbar-nav) + CTA.
 export function Topbar({ onCta }) {
   const [scrolled, setScrolled] = React.useState(false);
   React.useEffect(() => {
@@ -70,6 +81,11 @@ export function Topbar({ onCta }) {
       transition: "all 220ms cubic-bezier(0.22,1,0.36,1)",
     }}>
       <img src="assets/logo-mp-mark.svg" alt="M|P Assessoria" style={{ height: scrolled ? 30 : 36, transition: "all 220ms" }} />
+      <nav className="topbar-nav" aria-label="Seções da página">
+        {NAV_LINKS.map((l) => (
+          <a key={l.href} href={l.href}>{l.label}</a>
+        ))}
+      </nav>
       <MpButton size="sm" onClick={onCta} iconRight="arrow-right">Quero meu diagnóstico</MpButton>
     </header>
   );

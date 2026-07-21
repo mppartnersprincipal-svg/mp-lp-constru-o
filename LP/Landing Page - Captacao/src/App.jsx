@@ -9,7 +9,8 @@ import { LpProof } from "./components/LpProof.jsx";
 import { LpMath } from "./components/LpMath.jsx";
 import { LpForm } from "./components/LpForm.jsx";
 import { LpMethod } from "./components/LpMethod.jsx";
-import { LpResults, LpFooter } from "./components/LpResults.jsx";
+import { LpResults, LpFinalCta, LpFooter } from "./components/LpResults.jsx";
+import { LpValueStack, LpGarantia, LpEscassez } from "./components/LpOffer.jsx";
 import { pushEvent } from "./track.js";
 
 const WHATSAPP_FLOAT =
@@ -47,15 +48,22 @@ export function App() {
     if (el) window.scrollTo({ top: Math.max(0, el.offsetTop - 80), behavior: "smooth" });
   };
 
+  // Ordem da página (reordenada em 2026-07-21):
+  // hero → problema+método → prova (vídeo/print + clientes) → faça a conta →
+  // value stack → garantia → escassez → CTA final → formulário → rodapé.
   return (
     <>
       <Topbar onCta={() => goForm("topbar")} />
       <LpHero onCta={() => goForm("hero")} />
-      <LpProof onCta={() => goForm("prova_social")} />
-      <LpMath onCta={() => goForm("matematica")} />
-      <LpForm />
       <LpMethod />
-      <LpResults onCta={() => goForm("cta_final")} />
+      <LpProof onCta={() => goForm("prova_social")} />
+      <LpResults />
+      <LpMath onCta={() => goForm("matematica")} />
+      <LpValueStack />
+      <LpGarantia />
+      <LpEscassez />
+      <LpFinalCta onCta={() => goForm("cta_final")} />
+      <LpForm />
       <LpFooter />
       <WhatsAppFloat />
     </>

@@ -64,7 +64,7 @@ function BigNumber({ name, logo, logoH = 32, children }) {
   );
 }
 
-export function LpResults({ onCta }) {
+export function LpResults() {
   const cards = [
     { name: "Manu Tintas", to: 22, period: "de faturamento em 33 dias", logo: "assets/logo-manu-tintas.webp", logoH: 40 },
     { name: "Rodrigo Tintas", to: 15, period: "de faturamento em 45 dias", logo: "assets/logo-rodrigo-tintas.webp", logoH: 34 },
@@ -111,6 +111,18 @@ export function LpResults({ onCta }) {
           </Reveal>
         </div>
 
+      </div>
+    </section>
+  );
+}
+
+// CTA final — card "A próxima loja... pode ser a sua". Movido de dentro da
+// LpResults (2026-07-21) para encerrar a página imediatamente antes do
+// formulário. JSX do card intacto; só ganhou a moldura de seção própria.
+export function LpFinalCta({ onCta }) {
+  return (
+    <section style={{ padding: "var(--section-pad-y) clamp(20px, 4vw, 48px)", background: "var(--bg-page)" }}>
+      <div style={{ maxWidth: "var(--container-max)", margin: "0 auto" }}>
         <Reveal y={36} scale={0.97} duration={820} style={{
           background: "linear-gradient(135deg, #1c1c1c 0%, #121212 100%)", border: "1px solid var(--border-accent)",
           borderRadius: "var(--r-xl)", padding: "clamp(36px, 5vw, 64px)", textAlign: "center", position: "relative", overflow: "hidden",

@@ -6,6 +6,55 @@ com data, o que mudou, por quê, e pendências deixadas.
 
 ---
 
+## 2026-07-21 — Copy nova, reordenação de seções, blocos de oferta e menu de âncoras
+
+Sessão dirigida pelo usuário (protocolo em 2 fases com aprovação por etapa).
+
+### Números da prova sem depender de JS (prioridade da sessão)
+
+- `<CountUp>` ([anim.jsx](../LP/Landing%20Page%20-%20Captacao/src/components/anim.jsx))
+  passava `useState(from=0)` — o HTML pré-renderizado da produção continha
+  literalmente `+0%` / `R$ 0` nos cards (sem JS e para crawlers, ficava 0).
+  Corrigido: estado inicial agora é `to` (valor FINAL no markup); a contagem
+  0→alvo roda só após hidratar + entrar na viewport. O valor inicial do cliente
+  TEM de ser igual ao HTML estático (mismatch de hidratação re-renderiza tudo).
+- Nenhum valor foi alterado; todos já existiam no código.
+
+### Copy nova do hero (fornecida pelo usuário; grafia M|P)
+
+- H1: "Sua loja… pode faturar de 20% a 40% a mais — todo mês. Sem depender de
+  indicação de pedreiro nem de post impulsionado."; subhead cita Pacheco Solar
+  (R$ 579 mil / 4 meses); botão "Quero o diagnóstico gratuito da minha loja";
+  nova linha de confiança abaixo do botão ("…sem contrato que te prende").
+
+### Reordenação (App.jsx) + blocos novos
+
+- Nova ordem: hero → **método** (inclui o "problema na voz do dono", movido
+  inteiro) → prova → clientes → faça a conta → **value stack** (#diagnostico) →
+  **garantia** (#garantia) → **escassez** (#exclusividade) → **CTA final** →
+  formulário → rodapé.
+- CTA final extraído de `LpResults` para o export `LpFinalCta` (JSX intacto).
+- Blocos novos em `LpOffer.jsx` (copy do usuário, estilos existentes reusados):
+  `LpValueStack`, `LpGarantia`, `LpEscassez`.
+
+### Menu de âncoras na topbar (sitelinks do Google Ads)
+
+- `Topbar` (MpButton.jsx): nav com âncoras #metodo/#resultados/#clientes/
+  #diagnostico — `<a>` puro (funciona pré-hidratação); oculto ≤880px.
+- `scroll-margin-top: 96px` nas seções (âncora não some sob o header fixo).
+- **Re-ancoragem pós-fontes** (main.jsx): chegando por `/#secao`, o swap das
+  webfonts deslocava o alvo ~300px; após `document.fonts.ready` a página
+  re-ancora (cancelado se o usuário já rolou). Sitelinks pousam exatos.
+- URLs de sitelink: `/#metodo`, `/#resultados`, `/#clientes`, `/#diagnostico`,
+  `/#garantia`, `/#formulario`. Obs.: se o Google Ads reprovar por "mesmo
+  destino", usar variante com parâmetro (`/?s=metodo#metodo`).
+
+Validação: build ok; HTML estático com valores finais (zero `+0%`) e ordem
+nova conferida; zero erros de console (hidratação limpa); LCP local observado
+1,4s (sem regressão); screenshots seção a seção. Tracking intocado.
+
+---
+
 ## 2026-07-11 — Rodada 3 de performance: LCP 4,3s → 2,5s (pré-render + hero sem fade + fontes locais)
 
 **Gatilho:** usuário mediu LCP de 5,39s no DevTools; meta ≤ 3s (tráfego pago sendo
