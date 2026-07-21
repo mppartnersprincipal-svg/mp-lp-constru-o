@@ -9,6 +9,8 @@ dashboard/dist/
 
 # Ferramentas locais
 .gstack/
+# Configurações locais do Claude Code (permissões/caminhos desta máquina)
+.claude/
 
 # Segredos / variáveis de ambiente (NUNCA commitar)
 .env
